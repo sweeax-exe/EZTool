@@ -24,6 +24,9 @@ public sealed class SystemInfo
     {
         var info = new SystemInfo
         {
+            // Datenschutz im Screenshot-Modus: keine echten Namen auf Bildern
+            ComputerName = App.ScreenshotMode ? "MEIN-PC" : Environment.MachineName,
+            UserName = App.ScreenshotMode ? "Gamer" : Environment.UserName,
             OsName = Try(ReadOsName, "Windows"),
             OsBuild = Try(ReadBuild, ""),
             Motherboard = Try(() => Wmi("Win32_BaseBoard", o => $"{o["Manufacturer"]} {o["Product"]}".Trim()), "—"),

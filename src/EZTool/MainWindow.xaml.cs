@@ -157,13 +157,50 @@ public partial class MainWindow : Window
 
         // Einmalig anbieten, PawnIO für CPU-Temperaturen zu installieren
         var cfg = SettingsService.Current;
-        if (IsAdmin && !cfg.PawnIoPromptShown && (!PawnIoService.IsInstalled || PawnIoService.NeedsUpdate))
+        if (!App.ScreenshotMode && IsAdmin && !cfg.PawnIoPromptShown && (!PawnIoService.IsInstalled || PawnIoService.NeedsUpdate))
         {
             cfg.PawnIoPromptShown = true;
             SettingsService.Save();
             await Task.Delay(800);
             await PawnIoService.InstallWithDialogsAsync();
         }
+    }
+
+    /// <summary>
+    /// Screenshot-Modus: öffnet die Seiten nacheinander, rendert das Fenster selbst als PNG (mit dunklem
+    /// Hintergrund statt Desktop-Glas) und beendet EZTool danach.
+    /// </summary>
+    public async Task CaptureAsync(string dir, string[] pages)
+    {
+        WindowState = WindowState.Normal;
+        Width = 1440;
+        Height = 900;
+        Directory.CreateDirectory(dir);
+        await Task.Delay(6000); // Sensoren, Systeminfos und Verlauf laden lassen
+
+        foreach (var page in pages)
+        {
+            if (!OpenModule(page)) continue;
+            await Task.Delay(page == "cleaner" ? 12000 : 5000);
+
+            const double scale = 1.25;
+            var size = new Size(Root.ActualWidth, Root.ActualHeight);
+            var visual = new DrawingVisual();
+            using (var dc = visual.RenderOpen())
+            {
+                var bg = new LinearGradientBrush(Color.FromRgb(0x0A, 0x10, 0x1E), Color.FromRgb(0x12, 0x0C, 0x26), 35);
+                dc.DrawRectangle(bg, null, new Rect(size));
+                dc.DrawRectangle(new VisualBrush(Root), null, new Rect(size));
+            }
+            var bmp = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Pbgra32);
+            bmp.Render(visual);
+            var png = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            png.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));
+            await using var fs = File.Create(Path.Combine(dir, page + ".png"));
+            png.Save(fs);
+        }
+        ((App)Application.Current).ExitApp();
     }
 
     /// <summary>Für den Start im Infobereich (--tray): Fenster vorbereiten, aber nicht zeigen.</summary>

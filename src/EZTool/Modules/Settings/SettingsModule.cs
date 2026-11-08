@@ -98,7 +98,7 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
         .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
 
     public string Version => "v" + typeof(App).Assembly.GetName().Version?.ToString(3);
-    public string SettingsPath => SettingsService.Folder;
+    public string SettingsPath => App.ScreenshotMode ? @"%LOCALAPPDATA%\EZTool" : SettingsService.Folder;
 
     private static readonly int[] Intervals = [500, 1000, 2000];
 

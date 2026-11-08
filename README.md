@@ -6,6 +6,17 @@
 
 Futuristisches System-Tool für Windows 10/11 im Glas-Design: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, Tweaks und Tastenbelegung – kostenlos und Open Source.
 
+![EZTool Dashboard](docs/screenshots/dashboard.png)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Gaming-Modus](docs/screenshots/gaming.png) **Gaming-Modus** – Boost per Klick, Live-FPS, Session-Bericht | ![Verlauf](docs/screenshots/history.png) **Verlauf** – Temperaturen und Auslastung der letzten 24 Stunden |
+| ![Hardware](docs/screenshots/hardware.png) **Hardware** – alle Sensoren live, nach Bauteil gruppiert | ![Speicher-Cleaner](docs/screenshots/cleaner.png) **Speicher-Cleaner** – sicher aufräumen, inklusive Tiefenreinigung |
+| ![Windows-Tweaks](docs/screenshots/tweaks.png) **Windows-Tweaks** – Werbung raus, Gaming rein, alles umkehrbar | ![Tastenbelegung](docs/screenshots/hotkeys.png) **Tastenbelegung** – Medientasten für jede Tastatur |
+| ![Einstellungen](docs/screenshots/settings.png) **Einstellungen** – Autostart, Alarme, Overlay, Auto-Update | |
+
 ## Download
 
 1. Unter [**Releases**](https://github.com/sweeax-exe/EZTool/releases/latest) die Datei **`EZTool.exe`** herunterladen.
@@ -87,6 +98,7 @@ Startparameter:
 - `--page=<modul>` öffnet ein Modul direkt (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `settings`).
 - `--tray` startet unsichtbar im Infobereich.
 - Umgebungsvariable `EZTOOL_DEV=1`: eigene Instanz für Tests, die eine laufende EZTool-Instanz nicht stört.
+- `--screenshots=<Ordner> --pages=dashboard,gaming,…`: EZTool fotografiert die genannten Seiten selbst und beendet sich. So entstehen die Bilder in `docs/screenshots`. Computer- und Benutzername werden dabei durch Platzhalter ersetzt, und es wird nichts aufgezeichnet.
 
 ### CPU-Temperaturen (PawnIO)
 

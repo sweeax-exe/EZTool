@@ -7,9 +7,19 @@ namespace EZTool;
 
 public partial class App : Application
 {
+    /// <summary>
+    /// Screenshot-Modus (für die README): "--screenshots=Ordner --pages=dashboard,hardware".
+    /// EZTool fotografiert die Seiten selbst, maskiert persönliche Daten und beendet sich.
+    /// </summary>
+    public static string? ScreenshotDir { get; } = Arg("--screenshots=");
+    public static bool ScreenshotMode => ScreenshotDir != null;
+
     // EZTOOL_DEV=1 → eigene Instanz für Tests, ohne eine laufende EZTool-Instanz zu stören
     private static readonly string InstanceName = "EZTool.SingleInstance.v1" +
-        (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("EZTOOL_DEV")) ? "" : ".dev");
+        (ScreenshotMode ? ".shot" : string.IsNullOrEmpty(Environment.GetEnvironmentVariable("EZTOOL_DEV")) ? "" : ".dev");
+
+    public static string? Arg(string prefix) =>
+        Environment.GetCommandLineArgs().FirstOrDefault(a => a.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))?[prefix.Length..].Trim('"');
     private Mutex? _mutex;
     private EventWaitHandle? _showSignal;
     private TrayService? _tray;
@@ -39,6 +49,18 @@ public partial class App : Application
 
         _ = SystemInfo.LoadAsync();
         HardwareService.Instance.Start();
+
+        if (ScreenshotMode)
+        {
+            // Nur anzeigen und fotografieren – keine Hintergrund-Funktionen, nichts wird geschrieben
+            SensorLogService.Instance.LoadOnly();
+            var shot = new MainWindow();
+            MainWindow = shot;
+            shot.Show();
+            _ = shot.CaptureAsync(ScreenshotDir!, (Arg("--pages=") ?? "dashboard").Split(',', StringSplitOptions.RemoveEmptyEntries));
+            return;
+        }
+
         SensorLogService.Instance.Start();
         SensorLogService.Instance.FpsSource = () => FpsService.Instance.Current?.Fps;
 

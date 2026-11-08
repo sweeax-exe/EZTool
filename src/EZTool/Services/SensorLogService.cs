@@ -35,6 +35,13 @@ public sealed class SensorLogService
         System.Windows.Application.Current.Exit += (_, _) => Flush();
     }
 
+    /// <summary>Nur vorhandene Logs laden, ohne selbst etwas aufzuzeichnen (Screenshot-Modus).</summary>
+    public void LoadOnly()
+    {
+        Load(DateTime.Today.AddDays(-1));
+        Load(DateTime.Today);
+    }
+
     public IReadOnlyList<SensorSample> Since(DateTime from)
     {
         lock (_samples) return _samples.Where(s => s.Time >= from).ToList();
