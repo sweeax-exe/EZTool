@@ -1,0 +1,165 @@
+<UserControl x:Class="EZTool.Modules.Folders.FoldersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+    <Grid Margin="40,0,40,28">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="340" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══ Einstellungen ═══ -->
+        <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="22">
+            <StackPanel>
+                <TextBlock Text="MODUS" Style="{StaticResource Label}" />
+                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" Margin="0,8,0,0">
+                    <UniformGrid Columns="3">
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="Ungenutzt" IsChecked="True" GroupName="fmode" Command="{Binding SetModeCommand}" CommandParameter="stale" Padding="6,7" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="Verwaist" GroupName="fmode" Command="{Binding SetModeCommand}" CommandParameter="orphans" Padding="6,7" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="Leer" GroupName="fmode" Command="{Binding SetModeCommand}" CommandParameter="empty" Padding="6,7" />
+                    </UniformGrid>
+                </Border>
+                <TextBlock Text="{Binding ModeHint}" Style="{StaticResource Body}" FontSize="12" Margin="2,10,0,0" LineHeight="18" />
+
+                <!-- Ort -->
+                <StackPanel Visibility="{Binding ShowRoots, Converter={StaticResource Vis}}">
+                    <TextBlock Text="ORT" Style="{StaticResource Label}" Margin="0,22,0,8" />
+                    <ItemsControl ItemsSource="{Binding Roots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Style="{StaticResource SegmentButton}" Content="{Binding Label}" IsChecked="{Binding IsSelected}" GroupName="froot"
+                                             ToolTip="{Binding Path}" Margin="0,0,6,6" BorderThickness="1" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Style="{StaticResource GhostButton}" Command="{Binding BrowseRootCommand}" HorizontalAlignment="Left" Padding="12,6" Margin="0,2,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE838;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
+                            <TextBlock Text="Anderer Ordner…" Margin="8,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Alter -->
+                <Grid Margin="0,22,0,6" Visibility="{Binding ShowSize, Converter={StaticResource Vis}}">
+                    <TextBlock Text="NICHT GEÄNDERT SEIT" Style="{StaticResource Label}" />
+                    <TextBlock Text="{Binding AgeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                </Grid>
+                <Slider Minimum="0" Maximum="5" Value="{Binding AgeIndex}" TickFrequency="1" Visibility="{Binding ShowSize, Converter={StaticResource Vis}}" />
+
+                <!-- Größe -->
+                <StackPanel Visibility="{Binding ShowSize, Converter={StaticResource Vis}}">
+                    <Grid Margin="0,18,0,6">
+                        <TextBlock Text="MINDESTGRÖSSE" Style="{StaticResource Label}" />
+                        <TextBlock Text="{Binding SizeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                    </Grid>
+                    <Slider Minimum="0" Maximum="4" Value="{Binding SizeIndex}" TickFrequency="1" />
+                </StackPanel>
+
+                <Button Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}" Margin="0,26,0,0" Padding="22,12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14" VerticalAlignment="Center" />
+                        <TextBlock Text="Analyse starten" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <StackPanel Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" Margin="0,16,0,0">
+                    <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" />
+                    <TextBlock Text="{Binding ProgressText}" Style="{StaticResource Body}" FontSize="11" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                    <Button Style="{StaticResource GhostButton}" Content="Abbrechen" Command="{Binding CancelCommand}" HorizontalAlignment="Right" Padding="12,5" Margin="0,8,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══ Ergebnisse ═══ -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,12">
+                <TextBlock Text="{Binding ResultText}" Style="{StaticResource Body}" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding HasResults, Converter={StaticResource Vis}}">
+                    <Button Style="{StaticResource GhostButton}" Content="Alle" Command="{Binding SelectAllCommand}" Padding="12,6" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="Keine" Command="{Binding SelectNoneCommand}" Padding="12,6" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Leerer Zustand -->
+            <Border Grid.Row="1" Style="{StaticResource Card}" Visibility="{Binding HasResults, Converter={StaticResource InvVis}}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid Width="120" Height="120" HorizontalAlignment="Center">
+                        <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
+                        <Ellipse Margin="18" Stroke="{StaticResource Cyan}" StrokeThickness="1" Opacity="0.25" />
+                        <TextBlock Text="&#xE838;" Style="{StaticResource Icon}" FontSize="38" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
+                    </Grid>
+                    <TextBlock Text="Bereit für die Analyse" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,18,0,0" />
+                    <TextBlock Text="Alles, was du löschst, landet im Papierkorb und ist wiederherstellbar." Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <ListBox Grid.Row="1" Style="{StaticResource CleanList}" ItemsSource="{Binding Results}" Visibility="{Binding HasResults, Converter={StaticResource Vis}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="58" Margin="0,0,8,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="44" />
+                                <ColumnDefinition Width="46" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="110" />
+                                <ColumnDefinition Width="44" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox IsChecked="{Binding IsChecked}" HorizontalAlignment="Center" />
+                            <Border Grid.Column="1" Width="36" Height="36" CornerRadius="10" Background="#14FFB547">
+                                <TextBlock Text="&#xE8B7;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" HorizontalAlignment="Center" />
+                            </Border>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="6,0,12,0">
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" FontSize="13.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding Parent}" Style="{StaticResource Body}" FontSize="11.5" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" MaxWidth="460" />
+                                    <TextBlock Text="{Binding Note}" FontSize="11.5" Foreground="{StaticResource TextMute}" Margin="10,0,0,0" />
+                                    <TextBlock Text="{Binding Status}" FontSize="11.5" Foreground="{StaticResource Red}" Margin="10,0,0,0" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding LastWrite, Converter={StaticResource Age}}" Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Style="{StaticResource Body}" FontSize="11" Foreground="{StaticResource TextMute}">
+                                    <Run Text="{Binding Files, Mode=OneWay, StringFormat={}{0:N0}}" /><Run Text=" Dateien" />
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="4" Text="{Binding Size, Converter={StaticResource Bytes}}" Style="{StaticResource Value}" FontSize="14"
+                                       VerticalAlignment="Center" HorizontalAlignment="Right" />
+                            <Button Grid.Column="5" Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="Im Explorer öffnen" HorizontalAlignment="Right"
+                                    Command="{Binding DataContext.OpenCommand, ElementName=Root}" CommandParameter="{Binding}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Aktionsleiste -->
+            <Border Grid.Row="2" Style="{StaticResource Card}" Padding="18,12" Margin="0,14,0,0" BorderBrush="#55FFB547"
+                    Visibility="{Binding SelectedCount, Converter={StaticResource Vis}}">
+                <Grid>
+                    <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Text}" FontFamily="{StaticResource DisplayFont}" FontSize="14">
+                        <Run Text="{Binding SelectedCount, Mode=OneWay}" /><Run Text=" Ordner ausgewählt · " /><Run Text="{Binding SelectedSize, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Amber}" />
+                    </TextBlock>
+                    <Button Style="{StaticResource DangerButton}" Command="{Binding RecycleCommand}" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74D;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
+                            <TextBlock Text="In den Papierkorb" Margin="10,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,65 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:EZTool.Controls">
+
+    <c:TempToBrushConverter x:Key="TempBrush" />
+    <c:PercentToLengthConverter x:Key="PctLen" />
+
+    <Style TargetType="c:GaugeCard">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="c:GaugeCard">
+                    <Border Style="{StaticResource Card}" Padding="20,18">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{TemplateBinding Icon}" Style="{StaticResource Icon}" FontSize="14" Foreground="{TemplateBinding ArcBrush}" />
+                                    <TextBlock Text="{TemplateBinding Title}" Style="{StaticResource Label}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Text="{TemplateBinding Caption}" Style="{StaticResource Body}" FontSize="11" HorizontalAlignment="Right"
+                                           TextTrimming="CharacterEllipsis" MaxWidth="150" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <Grid Grid.Row="1" Height="190" Margin="0,8,0,4">
+                                <c:RadialGauge Value="{TemplateBinding Value}" ArcBrush="{TemplateBinding ArcBrush}" GlowColor="{TemplateBinding GlowColor}"
+                                               Thickness="11" Width="190" Height="190" />
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,4,0,0">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="{TemplateBinding ValueText}" Style="{StaticResource BigValue}" FontSize="40" />
+                                        <TextBlock Text="{TemplateBinding Unit}" Style="{StaticResource Value}" Foreground="{StaticResource TextDim}"
+                                                   FontSize="16" VerticalAlignment="Bottom" Margin="3,0,0,8" />
+                                    </StackPanel>
+                                    <TextBlock Text="{TemplateBinding SubText}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource TextDim}"
+                                               HorizontalAlignment="Center" Margin="0,-2,0,0" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{TemplateBinding Stat1Label}" Style="{StaticResource Label}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{TemplateBinding Stat1Value}" Style="{StaticResource Value}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <Rectangle Grid.Column="1" Fill="{StaticResource StrokeSoft}" />
+                                <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                    <TextBlock Text="{TemplateBinding Stat2Label}" Style="{StaticResource Label}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{TemplateBinding Stat2Value}" Style="{StaticResource Value}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

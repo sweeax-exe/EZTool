@@ -1,0 +1,108 @@
+<UserControl x:Class="EZTool.Modules.History.HistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:EZTool.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="40,0,32,28">
+        <StackPanel>
+            <!-- Werkzeugleiste -->
+            <Grid Margin="0,0,0,14">
+                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="15 Min" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="15" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="1 Stunde" IsChecked="True" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="60" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="6 Stunden" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="360" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="24 Stunden" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="1440" />
+                    </StackPanel>
+                </Border>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Style="{StaticResource Body}" VerticalAlignment="Center" Margin="0,0,14,0">
+                        <Run Text="{Binding SampleCount, Mode=OneWay, StringFormat={}{0:N0}}" /><Run Text=" Messpunkte" />
+                    </TextBlock>
+                    <Button Style="{StaticResource GhostButton}" Content="Als CSV exportieren" Command="{Binding ExportCommand}" Padding="14,8" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="Log-Ordner" Command="{Binding OpenFolderCommand}" Padding="14,8" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Kennzahlen -->
+            <UniformGrid Columns="4" Margin="-8,0,-8,16">
+                <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
+                    <StackPanel>
+                        <TextBlock Text="CPU HÖCHSTWERT" Style="{StaticResource Label}" />
+                        <TextBlock Text="{Binding CpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Cyan}" />
+                        <TextBlock Text="{Binding CpuTempMaxAt}" Style="{StaticResource Body}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
+                    <StackPanel>
+                        <TextBlock Text="GPU HÖCHSTWERT" Style="{StaticResource Label}" />
+                        <TextBlock Text="{Binding GpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Magenta}" />
+                        <TextBlock Text="{Binding GpuTempMaxAt}" Style="{StaticResource Body}" FontSize="11.5" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
+                    <StackPanel>
+                        <TextBlock Text="Ø CPU-LAST" Style="{StaticResource Label}" />
+                        <TextBlock Text="{Binding CpuLoadAvg}" Style="{StaticResource BigValue}" FontSize="28" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
+                    <StackPanel>
+                        <TextBlock Text="Ø GPU-LAST" Style="{StaticResource Label}" />
+                        <TextBlock Text="{Binding GpuLoadAvg}" Style="{StaticResource BigValue}" FontSize="28" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Temperaturen -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE9CA;" Style="{StaticResource Icon}" FontSize="14" />
+                            <TextBlock Text="Temperaturen" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
+                            <TextBlock Text="CPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center" />
+                            <TextBlock Text="GPU" Style="{StaticResource Label}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+                    <c:TimeChart Series="{Binding TempSeries}" Times="{Binding Times}" Maximum="0" Height="240" Margin="0,14,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Auslastung -->
+            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                <StackPanel>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE9D2;" Style="{StaticResource Icon}" FontSize="14" />
+                            <TextBlock Text="Auslastung" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
+                            <TextBlock Text="CPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center" />
+                            <TextBlock Text="GPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource Green}" VerticalAlignment="Center" />
+                            <TextBlock Text="RAM" Style="{StaticResource Label}" Margin="6,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+                    <c:TimeChart Series="{Binding LoadSeries}" Times="{Binding Times}" Maximum="100" Height="220" Margin="0,14,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- FPS (nur wenn der Gaming-Modus gemessen hat) -->
+            <Border Style="{StaticResource Card}" Margin="0,16,0,0" Visibility="{Binding HasFps, Converter={StaticResource Vis}}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7FC;" Style="{StaticResource Icon}" FontSize="14" Foreground="{StaticResource Amber}" />
+                        <TextBlock Text="Bilder pro Sekunde (Spiel im Vordergrund)" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                    </StackPanel>
+                    <c:TimeChart Series="{Binding FpsSeries}" Times="{Binding Times}" Maximum="0" Height="200" Margin="0,14,0,0" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

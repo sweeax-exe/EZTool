@@ -1,0 +1,183 @@
+<UserControl x:Class="EZTool.Modules.Duplicates.DuplicatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+    <Grid Margin="40,0,40,28">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="340" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══ Einstellungen ═══ -->
+        <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="22">
+            <StackPanel>
+                <TextBlock Text="ORT" Style="{StaticResource Label}" Margin="0,0,0,8" />
+                <ItemsControl ItemsSource="{Binding Roots}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Style="{StaticResource SegmentButton}" Content="{Binding Label}" IsChecked="{Binding IsSelected}" GroupName="droot"
+                                         ToolTip="{Binding Path}" Margin="0,0,6,6" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Style="{StaticResource GhostButton}" Command="{Binding BrowseRootCommand}" HorizontalAlignment="Left" Padding="12,6" Margin="0,2,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE838;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
+                        <TextBlock Text="Anderer Ordner…" Margin="8,0,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <TextBlock Text="DATEITYP" Style="{StaticResource Label}" Margin="0,22,0,8" />
+                <WrapPanel>
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Alle" IsChecked="True" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="all" Margin="0,0,6,6" />
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Bilder" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="images" Margin="0,0,6,6" />
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Videos" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="videos" Margin="0,0,6,6" />
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Musik" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="music" Margin="0,0,6,6" />
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Dokumente" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="docs" Margin="0,0,6,6" />
+                    <RadioButton Style="{StaticResource SegmentButton}" Content="Archive &amp; Setups" GroupName="dtype" Command="{Binding SetTypeCommand}" CommandParameter="archives" Margin="0,0,6,6" />
+                </WrapPanel>
+
+                <Grid Margin="0,18,0,6">
+                    <TextBlock Text="DATEIGRÖSSE" Style="{StaticResource Label}" />
+                    <TextBlock Text="{Binding SizeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                </Grid>
+                <Slider Minimum="0" Maximum="3" TickFrequency="1" Value="{Binding SizeIndex}" />
+
+                <Button Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}" Margin="0,24,0,0" Padding="22,12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14" VerticalAlignment="Center" />
+                        <TextBlock Text="Duplikate suchen" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Button>
+
+                <StackPanel Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" Margin="0,16,0,0">
+                    <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" />
+                    <TextBlock Text="{Binding Phase}" Style="{StaticResource Body}" FontSize="12" Foreground="{StaticResource Text}" Margin="0,8,0,0" />
+                    <TextBlock Text="{Binding Detail}" Style="{StaticResource Body}" FontSize="11" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                    <Button Style="{StaticResource GhostButton}" Content="Abbrechen" Command="{Binding CancelCommand}" HorizontalAlignment="Right" Padding="12,5" Margin="0,8,0,0" />
+                </StackPanel>
+
+                <Rectangle Height="1" Fill="{StaticResource StrokeSoft}" Margin="0,20,0,14" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE83D;" Style="{StaticResource Icon}" Foreground="{StaticResource Green}" FontSize="14" VerticalAlignment="Top" Margin="0,2,0,0" />
+                    <TextBlock Style="{StaticResource Body}" FontSize="11.5" Margin="10,0,0,0" Width="260">
+                        Verglichen wird der echte Inhalt (SHA-256). Das Original bleibt immer erhalten, Gelöschtes landet im Papierkorb. Cloud-Dateien werden nicht heruntergeladen.
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══ Ergebnisse ═══ -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,12">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ResultText}" Style="{StaticResource Body}" />
+                    <TextBlock Style="{StaticResource Body}" FontSize="12" Visibility="{Binding HasResults, Converter={StaticResource Vis}}">
+                        <Run Text="Verschwendeter Platz: " /><Run Text="{Binding WastedTotal, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Magenta}" FontFamily="{StaticResource DisplayFont}" />
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding HasResults, Converter={StaticResource Vis}}">
+                    <Button Style="{StaticResource GhostButton}" Content="Älteste behalten" Command="{Binding KeepOldestCommand}" Padding="12,6" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="Neueste behalten" Command="{Binding KeepNewestCommand}" Padding="12,6" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="Keine" Command="{Binding SelectNoneCommand}" Padding="12,6" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Leerer Zustand -->
+            <Border Grid.Row="1" Style="{StaticResource Card}" Visibility="{Binding HasResults, Converter={StaticResource InvVis}}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid Width="120" Height="120" HorizontalAlignment="Center">
+                        <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
+                        <Ellipse Margin="18" Stroke="{StaticResource Cyan}" StrokeThickness="1" Opacity="0.25" />
+                        <TextBlock Text="&#xE8C8;" Style="{StaticResource Icon}" FontSize="38" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
+                    </Grid>
+                    <TextBlock Text="Bereit für die Suche" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,18,0,0" />
+                    <TextBlock Text="Tipp: „Bilder“ oder „Videos“ im Benutzerordner bringen oft am meisten." Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,8,0" Visibility="{Binding HasResults, Converter={StaticResource Vis}}">
+                <ItemsControl ItemsSource="{Binding Groups}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,10">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,6">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Style="{StaticResource Chip}" Padding="7,1">
+                                                <TextBlock Text="{Binding Extension}" FontSize="10.5" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" />
+                                            </Border>
+                                            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Text}" FontFamily="{StaticResource DisplayFont}" FontSize="13">
+                                                <Run Text="{Binding Files.Count, Mode=OneWay}" /><Run Text="× " /><Run Text="{Binding Size, Mode=OneWay, Converter={StaticResource Bytes}}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource TextDim}">
+                                            <Run Text="verschwendet " /><Run Text="{Binding Wasted, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Magenta}" />
+                                        </TextBlock>
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding Files}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid x:Name="row" Margin="0,3">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="34" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="110" />
+                                                        <ColumnDefinition Width="40" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" />
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                        <TextBlock x:Name="name" Text="{Binding Name}" Foreground="{StaticResource Text}" FontSize="12.5" TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Text="{Binding Folder}" Style="{StaticResource Body}" FontSize="11" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Modified, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Style="{StaticResource Body}" FontSize="11.5" VerticalAlignment="Center" />
+                                                    <Button Grid.Column="3" Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="Im Explorer zeigen" Width="30" Height="30"
+                                                            Command="{Binding DataContext.OpenCommand, ElementName=Root}" CommandParameter="{Binding}" />
+                                                </Grid>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsRemoved}" Value="True">
+                                                        <Setter TargetName="row" Property="Opacity" Value="0.35" />
+                                                        <Setter TargetName="row" Property="IsEnabled" Value="False" />
+                                                        <Setter TargetName="name" Property="TextDecorations" Value="Strikethrough" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Aktionsleiste -->
+            <Border Grid.Row="2" Style="{StaticResource Card}" Padding="18,12" Margin="0,14,0,0" BorderBrush="#55FF3D9A"
+                    Visibility="{Binding SelectedCount, Converter={StaticResource Vis}}">
+                <Grid>
+                    <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Text}" FontFamily="{StaticResource DisplayFont}" FontSize="14">
+                        <Run Text="{Binding SelectedCount, Mode=OneWay, StringFormat={}{0:N0}}" /><Run Text=" Kopien ausgewählt · " /><Run Text="{Binding SelectedSize, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Magenta}" />
+                    </TextBlock>
+                    <Button Style="{StaticResource DangerButton}" Command="{Binding RecycleCommand}" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74D;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
+                            <TextBlock Text="In den Papierkorb" Margin="10,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

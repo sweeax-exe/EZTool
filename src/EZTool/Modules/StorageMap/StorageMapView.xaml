@@ -1,0 +1,136 @@
+<UserControl x:Class="EZTool.Modules.StorageMap.StorageMapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:EZTool.Controls"
+             x:Name="Root">
+    <Grid Margin="40,0,40,28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Werkzeugleiste -->
+        <Grid Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <ItemsControl ItemsSource="{Binding Roots}" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Style="{StaticResource SegmentButton}" Content="{Binding Label}" IsChecked="{Binding IsSelected}" GroupName="smroot"
+                                         ToolTip="{Binding Path}" Margin="0,0,4,0" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Style="{StaticResource IconButton}" Content="&#xE838;" Command="{Binding BrowseRootCommand}" ToolTip="Anderen Ordner wählen" Margin="4,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource GhostButton}" Content="Abbrechen" Command="{Binding CancelCommand}" Padding="12,8" Margin="0,0,8,0"
+                        Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" />
+                <Button Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}" Padding="18,9">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xEB05;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
+                        <TextBlock Text="Karte erstellen" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Brotkrumen-Navigation -->
+        <Grid Grid.Row="1" Margin="0,0,0,10" Visibility="{Binding HasMap, Converter={StaticResource Vis}}">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource IconButton}" Content="&#xE72B;" Command="{Binding UpCommand}" ToolTip="Eine Ebene zurück (Rechtsklick)" Width="30" Height="30" />
+                <ItemsControl ItemsSource="{Binding Breadcrumb}" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{Binding Name}" Command="{Binding DataContext.ZoomToCommand, ElementName=Root}" CommandParameter="{Binding}"
+                                        Cursor="Hand" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" FontSize="13">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text=" › " Foreground="{StaticResource TextMute}" FontSize="13" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <TextBlock Text="{Binding Summary}" Style="{StaticResource Value}" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- Karte + Liste -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="320" />
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource Card}" Padding="8">
+                <Grid>
+                    <c:TreemapView x:Name="Map" Root="{Binding Current}" />
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding HasMap, Converter={StaticResource InvVis}}">
+                        <Grid Width="120" Height="120" HorizontalAlignment="Center">
+                            <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
+                            <TextBlock Text="&#xEB05;" Style="{StaticResource Icon}" FontSize="40" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
+                        </Grid>
+                        <TextBlock Text="Wähle ein Laufwerk und erstelle die Karte" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,16,0,0" />
+                        <TextBlock Text="Ein ganzes Laufwerk dauert je nach Größe 30 Sekunden bis wenige Minuten." Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                        <StackPanel Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" Margin="0,18,0,0" Width="420">
+                            <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" />
+                            <TextBlock Text="{Binding ProgressText}" Style="{StaticResource Body}" FontSize="11.5" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Größte Einträge -->
+            <Border Grid.Column="2" Style="{StaticResource Card}" Padding="14,12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="GRÖSSTE EINTRÄGE" Style="{StaticResource Label}" Margin="4,0,0,8" />
+                    <ListBox Grid.Row="1" Style="{StaticResource CleanList}" ItemsSource="{Binding Children}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="6,6,4,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Grid>
+                                            <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" FontSize="12.5" TextTrimming="CharacterEllipsis" Margin="0,0,70,0" />
+                                            <TextBlock Text="{Binding Size, Converter={StaticResource Bytes}}" Style="{StaticResource Value}" FontSize="12" HorizontalAlignment="Right" />
+                                        </Grid>
+                                        <ProgressBar Style="{StaticResource NeonBar}" Height="3" Value="{Binding Share, Mode=OneWay}" Margin="0,5,0,0" />
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8A7;" Width="28" Height="28" Margin="6,0,0,0" ToolTip="Im Explorer zeigen"
+                                            Command="{Binding DataContext.RevealCommand, ElementName=Root}" CommandParameter="{Binding}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Statuszeile -->
+        <TextBlock Grid.Row="3" Text="{Binding HoverText}" Style="{StaticResource Body}" FontSize="12" Margin="4,10,0,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+    </Grid>
+</UserControl>

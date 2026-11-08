@@ -1,0 +1,118 @@
+<UserControl x:Class="EZTool.Modules.Disks.DisksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:EZTool.Controls">
+    <Grid Margin="40,0,40,28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Margin="0,0,0,12">
+            <TextBlock Style="{StaticResource Body}" VerticalAlignment="Center" MaxWidth="820" HorizontalAlignment="Left">
+                Die Restlebensdauer einer SSD sinkt mit jeder geschriebenen Datenmenge. Werte unter 10 % oder der Status „Warnung“ sind ein Zeichen, bald ein Backup zu machen.
+            </TextBlock>
+            <Button Style="{StaticResource IconButton}" Content="&#xE72C;" Command="{Binding LoadCommand}" ToolTip="Neu einlesen" HorizontalAlignment="Right" />
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
+            <StackPanel>
+                <Border Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12" BorderBrush="#55FFB547" Visibility="{Binding Limited, Converter={StaticResource Vis}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" />
+                        <TextBlock Text="Betriebsstunden, Abnutzung und Fehlerzähler liefert Windows nur mit Administrator-Rechten." Style="{StaticResource Body}" Margin="12,0,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding Disks}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="card" Style="{StaticResource Card}" Padding="24,20" Margin="0,0,0,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="190" />
+                                        <ColumnDefinition Width="28" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Restlebensdauer -->
+                                    <Grid Width="180" Height="180">
+                                        <c:RadialGauge Value="{Binding LifeGauge}" Thickness="10" ArcBrush="{StaticResource GreenGradient}" GlowColor="#2CF5A0" />
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding LifeText}" Style="{StaticResource BigValue}" FontSize="36" />
+                                                <TextBlock Text="%" Style="{StaticResource Value}" Foreground="{StaticResource TextDim}" VerticalAlignment="Bottom" Margin="2,0,0,7" />
+                                            </StackPanel>
+                                            <TextBlock Text="Lebensdauer" Style="{StaticResource Body}" FontSize="11.5" HorizontalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Model}" Style="{StaticResource H2}" FontSize="19" />
+                                            <Border x:Name="status" Style="{StaticResource Chip}" Margin="12,0,0,0" Background="#1A2CF5A0" BorderBrush="#552CF5A0" VerticalAlignment="Center">
+                                                <TextBlock x:Name="statusText" Text="{Binding StatusText}" FontSize="11" Foreground="{StaticResource Green}" FontFamily="{StaticResource DisplayFont}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,4,0,0">
+                                            <Run Text="{Binding Kind, Mode=OneWay}" Foreground="{StaticResource Cyan}" /><Run Text="  ·  " /><Run Text="{Binding Size, Mode=OneWay, Converter={StaticResource Bytes}}" /><Run Text="  ·  " /><Run Text="{Binding Letters, Mode=OneWay}" Foreground="{StaticResource Text}" />
+                                        </TextBlock>
+
+                                        <UniformGrid Columns="3" Margin="0,18,0,0">
+                                            <StackPanel Margin="0,0,16,14">
+                                                <TextBlock Text="TEMPERATUR" Style="{StaticResource Label}" />
+                                                <TextBlock Text="{Binding TempText}" Style="{StaticResource Value}" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,14">
+                                                <TextBlock Text="BETRIEBSZEIT" Style="{StaticResource Label}" />
+                                                <TextBlock Text="{Binding HoursText}" Style="{StaticResource Value}" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,14">
+                                                <TextBlock Text="LESE- / SCHREIBFEHLER" Style="{StaticResource Label}" />
+                                                <TextBlock x:Name="errors" Text="{Binding ErrorsText}" Style="{StaticResource Value}" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,0">
+                                                <TextBlock Text="GESCHRIEBEN" Style="{StaticResource Label}" />
+                                                <TextBlock Text="{Binding WrittenText}" Style="{StaticResource Value}" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,0">
+                                                <TextBlock Text="GELESEN" Style="{StaticResource Label}" />
+                                                <TextBlock Text="{Binding ReadText}" Style="{StaticResource Value}" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,16,0">
+                                                <TextBlock Text="SERIENNUMMER" Style="{StaticResource Label}" />
+                                                <TextBlock Text="{Binding Serial}" Style="{StaticResource Value}" FontSize="12.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
+                                        </UniformGrid>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="1">
+                                    <Setter TargetName="status" Property="Background" Value="#1AFFB547" />
+                                    <Setter TargetName="status" Property="BorderBrush" Value="#55FFB547" />
+                                    <Setter TargetName="statusText" Property="Foreground" Value="{StaticResource Amber}" />
+                                    <Setter TargetName="card" Property="BorderBrush" Value="#55FFB547" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="2">
+                                    <Setter TargetName="status" Property="Background" Value="#1AFF4D6D" />
+                                    <Setter TargetName="status" Property="BorderBrush" Value="#55FF4D6D" />
+                                    <Setter TargetName="statusText" Property="Foreground" Value="{StaticResource Red}" />
+                                    <Setter TargetName="card" Property="BorderBrush" Value="#77FF4D6D" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding HasErrors}" Value="True">
+                                    <Setter TargetName="errors" Property="Foreground" Value="{StaticResource Amber}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsLoading, Converter={StaticResource Vis}}">
+            <TextBlock Text="Datenträger werden abgefragt…" Style="{StaticResource H2}" HorizontalAlignment="Center" />
+            <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" Width="260" Margin="0,16,0,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>
