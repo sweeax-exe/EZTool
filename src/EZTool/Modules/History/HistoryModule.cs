@@ -25,11 +25,12 @@ public sealed class HistoryModule : IModule
 
 public sealed partial class HistoryViewModel : ObservableObject
 {
-    private static readonly Color Cyan = Color.FromRgb(0x00, 0xE5, 0xFF), Magenta = Color.FromRgb(0xFF, 0x3D, 0x9A),
-        Green = Color.FromRgb(0x2C, 0xF5, 0xA0), Amber = Color.FromRgb(0xFF, 0xB5, 0x47);
+    private static readonly Color Cpu = Color.FromRgb(0xFF, 0xC2, 0x0E), Gpu = Color.FromRgb(0x4D, 0xA8, 0xE8),
+        Green = Color.FromRgb(0x6C, 0xCB, 0x6A), Amber = Color.FromRgb(0xFF, 0x9F, 0x1C);
     private const int MaxPoints = 480;
 
-    [ObservableProperty] private int _rangeMinutes = 60;
+    // Im Screenshot-Modus den ganzen Tag zeigen, damit die README-Bilder Daten enthalten
+    [ObservableProperty] private int _rangeMinutes = App.ScreenshotMode ? 1440 : 60;
     [ObservableProperty] private IReadOnlyList<DateTime>? _times;
     [ObservableProperty] private IReadOnlyList<ChartSeries>? _tempSeries;
     [ObservableProperty] private IReadOnlyList<ChartSeries>? _loadSeries;
@@ -84,8 +85,8 @@ public sealed partial class HistoryViewModel : ObservableObject
         }
 
         Times = times;
-        TempSeries = [new("CPU", Cyan, cpuT, "°C"), new("GPU", Magenta, gpuT, "°C")];
-        LoadSeries = [new("CPU", Cyan, cpuL, "%"), new("GPU", Magenta, gpuL, "%"), new("RAM", Green, ram, "%")];
+        TempSeries = [new("CPU", Cpu, cpuT, "°C"), new("GPU", Gpu, gpuT, "°C")];
+        LoadSeries = [new("CPU", Cpu, cpuL, "%"), new("GPU", Gpu, gpuL, "%"), new("RAM", Green, ram, "%")];
         HasFps = fps.Any(f => f is > 0);
         FpsSeries = [new("FPS", Amber, fps, "")];
 

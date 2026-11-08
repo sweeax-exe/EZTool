@@ -12,7 +12,7 @@
         <!-- Werkzeugleiste -->
         <Grid Margin="0,0,0,12">
             <TextBlock Style="{StaticResource Body}" VerticalAlignment="Center">
-                <Run Text="{Binding ActiveCount, Mode=OneWay}" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" /><Run Text="{l:T Tweaks.ActiveSuffix}" />
+                <Run Text="{Binding ActiveCount, Mode=OneWay}" Foreground="{StaticResource Accent}" FontFamily="{StaticResource DisplayFont}" /><Run Text="{l:T Tweaks.ActiveSuffix}" />
             </TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource GhostButton}" Command="{Binding CreateRestorePointCommand}" Padding="14,8" Margin="0,0,8,0">
@@ -27,7 +27,7 @@
 
         <!-- Hinweis: Neustart nötig -->
         <StackPanel Grid.Row="1">
-            <Border Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12" BorderBrush="#5500E5FF"
+            <Border Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12" BorderBrush="#55FFC20E"
                     Visibility="{Binding NeedsExplorerRestart, Converter={StaticResource Vis}}">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -37,7 +37,7 @@
                     <Button Style="{StaticResource PrimaryButton}" Content="{l:T Tweaks.RestartExplorer}" Command="{Binding RestartExplorerCommand}" HorizontalAlignment="Right" Padding="14,7" FontSize="12.5" />
                 </Grid>
             </Border>
-            <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,12" BorderBrush="#55FFB547"
+            <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,12" BorderBrush="#55FF9F1C"
                     Visibility="{Binding NeedsReboot, Converter={StaticResource Vis}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" />
@@ -52,7 +52,7 @@
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource Label}" Foreground="{StaticResource Cyan}" Margin="4,10,0,8" FontSize="12" />
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource Label}" Foreground="{StaticResource Accent}" Margin="4,10,0,8" FontSize="12" />
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
@@ -72,7 +72,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Border Width="38" Height="38" CornerRadius="10" Background="#0DFFFFFF" VerticalAlignment="Top">
+                                <Border Width="38" Height="38" CornerRadius="4" Background="#0DFFFFFF" VerticalAlignment="Top">
                                     <TextBlock Text="{Binding Icon}" Style="{StaticResource Icon}" HorizontalAlignment="Center" />
                                 </Border>
                                 <StackPanel Grid.Column="1" Margin="14,0,14,0">
@@ -93,7 +93,7 @@
                         </Border>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsOn}" Value="True">
-                                <Setter TargetName="card" Property="BorderBrush" Value="#5500E5FF" />
+                                <Setter TargetName="card" Property="BorderBrush" Value="#55FFC20E" />
                             </DataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>

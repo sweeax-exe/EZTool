@@ -26,7 +26,7 @@
   "Gaming.SessionDateLong": "{0:yyyy'년' M'월' d'일' dddd HH:mm}",
   "Gaming.SessionReport": "세션 보고서",
   "Gaming.AvgFps": "평균 FPS",
-  "Gaming.Low1": "1% LOW",
+  "Gaming.Low1": "1% Low",
   "Gaming.MaxTemp": "최고 CPU / GPU",
   "Gaming.Frames": "프레임",
   "Gaming.FpsHistory": "FPS 기록",

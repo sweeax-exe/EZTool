@@ -4,37 +4,33 @@
              xmlns:c="clr-namespace:EZTool.Controls"
              xmlns:l="clr-namespace:EZTool.Core">
     <UserControl.Resources>
-        <!-- Großer runder Boost-Knopf -->
+        <!-- Großer Boost-Taster: eine eckige Taste in einer eingelassenen Fassung, die beim Drücken nachgibt -->
         <Style x:Key="BoostButton" TargetType="Button">
             <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource KeyFocus}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid Width="190" Height="190">
-                            <Ellipse x:Name="glow" Margin="8" Fill="{TemplateBinding Background}" Opacity="0.45">
-                                <Ellipse.Effect>
-                                    <BlurEffect Radius="34" />
-                                </Ellipse.Effect>
-                            </Ellipse>
-                            <Ellipse Margin="10" Stroke="{TemplateBinding Background}" StrokeThickness="2" Opacity="0.6" StrokeDashArray="1 3" />
-                            <Ellipse x:Name="core" Margin="24" Fill="{TemplateBinding Background}" />
-                            <Ellipse Margin="24">
-                                <Ellipse.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Color="#55FFFFFF" Offset="0" />
-                                        <GradientStop Color="#00FFFFFF" Offset="0.5" />
-                                    </LinearGradientBrush>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Grid>
+                        <Border Width="184" Height="184" CornerRadius="8" Background="{StaticResource Well}" Padding="8">
+                            <Grid x:Name="keyGrid">
+                                <Border x:Name="key" CornerRadius="5" Background="{TemplateBinding Background}"
+                                        BorderBrush="#40000000" BorderThickness="0,0,0,5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <Border x:Name="hi" CornerRadius="5" Background="#FFFFFF" Opacity="0" IsHitTestVisible="False" />
+                            </Grid>
+                        </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="glow" Property="Opacity" Value="0.8" />
+                                <Setter TargetName="hi" Property="Opacity" Value="0.12" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="core" Property="Opacity" Value="0.8" />
+                                <Setter TargetName="keyGrid" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="3" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="key" Property="BorderThickness" Value="0,0,0,2" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.5" />
@@ -59,23 +55,23 @@
                 <Border Style="{StaticResource Card}" Padding="24">
                     <StackPanel>
                         <Grid HorizontalAlignment="Center">
-                            <Button Style="{StaticResource BoostButton}" Command="{Binding ToggleCommand}" Background="{StaticResource AccentGradientDiag}"
+                            <Button Style="{StaticResource BoostButton}" Command="{Binding ToggleCommand}" Background="{StaticResource Accent}"
                                     Visibility="{Binding IsActive, Converter={StaticResource InvVis}}">
                                 <StackPanel>
-                                    <TextBlock Text="&#xE945;" FontFamily="{StaticResource IconFont}" FontSize="32" Foreground="#04060C" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{l:T Gaming.Boost}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="22" Foreground="#04060C" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                    <TextBlock Text="&#xE945;" FontFamily="{StaticResource IconFont}" FontSize="30" Foreground="{StaticResource OnAccent}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{l:T Gaming.Boost}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontStretch="Condensed" FontSize="30" Foreground="{StaticResource OnAccent}" HorizontalAlignment="Center" Margin="0,4,0,0" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource BoostButton}" Command="{Binding ToggleCommand}" Background="{StaticResource DangerGradient}"
+                            <Button Style="{StaticResource BoostButton}" Command="{Binding ToggleCommand}" Background="{StaticResource Red}"
                                     Visibility="{Binding IsActive, Converter={StaticResource Vis}}">
                                 <StackPanel>
                                     <TextBlock Text="&#xE71A;" FontFamily="{StaticResource IconFont}" FontSize="28" Foreground="White" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{l:T Gaming.Stop}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="18" Foreground="White" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                                    <TextBlock Text="{l:T Gaming.Stop}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontStretch="Condensed" FontSize="26" Foreground="White" HorizontalAlignment="Center" Margin="0,6,0,0" />
                                 </StackPanel>
                             </Button>
                         </Grid>
 
-                        <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0">
+                        <TextBlock HorizontalAlignment="Center" Margin="0,16,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource H2}">
                                     <Setter Property="Text" Value="{l:T Gaming.StateOff}" />
@@ -83,7 +79,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsActive}" Value="True">
                                             <Setter Property="Text" Value="{l:T Gaming.StateOn}" />
-                                            <Setter Property="Foreground" Value="{StaticResource Magenta}" />
+                                            <Setter Property="Foreground" Value="{StaticResource Blue}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -123,11 +119,7 @@
                         </Grid>
                         <Grid Grid.Row="1" Margin="0,8,0,0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding FpsText}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontSize="84" Foreground="{StaticResource Text}">
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect Color="#FFB547" BlurRadius="24" ShadowDepth="0" Opacity="0.45" />
-                                    </TextBlock.Effect>
-                                </TextBlock>
+                                <TextBlock Text="{Binding FpsText}" FontFamily="{StaticResource DisplayFont}" FontWeight="SemiBold" FontStretch="Condensed" FontSize="96" Foreground="{StaticResource Text}" />
                                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,0,20">
                                     <TextBlock Text="FPS" Style="{StaticResource H2}" Foreground="{StaticResource Amber}" />
                                     <TextBlock Text="{Binding FrameTimeText}" Style="{StaticResource Body}" FontSize="12" />
@@ -135,12 +127,12 @@
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <TextBlock Text="CPU" Style="{StaticResource Label}" HorizontalAlignment="Right" />
-                                <TextBlock Text="{Binding CpuTemp}" Style="{StaticResource Value}" FontSize="20" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding CpuTemp}" Style="{StaticResource Value}" FontSize="20" Foreground="{StaticResource Accent}" HorizontalAlignment="Right" />
                                 <TextBlock Text="GPU" Style="{StaticResource Label}" HorizontalAlignment="Right" Margin="0,10,0,0" />
-                                <TextBlock Text="{Binding GpuTemp}" Style="{StaticResource Value}" FontSize="20" Foreground="{StaticResource Magenta}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{Binding GpuTemp}" Style="{StaticResource Value}" FontSize="20" Foreground="{StaticResource Blue}" HorizontalAlignment="Right" />
                             </StackPanel>
                         </Grid>
-                        <c:Sparkline Grid.Row="2" Values="{Binding FpsHistory}" Stroke="#FFB547" Maximum="0" MinHeight="90" Margin="0,8,0,0" />
+                        <c:Sparkline Grid.Row="2" Values="{Binding FpsHistory}" Stroke="#FF9F1C" Maximum="0" MinHeight="90" Margin="0,8,0,0" />
                         <TextBlock Grid.Row="3" Text="{Binding MeasureHint}" Style="{StaticResource Body}" FontSize="11.5" Margin="0,10,0,0" />
                     </Grid>
                 </Border>
@@ -174,7 +166,7 @@
                                     <ToggleButton IsChecked="{Binding IsSelected}" Margin="0,0,8,8" Cursor="Hand" FocusVisualStyle="{x:Null}" ToolTip="{Binding Name}">
                                         <ToggleButton.Template>
                                             <ControlTemplate TargetType="ToggleButton">
-                                                <Border x:Name="bd" CornerRadius="10" Padding="8,5,10,5" BorderThickness="1" Background="#0AFFFFFF" BorderBrush="{StaticResource StrokeSoft}">
+                                                <Border x:Name="bd" CornerRadius="4" Padding="8,5,10,5" BorderThickness="1" Background="#0AFFFFFF" BorderBrush="{StaticResource StrokeSoft}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,7,0" />
                                                         <TextBlock x:Name="tx" Text="{Binding Display}" FontSize="12" Foreground="{StaticResource TextDim}" MaxWidth="170" TextTrimming="CharacterEllipsis" />
@@ -185,8 +177,8 @@
                                                         <Setter TargetName="bd" Property="BorderBrush" Value="#55FFFFFF" />
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="True">
-                                                        <Setter TargetName="bd" Property="Background" Value="#22FF3D9A" />
-                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#99FF3D9A" />
+                                                        <Setter TargetName="bd" Property="Background" Value="#224DA8E8" />
+                                                        <Setter TargetName="bd" Property="BorderBrush" Value="#994DA8E8" />
                                                         <Setter TargetName="tx" Property="Foreground" Value="{StaticResource Text}" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>

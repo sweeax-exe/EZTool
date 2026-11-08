@@ -14,7 +14,7 @@
         <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="22">
             <StackPanel>
                 <TextBlock Text="{l:T Folders.ModeLabel}" Style="{StaticResource Label}" />
-                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" Margin="0,8,0,0">
+                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="4" Padding="3" Margin="0,8,0,0">
                     <UniformGrid Columns="3">
                         <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Folders.Mode.Stale}" IsChecked="True" GroupName="fmode" Command="{Binding SetModeCommand}" CommandParameter="stale" Padding="6,7" />
                         <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Folders.Mode.Orphans}" GroupName="fmode" Command="{Binding SetModeCommand}" CommandParameter="orphans" Padding="6,7" />
@@ -50,7 +50,7 @@
                 <!-- Alter -->
                 <Grid Margin="0,22,0,6" Visibility="{Binding ShowSize, Converter={StaticResource Vis}}">
                     <TextBlock Text="{l:T Folders.NotChangedSince}" Style="{StaticResource Label}" />
-                    <TextBlock Text="{Binding AgeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding AgeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Accent}" HorizontalAlignment="Right" />
                 </Grid>
                 <Slider Minimum="0" Maximum="5" Value="{Binding AgeIndex}" TickFrequency="1" Visibility="{Binding ShowSize, Converter={StaticResource Vis}}" />
 
@@ -58,7 +58,7 @@
                 <StackPanel Visibility="{Binding ShowSize, Converter={StaticResource Vis}}">
                     <Grid Margin="0,18,0,6">
                         <TextBlock Text="{l:T Folders.MinSize}" Style="{StaticResource Label}" />
-                        <TextBlock Text="{Binding SizeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding SizeLabel}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Accent}" HorizontalAlignment="Right" />
                     </Grid>
                     <Slider Minimum="0" Maximum="4" Value="{Binding SizeIndex}" TickFrequency="1" />
                 </StackPanel>
@@ -97,10 +97,8 @@
             <!-- Leerer Zustand -->
             <Border Grid.Row="1" Style="{StaticResource Card}" Visibility="{Binding HasResults, Converter={StaticResource InvVis}}">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Grid Width="120" Height="120" HorizontalAlignment="Center">
-                        <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
-                        <Ellipse Margin="18" Stroke="{StaticResource Cyan}" StrokeThickness="1" Opacity="0.25" />
-                        <TextBlock Text="&#xE838;" Style="{StaticResource Icon}" FontSize="38" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
+                    <Grid Width="64" Height="64" HorizontalAlignment="Center">
+                        <TextBlock Text="&#xE838;" Style="{StaticResource Icon}" FontSize="38" HorizontalAlignment="Center" />
                     </Grid>
                     <TextBlock Text="{l:T Folders.EmptyTitle}" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,18,0,0" />
                     <TextBlock Text="{l:T Folders.EmptyText}" Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,6,0,0" />
@@ -120,7 +118,7 @@
                                 <ColumnDefinition Width="44" />
                             </Grid.ColumnDefinitions>
                             <CheckBox IsChecked="{Binding IsChecked}" HorizontalAlignment="Center" />
-                            <Border Grid.Column="1" Width="36" Height="36" CornerRadius="10" Background="#14FFB547">
+                            <Border Grid.Column="1" Width="36" Height="36" CornerRadius="4" Background="#14FF9F1C">
                                 <TextBlock Text="&#xE8B7;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" HorizontalAlignment="Center" />
                             </Border>
                             <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="6,0,12,0">
@@ -147,7 +145,7 @@
             </ListBox>
 
             <!-- Aktionsleiste -->
-            <Border Grid.Row="2" Style="{StaticResource Card}" Padding="18,12" Margin="0,14,0,0" BorderBrush="#55FFB547"
+            <Border Grid.Row="2" Style="{StaticResource Card}" Padding="18,12" Margin="0,14,0,0" BorderBrush="#55FF9F1C"
                     Visibility="{Binding SelectedCount, Converter={StaticResource Vis}}">
                 <Grid>
                     <TextBlock VerticalAlignment="Center" Foreground="{StaticResource Text}" FontFamily="{StaticResource DisplayFont}" FontSize="14">

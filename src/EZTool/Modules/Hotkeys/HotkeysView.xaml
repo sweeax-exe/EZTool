@@ -9,7 +9,7 @@
             <Setter Property="CornerRadius" Value="9" />
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="BorderThickness" Value="1,1,1,3" />
-            <Setter Property="BorderBrush" Value="#4000E5FF" />
+            <Setter Property="BorderBrush" Value="#40FFC20E" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -26,7 +26,7 @@
                          Command="{Binding DataContext.SelectActionCommand, ElementName=Root}" CommandParameter="{Binding Id}">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="bd" CornerRadius="10" Padding="10,7,12,7" BorderThickness="1" Background="#0AFFFFFF" BorderBrush="{StaticResource StrokeSoft}">
+                        <Border x:Name="bd" CornerRadius="4" Padding="10,7,12,7" BorderThickness="1" Background="#0AFFFFFF" BorderBrush="{StaticResource StrokeSoft}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="ic" Text="{Binding Icon}" FontFamily="{StaticResource IconFont}" FontSize="13" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" />
                                 <TextBlock x:Name="tx" Text="{Binding Label}" FontSize="12.5" Foreground="{StaticResource TextDim}" Margin="8,0,0,0" VerticalAlignment="Center" />
@@ -37,10 +37,10 @@
                                 <Setter TargetName="bd" Property="BorderBrush" Value="#55FFFFFF" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="{StaticResource CyanSoft}" />
-                                <Setter TargetName="bd" Property="BorderBrush" Value="#9900E5FF" />
+                                <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentSoft}" />
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#99FFC20E" />
                                 <Setter TargetName="tx" Property="Foreground" Value="{StaticResource Text}" />
-                                <Setter TargetName="ic" Property="Foreground" Value="{StaticResource Cyan}" />
+                                <Setter TargetName="ic" Property="Foreground" Value="{StaticResource Accent}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -55,13 +55,13 @@
             <Border Style="{StaticResource Card}" Padding="22,16" Margin="0,0,0,16">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
-                        <Border Width="46" Height="46" CornerRadius="14" Background="{StaticResource VioletSoft}" BorderBrush="#448B5CF6" BorderThickness="1">
-                            <TextBlock Text="&#xE8D6;" Style="{StaticResource Icon}" FontSize="20" Foreground="{StaticResource Violet}" HorizontalAlignment="Center" />
+                        <Border Width="46" Height="46" CornerRadius="4" Background="{StaticResource BlueSoft}" BorderBrush="#444DA8E8" BorderThickness="1">
+                            <TextBlock Text="&#xE8D6;" Style="{StaticResource Icon}" FontSize="20" Foreground="{StaticResource Blue}" HorizontalAlignment="Center" />
                         </Border>
                         <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
                             <TextBlock Text="{l:T Hotkeys.QuickTitle}" Style="{StaticResource H2}" />
                             <TextBlock Style="{StaticResource Body}" FontSize="12.5">
-                                <Run Text="{l:T Hotkeys.Key.PageUp}" Foreground="{StaticResource Cyan}" /><Run Text="{l:T Hotkeys.QuickNext}" /><Run Text="{l:T Hotkeys.Key.PageDown}" Foreground="{StaticResource Cyan}" /><Run Text="{l:T Hotkeys.QuickPrev}" /><Run Text="{l:T Hotkeys.Key.Pause}" Foreground="{StaticResource Cyan}" /><Run Text="{l:T Hotkeys.QuickPlayPause}" />
+                                <Run Text="{l:T Hotkeys.Key.PageUp}" Foreground="{StaticResource Accent}" /><Run Text="{l:T Hotkeys.QuickNext}" /><Run Text="{l:T Hotkeys.Key.PageDown}" Foreground="{StaticResource Accent}" /><Run Text="{l:T Hotkeys.QuickPrev}" /><Run Text="{l:T Hotkeys.Key.Pause}" Foreground="{StaticResource Accent}" /><Run Text="{l:T Hotkeys.QuickPlayPause}" />
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -113,7 +113,7 @@
                         <StackPanel Visibility="{Binding ShowTarget, Converter={StaticResource Vis}}" Margin="0,8,0,0">
                             <TextBlock Text="{l:T Hotkeys.SendInstead}" Style="{StaticResource Label}" Margin="0,0,0,8" />
                             <StackPanel Orientation="Horizontal">
-                                <Border Style="{StaticResource KeyCap}" MinWidth="120" BorderBrush="#448B5CF6">
+                                <Border Style="{StaticResource KeyCap}" MinWidth="120" BorderBrush="#444DA8E8">
                                     <TextBlock Text="{Binding TargetText}" FontFamily="{StaticResource DisplayFont}" FontSize="15" Foreground="{StaticResource Text}" />
                                 </Border>
                                 <Button Style="{StaticResource GhostButton}" Content="{l:T Hotkeys.RecordTargetKey}" Command="{Binding RecordTargetCommand}" Margin="12,0,0,0" />
@@ -148,7 +148,7 @@
                         <ItemsControl ItemsSource="{Binding Bindings}" Margin="0,10,0,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border x:Name="row" CornerRadius="12" Padding="12,10" Margin="0,4" Background="#08FFFFFF" BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1">
+                                    <Border x:Name="row" CornerRadius="4" Padding="12,10" Margin="0,4" Background="#08FFFFFF" BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -162,7 +162,7 @@
                                             <TextBlock Grid.Column="1" Text="&#xE72A;" FontFamily="{StaticResource IconFont}" FontSize="12" Foreground="{StaticResource TextMute}"
                                                        VerticalAlignment="Center" Margin="12,0" />
                                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding ActionIcon}" FontFamily="{StaticResource IconFont}" FontSize="14" Foreground="{StaticResource Cyan}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding ActionIcon}" FontFamily="{StaticResource IconFont}" FontSize="14" Foreground="{StaticResource Accent}" VerticalAlignment="Center" />
                                                 <TextBlock Text="{Binding ActionText}" Foreground="{StaticResource Text}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                                             </StackPanel>
                                             <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">

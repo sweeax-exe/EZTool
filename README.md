@@ -7,7 +7,7 @@
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-2CF5A0)
 ![20 languages](https://img.shields.io/badge/Languages-20-FF3D9A)
 
-A futuristic system tool for Windows 10/11 with a glass design: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, tweaks and key mapping. Free and open source.
+A system tool for Windows 10/11 that looks and reads like a measuring instrument: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, tweaks and key mapping. Free and open source.
 
 ![EZTool dashboard](docs/screenshots/en/dashboard.png)
 
@@ -68,7 +68,7 @@ The navigation is organized into five groups:
 
 ## Design
 
-On Windows 11 (22H2 and later) the window sits on real **acrylic glass**: your desktop shows through, blurred. On top are semi-transparent glass cards with a light edge and slowly drifting glow orbs (aurora). On Windows 10 the background is dark and opaque instead. All colors and glass materials live in `Themes/Theme.xaml` (`CardFill`, `CardBorderGradient`, `GlassPanel`, `GlassEdge`).
+EZTool is built like a piece of test equipment, not a sci-fi HUD: an opaque graphite housing, one **signal yellow** for everything you operate, large DIN numerals (Bahnschrift) for live values and segmented level meters with peak hold instead of glowing rings. Measurement channels use oscilloscope colors: CPU yellow, GPU blue, RAM green. All colors, fonts and control styles live in `Themes/Theme.xaml` (`Chassis`, `Panel`, `Well`, `Accent`, …).
 
 ## Running in the background
 
@@ -164,9 +164,9 @@ The module is discovered automatically and shows up in the navigation. If the vi
 ```
 src/EZTool/
 ├── Assets/         App icon
-├── Core/           IModule, Loc (languages), formatting, converters, Native (Recycle Bin, icons, acrylic)
+├── Core/           IModule, Loc (languages), formatting, converters, Native (Recycle Bin, icons, window frame)
 ├── Controls/       RadialGauge, Sparkline, GaugeCard, TimeChart, TreemapView
-├── Themes/         Colors, glass materials, fonts, all control styles
+├── Themes/         Colors, fonts, all control styles
 ├── Localization/   <language>/*.json – all UI texts (20 languages)
 ├── Services/       Hardware, Fps, Gaming, SensorLog, SystemInfo, Settings, Tray, Alerts, PawnIo, StartupTask,
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,

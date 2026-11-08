@@ -5,22 +5,9 @@
         Topmost="True" ShowInTaskbar="False" ShowActivated="False" Focusable="False"
         SizeToContent="WidthAndHeight" FontFamily="{StaticResource DisplayFont}" UseLayoutRounding="True"
         Title="EZTool Overlay">
-    <Border x:Name="Panel" CornerRadius="14" Padding="14,10" BorderThickness="1" Margin="8">
-        <Border.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#E00B1220" Offset="0" />
-                <GradientStop Color="#E0080C18" Offset="1" />
-            </LinearGradientBrush>
-        </Border.Background>
-        <Border.BorderBrush>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#6600E5FF" Offset="0" />
-                <GradientStop Color="#14FFFFFF" Offset="0.5" />
-                <GradientStop Color="#668B5CF6" Offset="1" />
-            </LinearGradientBrush>
-        </Border.BorderBrush>
+    <Border x:Name="Panel" CornerRadius="4" Padding="14,10" BorderThickness="1" Margin="8" Background="#E6181A1D" BorderBrush="#FF3A3F45">
         <Border.Effect>
-            <DropShadowEffect Color="#000000" BlurRadius="16" ShadowDepth="0" Opacity="0.6" />
+            <DropShadowEffect Color="#000000" BlurRadius="10" ShadowDepth="2" Opacity="0.5" />
         </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -39,11 +26,11 @@
             <TextBlock x:Name="FpsValue" Grid.Row="3" Grid.Column="1" Text="" Foreground="White" FontSize="15" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,3,0,0" Visibility="Collapsed" />
             <TextBlock x:Name="FrameTime" Grid.Row="3" Grid.Column="2" Text="" Foreground="{StaticResource TextDim}" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Collapsed" />
 
-            <TextBlock Text="CPU" Foreground="{StaticResource Cyan}" FontSize="12" FontWeight="SemiBold" Margin="0,1,14,1" />
+            <TextBlock Text="CPU" Foreground="{StaticResource Accent}" FontSize="12" FontWeight="SemiBold" Margin="0,1,14,1" />
             <TextBlock x:Name="CpuLoad" Grid.Column="1" Text="—" Foreground="White" FontSize="13" HorizontalAlignment="Right" />
             <TextBlock x:Name="CpuTemp" Grid.Column="2" Text="" Foreground="{StaticResource TextDim}" FontSize="13" HorizontalAlignment="Right" />
 
-            <TextBlock Grid.Row="1" Text="GPU" Foreground="{StaticResource Magenta}" FontSize="12" FontWeight="SemiBold" Margin="0,1,14,1" />
+            <TextBlock Grid.Row="1" Text="GPU" Foreground="{StaticResource Blue}" FontSize="12" FontWeight="SemiBold" Margin="0,1,14,1" />
             <TextBlock x:Name="GpuLoad" Grid.Row="1" Grid.Column="1" Text="—" Foreground="White" FontSize="13" HorizontalAlignment="Right" />
             <TextBlock x:Name="GpuTemp" Grid.Row="1" Grid.Column="2" Text="" Foreground="{StaticResource TextDim}" FontSize="13" HorizontalAlignment="Right" />
 

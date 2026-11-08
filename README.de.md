@@ -7,7 +7,7 @@
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-2CF5A0)
 ![20 Sprachen](https://img.shields.io/badge/Sprachen-20-FF3D9A)
 
-Futuristisches System-Tool für Windows 10/11 im Glas-Design: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, Tweaks und Tastenbelegung. Kostenlos und Open Source.
+System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, Tweaks und Tastenbelegung. Kostenlos und Open Source.
 
 ![EZTool Dashboard](docs/screenshots/de/dashboard.png)
 
@@ -68,7 +68,7 @@ Die Navigation ist in fünf Gruppen gegliedert:
 
 ## Design
 
-Unter Windows 11 (ab 22H2) läuft das Fenster auf echtem **Acrylic-Glas**: Der Desktop scheint verschwommen durch. Darüber liegen halbtransparente Glaskarten mit Lichtkante und langsam treibende Leucht-Nebel (Aurora). Unter Windows 10 gibt es stattdessen einen dunklen, deckenden Hintergrund. Alle Farben und Glas-Materialien stehen zentral in `Themes/Theme.xaml` (`CardFill`, `CardBorderGradient`, `GlassPanel`, `GlassEdge`).
+EZTool ist gebaut wie ein Prüfgerät, nicht wie ein Sci-Fi-HUD: deckendes Graphit-Gehäuse, ein **Signalgelb** für alles, was man bedient, große DIN-Ziffern (Bahnschrift) für Live-Werte und segmentierte Pegelanzeigen mit Peak-Hold statt leuchtender Ringe. Messkanäle tragen Oszilloskop-Farben: CPU gelb, GPU blau, RAM grün. Alle Farben, Fonts und Control-Styles stehen zentral in `Themes/Theme.xaml` (`Chassis`, `Panel`, `Well`, `Accent`, …).
 
 ## Hintergrundbetrieb
 
@@ -164,9 +164,9 @@ Das Modul wird automatisch gefunden und in der Navigation angezeigt. Implementie
 ```
 src/EZTool/
 ├── Assets/         App-Icon
-├── Core/           IModule, Loc (Sprachen), Formatierung, Konverter, Native (Papierkorb, Icons, Acrylic)
+├── Core/           IModule, Loc (Sprachen), Formatierung, Konverter, Native (Papierkorb, Icons, Fensterrahmen)
 ├── Controls/       RadialGauge, Sparkline, GaugeCard, TimeChart, TreemapView
-├── Themes/         Farben, Glas-Materialien, Fonts, alle Control-Styles
+├── Themes/         Farben, Fonts, alle Control-Styles
 ├── Localization/   <Sprache>/*.json – alle Texte der Oberfläche (20 Sprachen)
 ├── Services/       Hardware, Fps, Gaming, SensorLog, SystemInfo, Settings, Tray, Alerts, PawnIo, StartupTask,
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,

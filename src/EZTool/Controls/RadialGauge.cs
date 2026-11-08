@@ -24,7 +24,7 @@ public sealed class RadialGauge : FrameworkElement
 
     public static readonly DependencyProperty GlowColorProperty = DependencyProperty.Register(
         nameof(GlowColor), typeof(Color), typeof(RadialGauge),
-        new FrameworkPropertyMetadata(Color.FromRgb(0, 229, 255), FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(Color.FromRgb(0xFF, 0xC2, 0x0E), FrameworkPropertyMetadataOptions.AffectsRender));
 
     private static readonly DependencyProperty DisplayValueProperty = DependencyProperty.Register(
         "DisplayValue", typeof(double), typeof(RadialGauge),
@@ -64,58 +64,30 @@ public sealed class RadialGauge : FrameworkElement
         double max = Maximum <= 0 ? 100 : Maximum;
         double frac = Math.Clamp((double)GetValue(DisplayValueProperty) / max, 0, 1);
 
-        // Tick-Ring
-        var tickOn = new Pen(new SolidColorBrush(Color.FromArgb(200, GlowColor.R, GlowColor.G, GlowColor.B)), 1.6);
-        var tickOff = new Pen(new SolidColorBrush(Color.FromArgb(40, 255, 255, 255)), 1.2);
-        tickOn.Freeze();
-        tickOff.Freeze();
-        for (int i = 0; i <= TickCount; i++)
+        // Segmentring statt glühendem Bogen: einzelne radiale Segmente, beleuchtet bis zum Wert
+        const int segments = 36;
+        var off = new SolidColorBrush(Color.FromRgb(0x2E, 0x33, 0x38));
+        off.Freeze();
+        double segSweep = Sweep / segments;
+        double gapDeg = Math.Min(segSweep * 0.35, 3.0);
+        int lit = (int)Math.Round(frac * segments);
+        var onPen = new Pen(ArcBrush, Thickness);
+        var offPen = new Pen(off, Thickness);
+        offPen.Freeze();
+        for (int i = 0; i < segments; i++)
         {
-            double t = (double)i / TickCount;
-            double a = StartAngle + Sweep * t;
-            bool major = i % 5 == 0;
-            double r1 = outer - 2;
-            double r2 = outer - 2 - (major ? tickLen : tickLen * 0.55);
-            dc.DrawLine(t <= frac ? tickOn : tickOff, Polar(center, r1, a), Polar(center, r2, a));
+            double a = StartAngle + i * segSweep + gapDeg / 2;
+            dc.DrawGeometry(null, i < lit ? onPen : offPen, Arc(center, radius, a, segSweep - gapDeg));
         }
 
-        // Track
-        var track = new Pen(new SolidColorBrush(Color.FromArgb(22, 255, 255, 255)), Thickness)
+        // Feine Skala außen: alle 10 %
+        var scale = new Pen(new SolidColorBrush(Color.FromRgb(0x6E, 0x75, 0x7C)), 1);
+        scale.Freeze();
+        for (int i = 0; i <= 10; i++)
         {
-            StartLineCap = PenLineCap.Round,
-            EndLineCap = PenLineCap.Round
-        };
-        track.Freeze();
-        dc.DrawGeometry(null, track, Arc(center, radius, StartAngle, Sweep));
-
-        // Innerer dünner Ring
-        var inner = new Pen(new SolidColorBrush(Color.FromArgb(18, 255, 255, 255)), 1);
-        inner.Freeze();
-        dc.DrawEllipse(null, inner, center, radius - Thickness - 6, radius - Thickness - 6);
-
-        if (frac <= 0.002) return;
-        double sweep = Sweep * frac;
-        var arc = Arc(center, radius, StartAngle, sweep);
-
-        // Glow (mehrere breite, transparente Schichten)
-        for (int i = 3; i >= 1; i--)
-        {
-            var glow = new Pen(new SolidColorBrush(Color.FromArgb((byte)(14 * (4 - i)), GlowColor.R, GlowColor.G, GlowColor.B)),
-                Thickness + i * 7)
-            {
-                StartLineCap = PenLineCap.Round,
-                EndLineCap = PenLineCap.Round
-            };
-            dc.DrawGeometry(null, glow, arc);
+            double a = StartAngle + Sweep * i / 10;
+            dc.DrawLine(scale, Polar(center, outer - 2, a), Polar(center, outer - 2 - tickLen, a));
         }
-
-        var pen = new Pen(ArcBrush, Thickness) { StartLineCap = PenLineCap.Round, EndLineCap = PenLineCap.Round };
-        dc.DrawGeometry(null, pen, arc);
-
-        // Leuchtender Endpunkt
-        var tip = Polar(center, radius, StartAngle + sweep);
-        dc.DrawEllipse(new SolidColorBrush(Color.FromArgb(60, GlowColor.R, GlowColor.G, GlowColor.B)), null, tip, Thickness * 0.95, Thickness * 0.95);
-        dc.DrawEllipse(Brushes.White, null, tip, Thickness * 0.28, Thickness * 0.28);
     }
 
     private static Point Polar(Point c, double r, double angleDeg)

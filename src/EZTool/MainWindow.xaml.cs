@@ -23,7 +23,7 @@ public partial class MainWindow : Window
         _modules = ModuleRegistry.Discover();
         BuildNavigation();
 
-        SourceInitialized += (_, _) => EnableGlass();
+        SourceInitialized += (_, _) => Native.StyleWindow(this);
         StateChanged += (_, _) => UpdateMaximizedState();
         Loaded += OnLoaded;
         HardwareService.Instance.Updated += OnHardware;
@@ -35,48 +35,12 @@ public partial class MainWindow : Window
 
         _clock.Tick += (_, _) => ClockText.Text = DateTime.Now.ToString(Loc.T("Shell.ClockFormat"), Loc.Culture);
         _clock.Start();
-        StatusText.Text = $"{(IsAdmin ? Loc.T("Shell.Admin") : Loc.T("Shell.Limited"))} · v{typeof(App).Assembly.GetName().Version?.ToString(3)}";
-        StartAurora();
+        StatusText.Text = IsAdmin ? Loc.T("Shell.Admin") : Loc.T("Shell.Limited");
+        VersionText.Text = $"v{typeof(App).Assembly.GetName().Version?.ToString(3)}";
     }
 
     private static bool IsAdmin { get; } = new System.Security.Principal.WindowsPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent())
         .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
-
-    // ───────────── Glas & Animation ─────────────
-
-    private void EnableGlass()
-    {
-        var hwnd = new WindowInteropHelper(this).Handle;
-        if (Native.EnableAcrylic(hwnd))
-        {
-            // Der WPF-Hintergrund muss durchsichtig sein, damit das Acrylic-Glas durchscheint.
-            if (HwndSource.FromHwnd(hwnd) is { CompositionTarget: { } ct }) ct.BackgroundColor = Colors.Transparent;
-        }
-        else
-        {
-            // Ältere Windows-Versionen: deckender, dunkler Hintergrund
-            Tint.Fill = (Brush)FindResource("Bg0");
-        }
-    }
-
-    private void StartAurora()
-    {
-        void Drift(TranslateTransform t, double dx, double dy, double seconds)
-        {
-            var ease = new SineEase { EasingMode = EasingMode.EaseInOut };
-            var ax = new DoubleAnimation(0, dx, TimeSpan.FromSeconds(seconds)) { AutoReverse = true, RepeatBehavior = RepeatBehavior.Forever, EasingFunction = ease };
-            var ay = new DoubleAnimation(0, dy, TimeSpan.FromSeconds(seconds * 1.3)) { AutoReverse = true, RepeatBehavior = RepeatBehavior.Forever, EasingFunction = ease };
-            // Sehr langsame Bewegung – 20 fps reichen und sparen GPU/CPU.
-            Timeline.SetDesiredFrameRate(ax, 20);
-            Timeline.SetDesiredFrameRate(ay, 20);
-            t.BeginAnimation(TranslateTransform.XProperty, ax);
-            t.BeginAnimation(TranslateTransform.YProperty, ay);
-        }
-
-        Drift(Orb1, 260, 160, 26);
-        Drift(Orb2, -320, -180, 32);
-        Drift(Orb3, -200, 220, 38);
-    }
 
     // ───────────── Navigation ─────────────
 
@@ -91,24 +55,23 @@ public partial class MainWindow : Window
                 group = module.Group;
                 NavPanel.Children.Add(new TextBlock
                 {
-                    Text = group.ToUpperInvariant(),
+                    Text = group,
                     Style = (Style)FindResource("Label"),
-                    FontSize = 10,
+                    FontSize = 12,
                     Foreground = (Brush)FindResource("TextMute"),
-                    Margin = new Thickness(26, NavPanel.Children.Count == 0 ? 4 : 14, 0, 4),
+                    Margin = new Thickness(24, NavPanel.Children.Count == 0 ? 0 : 18, 0, 6),
                 });
             }
 
             var content = new StackPanel { Orientation = Orientation.Horizontal };
-            content.Children.Add(new TextBlock
+            var icon = new TextBlock { Text = module.Icon, Style = (Style)FindResource("Icon"), FontSize = 15, Width = 20 };
+            // Symbol übernimmt die Textfarbe des Eintrags – auf dem gelben Reiter also dunkel
+            icon.SetBinding(TextBlock.ForegroundProperty, new System.Windows.Data.Binding("Foreground")
             {
-                Text = module.Icon,
-                Style = (Style)FindResource("Icon"),
-                FontSize = 16,
-                Width = 22,
-                Foreground = (Brush)FindResource("Cyan")
+                RelativeSource = new System.Windows.Data.RelativeSource(System.Windows.Data.RelativeSourceMode.FindAncestor, typeof(RadioButton), 1)
             });
-            content.Children.Add(new TextBlock { Text = module.Title, Margin = new Thickness(14, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center });
+            content.Children.Add(icon);
+            content.Children.Add(new TextBlock { Text = module.Title, Margin = new Thickness(12, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center });
 
             var button = new RadioButton { Style = (Style)FindResource("NavButton"), Content = content, GroupName = "nav", Tag = module };
             button.Checked += (_, _) => Navigate(module);
@@ -137,16 +100,11 @@ public partial class MainWindow : Window
             _views[module.Id] = view;
         }
 
-        PageEyebrow.Text = Loc.T("Shell.Module", _modules.ToList().IndexOf(module) + 1, _modules.Count);
         PageTitle.Text = module.Title;
         PageSubtitle.Text = module.Subtitle;
 
         PageHost.Content = view;
-        var tt = new TranslateTransform(0, 14);
-        view.RenderTransform = tt;
-        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
-        view.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(320)) { EasingFunction = ease });
-        tt.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(14, 0, TimeSpan.FromMilliseconds(380)) { EasingFunction = ease });
+        view.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(140)));
 
         if (IsLoaded) (view.DataContext as IActivatable)?.OnActivated();
     }
@@ -204,7 +162,7 @@ public partial class MainWindow : Window
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen())
             {
-                var bg = new LinearGradientBrush(Color.FromRgb(0x0A, 0x10, 0x1E), Color.FromRgb(0x12, 0x0C, 0x26), 35);
+                var bg = (Brush)FindResource("Chassis");
                 dc.DrawRectangle(bg, null, new Rect(size));
                 dc.DrawRectangle(new VisualBrush(Root), null, new Rect(size));
             }
@@ -228,7 +186,7 @@ public partial class MainWindow : Window
     private void OnHardware(HardwareSnapshot s)
     {
         if (!IsVisible) return;
-        MiniCpu.Text = $"{s.CpuLoad:0}%" + (s.CpuTemp is { } t ? $" · {t:0}°C" : "");
+        MiniCpu.Text = (s.CpuTemp is { } t ? $"{t:0} °C   " : "") + $"{s.CpuLoad:0} %";
         MiniCpuBar.Value = s.CpuLoad;
         MiniRam.Text = $"{Format.Bytes(s.RamUsed)} / {Format.Bytes(s.RamTotal)}";
         MiniRamBar.Value = s.RamLoad;

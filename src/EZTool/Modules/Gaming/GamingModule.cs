@@ -30,7 +30,7 @@ public sealed partial class AppChoice : ObservableObject
 
 public sealed partial class GamingViewModel : ObservableObject
 {
-    private static readonly Color Amber = Color.FromRgb(0xFF, 0xB5, 0x47), Cyan = Color.FromRgb(0x00, 0xE5, 0xFF), Magenta = Color.FromRgb(0xFF, 0x3D, 0x9A);
+    private static readonly Color Amber = Color.FromRgb(0xFF, 0x9F, 0x1C), Cpu = Color.FromRgb(0xFF, 0xC2, 0x0E), Gpu = Color.FromRgb(0x4D, 0xA8, 0xE8);
     private readonly AppSettings _cfg = SettingsService.Current;
     private readonly Queue<double> _fpsQueue = new();
     private bool _visible;
@@ -198,6 +198,6 @@ public sealed partial class GamingViewModel : ObservableObject
         }
         ReportTimes = value.Times;
         ReportFps = [new ChartSeries("FPS", Amber, value.FpsSeries, "")];
-        ReportTemps = [new ChartSeries("CPU", Cyan, value.CpuTempSeries, "°C"), new ChartSeries("GPU", Magenta, value.GpuTempSeries, "°C")];
+        ReportTemps = [new ChartSeries("CPU", Cpu, value.CpuTempSeries, "°C"), new ChartSeries("GPU", Gpu, value.GpuTempSeries, "°C")];
     }
 }

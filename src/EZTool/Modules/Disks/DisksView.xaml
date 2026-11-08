@@ -16,7 +16,7 @@
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,8,0">
             <StackPanel>
-                <Border Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12" BorderBrush="#55FFB547" Visibility="{Binding Limited, Converter={StaticResource Vis}}">
+                <Border Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12" BorderBrush="#55FF9F1C" Visibility="{Binding Limited, Converter={StaticResource Vis}}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" />
                         <TextBlock Text="{l:T Disks.AdminHint}" Style="{StaticResource Body}" Margin="12,0,0,0" />
@@ -36,7 +36,7 @@
 
                                     <!-- Restlebensdauer -->
                                     <Grid Width="180" Height="180">
-                                        <c:RadialGauge Value="{Binding LifeGauge}" Thickness="10" ArcBrush="{StaticResource GreenGradient}" GlowColor="#2CF5A0" />
+                                        <c:RadialGauge Value="{Binding LifeGauge}" Thickness="10" ArcBrush="{StaticResource Green}" GlowColor="#6CCB6A" />
                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <TextBlock Text="{Binding LifeText}" Style="{StaticResource BigValue}" FontSize="36" />
@@ -49,12 +49,12 @@
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Model}" Style="{StaticResource H2}" FontSize="19" />
-                                            <Border x:Name="status" Style="{StaticResource Chip}" Margin="12,0,0,0" Background="#1A2CF5A0" BorderBrush="#552CF5A0" VerticalAlignment="Center">
+                                            <Border x:Name="status" Style="{StaticResource Chip}" Margin="12,0,0,0" Background="#1A6CCB6A" BorderBrush="#556CCB6A" VerticalAlignment="Center">
                                                 <TextBlock x:Name="statusText" Text="{Binding StatusText}" FontSize="11" Foreground="{StaticResource Green}" FontFamily="{StaticResource DisplayFont}" />
                                             </Border>
                                         </StackPanel>
                                         <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,4,0,0">
-                                            <Run Text="{Binding Kind, Mode=OneWay}" Foreground="{StaticResource Cyan}" /><Run Text="  ·  " /><Run Text="{Binding Size, Mode=OneWay, Converter={StaticResource Bytes}}" /><Run Text="  ·  " /><Run Text="{Binding Letters, Mode=OneWay}" Foreground="{StaticResource Text}" />
+                                            <Run Text="{Binding Kind, Mode=OneWay}" Foreground="{StaticResource Accent}" /><Run Text="  ·  " /><Run Text="{Binding Size, Mode=OneWay, Converter={StaticResource Bytes}}" /><Run Text="  ·  " /><Run Text="{Binding Letters, Mode=OneWay}" Foreground="{StaticResource Text}" />
                                         </TextBlock>
 
                                         <UniformGrid Columns="3" Margin="0,18,0,0">
@@ -88,16 +88,16 @@
                             </Border>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding Status}" Value="1">
-                                    <Setter TargetName="status" Property="Background" Value="#1AFFB547" />
-                                    <Setter TargetName="status" Property="BorderBrush" Value="#55FFB547" />
+                                    <Setter TargetName="status" Property="Background" Value="#1AFF9F1C" />
+                                    <Setter TargetName="status" Property="BorderBrush" Value="#55FF9F1C" />
                                     <Setter TargetName="statusText" Property="Foreground" Value="{StaticResource Amber}" />
-                                    <Setter TargetName="card" Property="BorderBrush" Value="#55FFB547" />
+                                    <Setter TargetName="card" Property="BorderBrush" Value="#55FF9F1C" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="2">
-                                    <Setter TargetName="status" Property="Background" Value="#1AFF4D6D" />
-                                    <Setter TargetName="status" Property="BorderBrush" Value="#55FF4D6D" />
+                                    <Setter TargetName="status" Property="Background" Value="#1AF0443A" />
+                                    <Setter TargetName="status" Property="BorderBrush" Value="#55F0443A" />
                                     <Setter TargetName="statusText" Property="Foreground" Value="{StaticResource Red}" />
-                                    <Setter TargetName="card" Property="BorderBrush" Value="#77FF4D6D" />
+                                    <Setter TargetName="card" Property="BorderBrush" Value="#77F0443A" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding HasErrors}" Value="True">
                                     <Setter TargetName="errors" Property="Foreground" Value="{StaticResource Amber}" />

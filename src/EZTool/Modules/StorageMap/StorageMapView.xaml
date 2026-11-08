@@ -56,7 +56,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="{Binding Name}" Command="{Binding DataContext.ZoomToCommand, ElementName=Root}" CommandParameter="{Binding}"
-                                        Cursor="Hand" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" FontSize="13">
+                                        Cursor="Hand" Foreground="{StaticResource Accent}" FontFamily="{StaticResource DisplayFont}" FontSize="13">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <ContentPresenter />
@@ -84,9 +84,8 @@
                 <Grid>
                     <c:TreemapView x:Name="Map" Root="{Binding Current}" />
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding HasMap, Converter={StaticResource InvVis}}">
-                        <Grid Width="120" Height="120" HorizontalAlignment="Center">
-                            <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
-                            <TextBlock Text="&#xEB05;" Style="{StaticResource Icon}" FontSize="40" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
+                        <Grid Width="64" Height="64" HorizontalAlignment="Center">
+                            <TextBlock Text="&#xEB05;" Style="{StaticResource Icon}" FontSize="40" HorizontalAlignment="Center" />
                         </Grid>
                         <TextBlock Text="{l:T StorageMap.EmptyTitle}" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,16,0,0" />
                         <TextBlock Text="{l:T StorageMap.EmptyText}" Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,4,0,0" />

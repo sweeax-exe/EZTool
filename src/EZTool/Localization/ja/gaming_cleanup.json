@@ -26,7 +26,7 @@
   "Gaming.SessionDateLong": "{0:yyyy'年'M'月'd'日' dddd HH:mm}",
   "Gaming.SessionReport": "セッション レポート",
   "Gaming.AvgFps": "平均 FPS",
-  "Gaming.Low1": "1% LOW",
+  "Gaming.Low1": "1% Low",
   "Gaming.MaxTemp": "最高 CPU / GPU",
   "Gaming.Frames": "フレーム",
   "Gaming.FpsHistory": "FPS 履歴",

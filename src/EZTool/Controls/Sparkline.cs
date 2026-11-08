@@ -16,7 +16,7 @@ public sealed class Sparkline : FrameworkElement
 
     public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
         nameof(Stroke), typeof(Color), typeof(Sparkline),
-        new FrameworkPropertyMetadata(Color.FromRgb(0, 229, 255), FrameworkPropertyMetadataOptions.AffectsRender));
+        new FrameworkPropertyMetadata(Color.FromRgb(0xFF, 0xC2, 0x0E), FrameworkPropertyMetadataOptions.AffectsRender));
 
     public static readonly DependencyProperty CapacityProperty = DependencyProperty.Register(
         nameof(Capacity), typeof(int), typeof(Sparkline),
@@ -44,12 +44,18 @@ public sealed class Sparkline : FrameworkElement
 
         if (ShowGrid)
         {
-            var grid = new Pen(new SolidColorBrush(Color.FromArgb(18, 255, 255, 255)), 1) { DashStyle = new DashStyle([3, 4], 0) };
+            // Raster wie auf einem Oszilloskop: 10 × 4 Teilungen
+            var grid = new Pen(new SolidColorBrush(Color.FromArgb(16, 255, 255, 255)), 1);
             grid.Freeze();
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i <= 4; i++)
             {
-                double y = Math.Round(h * i / 4) + 0.5;
+                double y = Math.Min(h - 0.5, Math.Round(h * i / 4) + 0.5);
                 dc.DrawLine(grid, new Point(0, y), new Point(w, y));
+            }
+            for (int i = 0; i <= 10; i++)
+            {
+                double x = Math.Min(w - 0.5, Math.Round(w * i / 10) + 0.5);
+                dc.DrawLine(grid, new Point(x, 0), new Point(x, h));
             }
         }
 
@@ -103,17 +109,15 @@ public sealed class Sparkline : FrameworkElement
         area.Freeze();
 
         var c = Stroke;
-        var fill = new LinearGradientBrush(Color.FromArgb(90, c.R, c.G, c.B), Color.FromArgb(0, c.R, c.G, c.B), 90);
+        var fill = new SolidColorBrush(Color.FromArgb(16, c.R, c.G, c.B));
         fill.Freeze();
         dc.DrawGeometry(fill, null, area);
 
-        var glow = new Pen(new SolidColorBrush(Color.FromArgb(45, c.R, c.G, c.B)), 6) { LineJoin = PenLineJoin.Round };
-        dc.DrawGeometry(null, glow, line);
-        var pen = new Pen(new SolidColorBrush(c), 2) { LineJoin = PenLineJoin.Round };
+        var pen = new Pen(new SolidColorBrush(c), 1.6) { LineJoin = PenLineJoin.Round };
         dc.DrawGeometry(null, pen, line);
 
         var last = pts[^1];
-        dc.DrawEllipse(new SolidColorBrush(Color.FromArgb(70, c.R, c.G, c.B)), null, last, 6, 6);
-        dc.DrawEllipse(Brushes.White, null, last, 2.5, 2.5);
+        // aktueller Messpunkt als kleines Quadrat
+        dc.DrawRectangle(new SolidColorBrush(c), null, new Rect(last.X - 3, last.Y - 3, 6, 6));
     }
 }

@@ -29,8 +29,8 @@ public sealed class TimeChart : FrameworkElement
     public double Maximum { get => (double)GetValue(MaximumProperty); set => SetValue(MaximumProperty, value); }
 
     private static readonly Typeface Face = new(new FontFamily("Bahnschrift"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-    private static readonly Brush Axis = Freeze(new SolidColorBrush(Color.FromArgb(150, 140, 157, 186)));
-    private static readonly Pen Grid = FreezePen(new Pen(new SolidColorBrush(Color.FromArgb(20, 255, 255, 255)), 1) { DashStyle = new DashStyle([3, 4], 0) });
+    private static readonly Brush Axis = Freeze(new SolidColorBrush(Color.FromArgb(255, 0x6E, 0x75, 0x7C)));
+    private static readonly Pen Grid = FreezePen(new Pen(new SolidColorBrush(Color.FromArgb(16, 255, 255, 255)), 1));
     private const double Left = 40, Bottom = 24, Top = 8, Right = 8;
     private double? _hoverX;
 
@@ -104,8 +104,7 @@ public sealed class TimeChart : FrameworkElement
             }
             geo.Freeze();
             var c = s.Color;
-            dc.DrawGeometry(null, new Pen(new SolidColorBrush(Color.FromArgb(40, c.R, c.G, c.B)), 6) { LineJoin = PenLineJoin.Round }, geo);
-            dc.DrawGeometry(null, new Pen(new SolidColorBrush(c), 1.8) { LineJoin = PenLineJoin.Round }, geo);
+            dc.DrawGeometry(null, new Pen(new SolidColorBrush(c), 1.6) { LineJoin = PenLineJoin.Round }, geo);
         }
 
         // Fadenkreuz
@@ -125,15 +124,15 @@ public sealed class TimeChart : FrameworkElement
             foreach (var s in series)
             {
                 if (idx >= s.Values.Count || s.Values[idx] is not { } v) continue;
-                dc.DrawEllipse(new SolidColorBrush(s.Color), new Pen(Brushes.White, 1.5), new Point(x, Y(v)), 4, 4);
+                dc.DrawRectangle(new SolidColorBrush(s.Color), null, new Rect(x - 3.5, Y(v) - 3.5, 7, 7));
                 lines.Add(($"{s.Label}: {v:0.#} {s.Unit}", new SolidColorBrush(s.Color)));
             }
 
             var texts = lines.Select(l => new FormattedText(l.Item1, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Face, 12, l.Item2, dpi)).ToList();
             double bw = texts.Max(t => t.Width) + 20, bh = texts.Sum(t => t.Height + 2) + 14;
             double bx = x + 12 + bw > w ? x - bw - 12 : x + 12, by = Top + 6;
-            dc.DrawRoundedRectangle(new SolidColorBrush(Color.FromArgb(235, 13, 20, 36)), new Pen(new SolidColorBrush(Color.FromArgb(80, 0, 229, 255)), 1),
-                new Rect(bx, by, bw, bh), 8, 8);
+            dc.DrawRoundedRectangle(new SolidColorBrush(Color.FromRgb(0x14, 0x16, 0x18)), new Pen(new SolidColorBrush(Color.FromRgb(0x3A, 0x3F, 0x45)), 1),
+                new Rect(bx, by, bw, bh), 3, 3);
             double ty = by + 7;
             foreach (var t in texts)
             {

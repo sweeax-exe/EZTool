@@ -7,7 +7,7 @@
         <StackPanel>
 
             <!-- Hinweis: Treiber fehlt -->
-            <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,16" BorderBrush="#55FFB547"
+            <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,16" BorderBrush="#55FF9F1C"
                     Visibility="{Binding ShowDriverHint, Converter={StaticResource Vis}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" />
@@ -17,39 +17,34 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Reihe 1: Gauges ═══ -->
-            <UniformGrid Columns="4" Margin="-8,0">
-                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Processor}" Icon="&#xE950;" Caption="{Binding CpuName}"
-                             Value="{Binding CpuLoad}" ValueText="{Binding CpuLoadText}" SubText="{Binding CpuTempText}"
-                             ArcBrush="{StaticResource AccentGradient}" GlowColor="#00E5FF"
-                             Stat1Label="{l:T Dashboard.Clock}" Stat1Value="{Binding CpuClockText}"
-                             Stat2Label="{l:T Dashboard.Power}" Stat2Value="{Binding CpuPowerText}" />
-                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Graphics}" Icon="&#xE7F4;" Caption="{Binding GpuName}"
-                             Value="{Binding GpuLoad}" ValueText="{Binding GpuLoadText}" SubText="{Binding GpuTempText}"
-                             ArcBrush="{StaticResource HotGradient}" GlowColor="#B04DFF"
-                             Stat1Label="VRAM" Stat1Value="{Binding GpuMemText}"
-                             Stat2Label="{l:T Dashboard.Clock}" Stat2Value="{Binding GpuClockText}" />
-                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Memory}" Icon="&#xE964;" Caption="{Binding RamTotalText}"
-                             Value="{Binding RamLoad}" ValueText="{Binding RamLoadText}" SubText="{l:T Dashboard.InUse}"
-                             ArcBrush="{StaticResource GreenGradient}" GlowColor="#2CF5A0"
-                             Stat1Label="{l:T Dashboard.Used}" Stat1Value="{Binding RamUsedText}"
-                             Stat2Label="{l:T Dashboard.Free}" Stat2Value="{Binding RamFreeText}" />
-                <c:GaugeCard Margin="8" Title="{l:T Dashboard.SystemDrive}" Icon="&#xEDA2;" Caption="{Binding SysDriveName}"
-                             Value="{Binding SysDriveLoad}" ValueText="{Binding SysDriveLoadText}" SubText="{l:T Dashboard.InUse}"
-                             GlowColor="#FFB547"
-                             Stat1Label="{l:T Dashboard.Free}" Stat1Value="{Binding SysDriveFreeText}"
-                             Stat2Label="{l:T Dashboard.Total}" Stat2Value="{Binding SysDriveTotalText}">
-                    <c:GaugeCard.ArcBrush>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                            <GradientStop Color="#FFB547" Offset="0" />
-                            <GradientStop Color="#FF3D9A" Offset="1" />
-                        </LinearGradientBrush>
-                    </c:GaugeCard.ArcBrush>
-                </c:GaugeCard>
-            </UniformGrid>
+            <!-- ═══ Reihe 1: Messkanäle – ein durchgehendes Instrumentenfeld ═══ -->
+            <Border Style="{StaticResource Card}" Padding="0">
+                <UniformGrid Columns="4">
+                    <c:GaugeCard Title="{l:T Dashboard.Processor}" Caption="{Binding CpuName}"
+                                 Value="{Binding CpuLoad}" ValueText="{Binding CpuLoadText}" SubText="{Binding CpuTempText}"
+                                 SubBrush="{Binding CpuTemp, Converter={StaticResource TempBrush}}" ArcBrush="{StaticResource Accent}"
+                                 Stat1Label="{l:T Dashboard.Clock}" Stat1Value="{Binding CpuClockText}"
+                                 Stat2Label="{l:T Dashboard.Power}" Stat2Value="{Binding CpuPowerText}" />
+                    <c:GaugeCard BorderThickness="1,0,0,0" Title="{l:T Dashboard.Graphics}" Caption="{Binding GpuName}"
+                                 Value="{Binding GpuLoad}" ValueText="{Binding GpuLoadText}" SubText="{Binding GpuTempText}"
+                                 SubBrush="{Binding GpuTemp, Converter={StaticResource TempBrush}}" ArcBrush="{StaticResource Blue}"
+                                 Stat1Label="VRAM" Stat1Value="{Binding GpuMemText}"
+                                 Stat2Label="{l:T Dashboard.Clock}" Stat2Value="{Binding GpuClockText}" />
+                    <c:GaugeCard BorderThickness="1,0,0,0" Title="{l:T Dashboard.Memory}" Caption="{Binding RamTotalText}"
+                                 Value="{Binding RamLoad}" ValueText="{Binding RamLoadText}"
+                                 ArcBrush="{StaticResource Green}"
+                                 Stat1Label="{l:T Dashboard.Used}" Stat1Value="{Binding RamUsedText}"
+                                 Stat2Label="{l:T Dashboard.Free}" Stat2Value="{Binding RamFreeText}" />
+                    <c:GaugeCard BorderThickness="1,0,0,0" Title="{l:T Dashboard.SystemDrive}" Caption="{Binding SysDriveName}"
+                                 Value="{Binding SysDriveLoad}" ValueText="{Binding SysDriveLoadText}"
+                                 ArcBrush="{StaticResource TextDim}"
+                                 Stat1Label="{l:T Dashboard.Free}" Stat1Value="{Binding SysDriveFreeText}"
+                                 Stat2Label="{l:T Dashboard.Total}" Stat2Value="{Binding SysDriveTotalText}" />
+                </UniformGrid>
+            </Border>
 
             <!-- ═══ Reihe 2: Verlauf + Temperaturen ═══ -->
-            <Grid Margin="0,8,0,0">
+            <Grid Margin="0,16,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="16" />
@@ -68,18 +63,18 @@
                                 <TextBlock Text="{l:T Dashboard.LiveLoad}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
+                                <Rectangle Width="14" Height="4" Fill="{StaticResource Accent}" VerticalAlignment="Center" />
                                 <TextBlock Text="CPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center" />
+                                <Rectangle Width="14" Height="4" Fill="{StaticResource Blue}" VerticalAlignment="Center" />
                                 <TextBlock Text="GPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource Green}" VerticalAlignment="Center" />
+                                <Rectangle Width="14" Height="4" Fill="{StaticResource Green}" VerticalAlignment="Center" />
                                 <TextBlock Text="RAM" Style="{StaticResource Label}" Margin="6,0,0,0" VerticalAlignment="Center" />
                             </StackPanel>
                         </Grid>
                         <Grid Grid.Row="1" Margin="0,16,0,0">
-                            <c:Sparkline Values="{Binding RamHistory}" Stroke="#2CF5A0" Maximum="100" />
-                            <c:Sparkline Values="{Binding GpuHistory}" Stroke="#FF3D9A" Maximum="100" ShowGrid="False" />
-                            <c:Sparkline Values="{Binding CpuHistory}" Stroke="#00E5FF" Maximum="100" ShowGrid="False" />
+                            <c:Sparkline Values="{Binding RamHistory}" Stroke="#6CCB6A" Maximum="100" />
+                            <c:Sparkline Values="{Binding GpuHistory}" Stroke="#4DA8E8" Maximum="100" ShowGrid="False" />
+                            <c:Sparkline Values="{Binding CpuHistory}" Stroke="#FFC20E" Maximum="100" ShowGrid="False" />
                         </Grid>
                     </Grid>
                 </Border>
@@ -155,8 +150,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="1.5,0" ToolTip="{Binding StringFormat={}{0:0} %}">
-                                        <Border CornerRadius="3" Background="#0EFFFFFF" />
-                                        <Border CornerRadius="3" VerticalAlignment="Bottom" Background="{StaticResource AccentGradientDiag}"
+                                        <Border Background="#2E3338" />
+                                        <Border VerticalAlignment="Bottom" Background="{StaticResource Accent}"
                                                 Height="{Binding Converter={StaticResource PctLen}, ConverterParameter=110}" />
                                     </Grid>
                                 </DataTemplate>
@@ -210,17 +205,17 @@
                         </StackPanel>
                         <Grid Grid.Row="1" Margin="0,16,0,0">
                             <StackPanel>
-                                <TextBlock Text="{l:T Dashboard.Download}" Style="{StaticResource Label}" Foreground="{StaticResource Cyan}" />
+                                <TextBlock Text="{l:T Dashboard.Download}" Style="{StaticResource Label}" Foreground="{StaticResource Accent}" />
                                 <TextBlock Text="{Binding NetDownText}" Style="{StaticResource Value}" FontSize="20" Margin="0,2,0,0" />
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Right">
-                                <TextBlock Text="{l:T Dashboard.Upload}" Style="{StaticResource Label}" Foreground="{StaticResource Magenta}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{l:T Dashboard.Upload}" Style="{StaticResource Label}" Foreground="{StaticResource Blue}" HorizontalAlignment="Right" />
                                 <TextBlock Text="{Binding NetUpText}" Style="{StaticResource Value}" FontSize="20" Margin="0,2,0,0" HorizontalAlignment="Right" />
                             </StackPanel>
                         </Grid>
                         <Grid Grid.Row="2" Margin="0,14,0,0" MinHeight="70">
-                            <c:Sparkline Values="{Binding NetUpHistory}" Stroke="#FF3D9A" Maximum="0" />
-                            <c:Sparkline Values="{Binding NetDownHistory}" Stroke="#00E5FF" Maximum="0" ShowGrid="False" />
+                            <c:Sparkline Values="{Binding NetUpHistory}" Stroke="#4DA8E8" Maximum="0" />
+                            <c:Sparkline Values="{Binding NetDownHistory}" Stroke="#FFC20E" Maximum="0" ShowGrid="False" />
                         </Grid>
                     </Grid>
                 </Border>

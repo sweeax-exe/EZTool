@@ -4,8 +4,8 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize"
         SizeToContent="Height" Width="520" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
         FontFamily="{StaticResource BodyFont}" UseLayoutRounding="True">
-    <Border Margin="24" CornerRadius="20" BorderThickness="1" BorderBrush="{StaticResource CardBorderGradient}"
-            Background="{StaticResource DialogGlass}" Effect="{StaticResource SoftShadow}">
+    <Border Margin="24" CornerRadius="6" BorderThickness="1" BorderBrush="{StaticResource Rule}"
+            Background="{StaticResource Panel}" Effect="{StaticResource SoftShadow}">
         <Grid Margin="26,24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -15,15 +15,15 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <Border x:Name="IconBorder" Width="40" Height="40" CornerRadius="12" Background="{StaticResource CyanSoft}">
-                    <TextBlock x:Name="IconText" Text="&#xE946;" Style="{StaticResource Icon}" FontSize="18" HorizontalAlignment="Center" />
+                <Border x:Name="IconBorder" Width="40" Height="40" CornerRadius="4" Background="{StaticResource AccentSoft}">
+                    <TextBlock x:Name="IconText" Text="&#xE946;" Style="{StaticResource Icon}" FontSize="18" Foreground="{StaticResource Accent}" HorizontalAlignment="Center" />
                 </Border>
                 <TextBlock x:Name="TitleText" Style="{StaticResource H2}" FontSize="19" VerticalAlignment="Center" Margin="14,0,0,0" />
             </StackPanel>
 
             <TextBlock x:Name="MessageText" Grid.Row="1" Style="{StaticResource Body}" FontSize="13.5" Margin="0,16,0,0" LineHeight="20" />
 
-            <Border x:Name="DetailsBorder" Grid.Row="2" Margin="0,14,0,0" CornerRadius="10" Background="#08FFFFFF"
+            <Border x:Name="DetailsBorder" Grid.Row="2" Margin="0,14,0,0" CornerRadius="4" Background="{StaticResource Well}"
                     BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1" Visibility="Collapsed" MaxHeight="220">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,8">
                     <ItemsControl x:Name="DetailsList">

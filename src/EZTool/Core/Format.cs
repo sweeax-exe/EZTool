@@ -106,24 +106,19 @@ public sealed class AgeConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
 }
 
-/// <summary>Wandelt einen Text in einen deterministischen Farbverlauf um (für Platzhalter-Icons).</summary>
+/// <summary>Wandelt einen Text in eine deterministische Flächenfarbe um (für Platzhalter-Icons).</summary>
 public sealed class NameToBrushConverter : IValueConverter
 {
-    private static readonly (string, string)[] Pairs =
-    [
-        ("#00E5FF", "#8B5CF6"), ("#8B5CF6", "#FF3D9A"), ("#2CF5A0", "#00E5FF"),
-        ("#FFB547", "#FF3D9A"), ("#00E5FF", "#2CF5A0"), ("#FF3D9A", "#FFB547")
-    ];
+    // Gedeckte Flächenfarben – das Kürzel steht hell darauf
+    private static readonly string[] Fills = ["#5A4A1A", "#1F4A66", "#2F5A33", "#6A3F18", "#5E2D47", "#1E5550", "#433D6B", "#57503D"];
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var s = value as string ?? "";
         int h = 0;
         foreach (var c in s) h = (h * 31 + c) & 0x7FFFFFFF;
-        var (a, b) = Pairs[h % Pairs.Length];
-        var brush = new System.Windows.Media.LinearGradientBrush(
-            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(a),
-            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(b), 45);
+        var brush = new System.Windows.Media.SolidColorBrush(
+            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Fills[h % Fills.Length]));
         brush.Freeze();
         return brush;
     }

@@ -15,7 +15,7 @@
         <Border Style="{StaticResource Card}" Padding="22,16" Margin="0,0,0,14">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <Border Width="46" Height="46" CornerRadius="14" Background="{StaticResource CyanSoft}" BorderBrush="#3300E5FF" BorderThickness="1">
+                    <Border Width="46" Height="46" CornerRadius="4" Background="{StaticResource AccentSoft}" BorderBrush="#33FFC20E" BorderThickness="1">
                         <TextBlock Text="&#xE895;" Style="{StaticResource Icon}" FontSize="20" HorizontalAlignment="Center" />
                     </Border>
                     <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
@@ -64,11 +64,11 @@
                         </Grid.ColumnDefinitions>
                         <CheckBox IsChecked="{Binding IsChecked}" HorizontalAlignment="Center" />
                         <Grid Grid.Column="1" Width="36" Height="36">
-                            <Border CornerRadius="10" Background="{Binding Name, Converter={StaticResource NameBrush}}" Opacity="0.9">
+                            <Border CornerRadius="4" Background="{Binding Name, Converter={StaticResource NameBrush}}">
                                 <TextBlock Text="{Binding Name, Converter={StaticResource Initial}}" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold"
-                                           FontSize="16" Foreground="#04060C" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                           FontSize="16" Foreground="{StaticResource Text}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
-                            <Border CornerRadius="10" Background="#FF101828" Visibility="{Binding Icon, Converter={StaticResource Vis}}">
+                            <Border CornerRadius="4" Background="{StaticResource PanelHi}" Visibility="{Binding Icon, Converter={StaticResource Vis}}">
                                 <Image Source="{Binding Icon}" Width="26" Height="26" RenderOptions.BitmapScalingMode="HighQuality" />
                             </Border>
                         </Grid>
@@ -77,7 +77,7 @@
                             <TextBlock Text="{Binding Id}" FontFamily="{StaticResource MonoFont}" FontSize="10.5" Foreground="{StaticResource TextMute}" TextTrimming="CharacterEllipsis" />
                         </StackPanel>
                         <TextBlock Grid.Column="3" VerticalAlignment="Center" FontFamily="{StaticResource DisplayFont}" FontSize="13" TextTrimming="CharacterEllipsis">
-                            <Run Text="{Binding Version, Mode=OneWay}" Foreground="{StaticResource TextDim}" /><Run Text="  →  " Foreground="{StaticResource TextMute}" /><Run Text="{Binding Available, Mode=OneWay}" Foreground="{StaticResource Cyan}" />
+                            <Run Text="{Binding Version, Mode=OneWay}" Foreground="{StaticResource TextDim}" /><Run Text="  →  " Foreground="{StaticResource TextMute}" /><Run Text="{Binding Available, Mode=OneWay}" Foreground="{StaticResource Accent}" />
                         </TextBlock>
                         <StackPanel Grid.Column="4" VerticalAlignment="Center">
                             <TextBlock x:Name="status" Text="{Binding Status}" Style="{StaticResource Body}" FontSize="12" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" ToolTip="{Binding Status}" />
@@ -104,7 +104,7 @@
             <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" Width="260" Margin="0,16,0,0" />
         </StackPanel>
 
-        <Border Grid.Row="2" Style="{StaticResource Card}" VerticalAlignment="Top" Visibility="{Binding WingetMissing, Converter={StaticResource Vis}}" BorderBrush="#55FFB547">
+        <Border Grid.Row="2" Style="{StaticResource Card}" VerticalAlignment="Top" Visibility="{Binding WingetMissing, Converter={StaticResource Vis}}" BorderBrush="#55FF9F1C">
             <StackPanel>
                 <TextBlock Text="{l:T Updates.WingetMissingTitle}" Style="{StaticResource H2}" />
                 <TextBlock Style="{StaticResource Body}" Margin="0,6,0,0" Text="{l:T Updates.WingetMissingText}" />

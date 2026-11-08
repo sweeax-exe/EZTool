@@ -7,12 +7,12 @@
         <StackPanel>
             <!-- Werkzeugleiste -->
             <Grid Margin="0,0,0,14">
-                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" HorizontalAlignment="Left">
+                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="4" Padding="3" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range15m}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="15" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range1h}" IsChecked="True" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="60" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range6h}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="360" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range24h}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="1440" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range15m}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="15" IsChecked="{Binding RangeMinutes, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=15}" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range1h}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="60" IsChecked="{Binding RangeMinutes, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=60}" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range6h}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="360" IsChecked="{Binding RangeMinutes, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=360}" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T History.Range24h}" GroupName="hr" Command="{Binding SetRangeCommand}" CommandParameter="1440" IsChecked="{Binding RangeMinutes, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=1440}" />
                     </StackPanel>
                 </Border>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -29,14 +29,14 @@
                 <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
                     <StackPanel>
                         <TextBlock Text="{l:T History.CpuMax}" Style="{StaticResource Label}" />
-                        <TextBlock Text="{Binding CpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Cyan}" />
+                        <TextBlock Text="{Binding CpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Accent}" />
                         <TextBlock Text="{Binding CpuTempMaxAt}" Style="{StaticResource Body}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
                 <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,14">
                     <StackPanel>
                         <TextBlock Text="{l:T History.GpuMax}" Style="{StaticResource Label}" />
-                        <TextBlock Text="{Binding GpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Magenta}" />
+                        <TextBlock Text="{Binding GpuTempMax}" Style="{StaticResource BigValue}" FontSize="28" Foreground="{StaticResource Blue}" />
                         <TextBlock Text="{Binding GpuTempMaxAt}" Style="{StaticResource Body}" FontSize="11.5" />
                     </StackPanel>
                 </Border>
@@ -63,9 +63,9 @@
                             <TextBlock Text="{l:T History.Temperatures}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
+                            <Rectangle Width="14" Height="4" Fill="{StaticResource Accent}" VerticalAlignment="Center" />
                             <TextBlock Text="CPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center" />
+                            <Rectangle Width="14" Height="4" Fill="{StaticResource Blue}" VerticalAlignment="Center" />
                             <TextBlock Text="GPU" Style="{StaticResource Label}" Margin="6,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>
@@ -82,11 +82,11 @@
                             <TextBlock Text="{l:T History.Load}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
+                            <Rectangle Width="14" Height="4" Fill="{StaticResource Accent}" VerticalAlignment="Center" />
                             <TextBlock Text="CPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Magenta}" VerticalAlignment="Center" />
+                            <Rectangle Width="14" Height="4" Fill="{StaticResource Blue}" VerticalAlignment="Center" />
                             <TextBlock Text="GPU" Style="{StaticResource Label}" Margin="6,0,14,0" VerticalAlignment="Center" />
-                            <Ellipse Width="8" Height="8" Fill="{StaticResource Green}" VerticalAlignment="Center" />
+                            <Rectangle Width="14" Height="4" Fill="{StaticResource Green}" VerticalAlignment="Center" />
                             <TextBlock Text="RAM" Style="{StaticResource Label}" Margin="6,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>

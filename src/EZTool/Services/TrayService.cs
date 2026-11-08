@@ -76,7 +76,7 @@ public sealed class TrayService : IDisposable
 
     private static Forms.ToolStripMenuItem Item(string text, Action click, bool bold = false)
     {
-        var item = new Forms.ToolStripMenuItem(text) { ForeColor = Drawing.Color.FromArgb(232, 242, 255), Padding = new Forms.Padding(4, 3, 4, 3) };
+        var item = new Forms.ToolStripMenuItem(text) { ForeColor = Drawing.Color.FromArgb(236, 238, 239), Padding = new Forms.Padding(4, 3, 4, 3) };
         if (bold) item.Font = new Drawing.Font("Segoe UI", 9.5f, Drawing.FontStyle.Bold);
         item.Click += (_, _) => click();
         return item;
@@ -117,13 +117,13 @@ public sealed class TrayService : IDisposable
 
     private sealed class DarkColors : Forms.ProfessionalColorTable
     {
-        private static readonly Drawing.Color Bg = Drawing.Color.FromArgb(13, 20, 36);
-        private static readonly Drawing.Color Hover = Drawing.Color.FromArgb(18, 60, 80);
-        private static readonly Drawing.Color Border = Drawing.Color.FromArgb(26, 37, 64);
+        private static readonly Drawing.Color Bg = Drawing.Color.FromArgb(40, 44, 48);
+        private static readonly Drawing.Color Hover = Drawing.Color.FromArgb(58, 64, 70);
+        private static readonly Drawing.Color Border = Drawing.Color.FromArgb(58, 63, 69);
 
         public override Drawing.Color ToolStripDropDownBackground => Bg;
         public override Drawing.Color MenuBorder => Border;
-        public override Drawing.Color MenuItemBorder => Drawing.Color.FromArgb(0, 229, 255);
+        public override Drawing.Color MenuItemBorder => Drawing.Color.FromArgb(255, 194, 14);
         public override Drawing.Color MenuItemSelected => Hover;
         public override Drawing.Color MenuItemSelectedGradientBegin => Hover;
         public override Drawing.Color MenuItemSelectedGradientEnd => Hover;

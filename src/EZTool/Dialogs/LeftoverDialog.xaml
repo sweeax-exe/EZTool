@@ -5,12 +5,12 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize"
         SizeToContent="Height" Width="760" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
         FontFamily="{StaticResource BodyFont}" UseLayoutRounding="True">
-    <Border Margin="24" CornerRadius="20" BorderThickness="1" BorderBrush="{StaticResource CardBorderGradient}"
-            Background="{StaticResource DialogGlass}" Effect="{StaticResource SoftShadow}">
+    <Border Margin="24" CornerRadius="6" BorderThickness="1" BorderBrush="{StaticResource Rule}"
+            Background="{StaticResource Panel}" Effect="{StaticResource SoftShadow}">
         <StackPanel Margin="26,24">
             <StackPanel Orientation="Horizontal">
-                <Border Width="40" Height="40" CornerRadius="12" Background="{StaticResource CyanSoft}">
-                    <TextBlock Text="&#xEA99;" Style="{StaticResource Icon}" FontSize="18" HorizontalAlignment="Center" />
+                <Border Width="40" Height="40" CornerRadius="4" Background="{StaticResource AccentSoft}">
+                    <TextBlock Text="&#xEA99;" Style="{StaticResource Icon}" FontSize="18" Foreground="{StaticResource Accent}" HorizontalAlignment="Center" />
                 </Border>
                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                     <TextBlock Text="{l:T Leftover.Title}" Style="{StaticResource H2}" FontSize="19" />
@@ -20,7 +20,7 @@
 
             <TextBlock Style="{StaticResource Body}" FontSize="12.5" Margin="0,16,0,0" LineHeight="19" Text="{l:T Leftover.Info}" />
 
-            <Border Margin="0,14,0,0" CornerRadius="10" Background="#08FFFFFF" BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1" MaxHeight="340">
+            <Border Margin="0,14,0,0" CornerRadius="4" Background="{StaticResource Well}" BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1" MaxHeight="340">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,6">
                     <ItemsControl x:Name="List">
                         <ItemsControl.ItemTemplate>
@@ -34,7 +34,7 @@
                                     </Grid.ColumnDefinitions>
                                     <CheckBox IsChecked="{Binding IsChecked}" />
                                     <Border Grid.Column="1" Style="{StaticResource Chip}" Margin="12,0,10,0" Padding="7,1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Kind}" FontSize="10.5" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" />
+                                        <TextBlock Text="{Binding Kind}" FontSize="10.5" Foreground="{StaticResource Accent}" FontFamily="{StaticResource DisplayFont}" />
                                     </Border>
                                     <TextBlock Grid.Column="2" Text="{Binding Path}" Foreground="{StaticResource Text}" FontSize="12.5"
                                                TextTrimming="CharacterEllipsis" VerticalAlignment="Center" ToolTip="{Binding Path}" />

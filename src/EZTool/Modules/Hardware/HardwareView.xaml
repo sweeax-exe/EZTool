@@ -10,7 +10,7 @@
 
         <!-- Werkzeugleiste -->
         <Grid Margin="0,0,8,16">
-            <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" HorizontalAlignment="Left">
+            <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="4" Padding="3" HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Hardware.Filter.All}" IsChecked="True" Command="{Binding SetFilterCommand}" CommandParameter="all" GroupName="hwf" />
                     <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Hardware.Filter.Temp}" Command="{Binding SetFilterCommand}" CommandParameter="temp" GroupName="hwf" />
@@ -22,7 +22,7 @@
             </Border>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Style="{StaticResource Body}" VerticalAlignment="Center" Margin="0,0,14,0">
-                    <Run Text="{Binding SensorCount, Mode=OneWay}" Foreground="{StaticResource Cyan}" /><Run Text="{l:T Hardware.SensorsLive}" />
+                    <Run Text="{Binding SensorCount, Mode=OneWay}" Foreground="{StaticResource Accent}" /><Run Text="{l:T Hardware.SensorsLive}" />
                 </TextBlock>
                 <TextBox Style="{StaticResource SearchBox}" Width="260" Tag="{l:T Hardware.SearchHint}" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
@@ -41,11 +41,11 @@
                         <Border Style="{StaticResource Card}" Margin="0,0,0,16" Visibility="{Binding IsVisible, Converter={StaticResource Vis}}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="42" Height="42" CornerRadius="12" Background="{StaticResource CyanSoft}" BorderBrush="#3300E5FF" BorderThickness="1">
+                                    <Border Width="42" Height="42" CornerRadius="4" Background="{StaticResource AccentSoft}" BorderBrush="#33FFC20E" BorderThickness="1">
                                         <TextBlock Text="{Binding Icon}" Style="{StaticResource Icon}" FontSize="18" HorizontalAlignment="Center" />
                                     </Border>
                                     <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding TypeLabel}" Style="{StaticResource Label}" Foreground="{StaticResource Cyan}" />
+                                        <TextBlock Text="{Binding TypeLabel}" Style="{StaticResource Label}" Foreground="{StaticResource Accent}" />
                                         <TextBlock Text="{Binding Name}" Style="{StaticResource H2}" />
                                     </StackPanel>
                                 </StackPanel>
@@ -63,7 +63,7 @@
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Border Width="214" Margin="0,0,10,10" Padding="14,10" CornerRadius="10" Background="#07FFFFFF"
+                                                            <Border Width="214" Margin="0,0,10,10" Padding="14,10" CornerRadius="4" Background="#07FFFFFF"
                                                                     BorderBrush="{StaticResource StrokeSoft}" BorderThickness="1"
                                                                     Visibility="{Binding IsVisible, Converter={StaticResource Vis}}" ToolTip="{Binding RangeText}">
                                                                 <StackPanel>

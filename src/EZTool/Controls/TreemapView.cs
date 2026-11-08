@@ -29,8 +29,8 @@ public sealed class TreemapView : FrameworkElement
 
     private static readonly Color[] Palette =
     [
-        Color.FromRgb(0x00, 0xE5, 0xFF), Color.FromRgb(0x8B, 0x5C, 0xF6), Color.FromRgb(0xFF, 0x3D, 0x9A), Color.FromRgb(0x2C, 0xF5, 0xA0),
-        Color.FromRgb(0xFF, 0xB5, 0x47), Color.FromRgb(0x3B, 0x82, 0xF6), Color.FromRgb(0xF4, 0x72, 0xB6), Color.FromRgb(0x22, 0xD3, 0xEE),
+        Color.FromRgb(0xFF, 0xC2, 0x0E), Color.FromRgb(0x4D, 0xA8, 0xE8), Color.FromRgb(0x6C, 0xCB, 0x6A), Color.FromRgb(0xFF, 0x9F, 0x1C),
+        Color.FromRgb(0xE4, 0x6A, 0xA8), Color.FromRgb(0x46, 0xC2, 0xB4), Color.FromRgb(0x9C, 0x8F, 0xE0), Color.FromRgb(0xC9, 0xB4, 0x8A),
     ];
 
     private static readonly Typeface Face = new(new FontFamily("Bahnschrift"), FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
@@ -102,11 +102,10 @@ public sealed class TreemapView : FrameworkElement
         var tile = new Rect(r.X + 1, r.Y + 1, Math.Max(0, r.Width - 2), Math.Max(0, r.Height - 2));
         bool hover = ReferenceEquals(node, _hover);
 
-        byte a1 = (byte)(depth == 1 ? 110 : 90), a2 = (byte)(depth == 1 ? 40 : 55);
-        if (hover) { a1 = 200; a2 = 120; }
-        var fill = new LinearGradientBrush(Color.FromArgb(a1, c.R, c.G, c.B), Color.FromArgb(a2, c.R, c.G, c.B), 60);
-        var pen = new Pen(new SolidColorBrush(hover ? Colors.White : Color.FromArgb(90, c.R, c.G, c.B)), hover ? 1.6 : 1);
-        double radius = Math.Min(6, Math.Min(tile.Width, tile.Height) / 4);
+        byte a = (byte)(hover ? 150 : depth == 1 ? 60 : 85);
+        var fill = new SolidColorBrush(Color.FromArgb(a, c.R, c.G, c.B));
+        var pen = new Pen(new SolidColorBrush(hover ? Colors.White : Color.FromArgb(150, c.R, c.G, c.B)), hover ? 1.6 : 1);
+        double radius = Math.Min(2, Math.Min(tile.Width, tile.Height) / 4);
         dc.DrawRoundedRectangle(fill, pen, tile, radius, radius);
 
         // Beschriftung, wenn Platz ist
@@ -121,27 +120,27 @@ public sealed class TreemapView : FrameworkElement
         if (tile.Height >= 36 && (depth == 2 || !node.IsDir || node.Children.Count == 0 || tile.Height < 60))
         {
             var size = new FormattedText(Core.Format.Bytes(node.Size), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, FaceLight, 10.5,
-                new SolidColorBrush(Color.FromArgb(200, 232, 242, 255)), dpi) { MaxTextWidth = Math.Max(1, tile.Width - 12), MaxLineCount = 1 };
+                new SolidColorBrush(Color.FromArgb(210, 236, 238, 239)), dpi) { MaxTextWidth = Math.Max(1, tile.Width - 12), MaxLineCount = 1 };
             dc.DrawText(size, new Point(tile.X + 6, tile.Y + 4 + name.Height));
         }
         else if (depth == 1 && node.IsDir)
         {
             var size = new FormattedText(Core.Format.Bytes(node.Size), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, FaceLight, 10.5,
-                new SolidColorBrush(Color.FromArgb(200, 232, 242, 255)), dpi);
+                new SolidColorBrush(Color.FromArgb(210, 236, 238, 239)), dpi);
             if (name.Width + size.Width + 24 < tile.Width) dc.DrawText(size, new Point(tile.Right - size.Width - 6, tile.Y + 5));
         }
     }
 
     private static Color Shade(Color c, double f) => Color.FromRgb((byte)(c.R * f), (byte)(c.G * f), (byte)(c.B * f));
 
-    private static Color FileColor(MapNode n) => n.IsAggregate ? Color.FromRgb(0x55, 0x65, 0x7F) : n.Extension switch
+    private static Color FileColor(MapNode n) => n.IsAggregate ? Color.FromRgb(0x5C, 0x63, 0x6A) : n.Extension switch
     {
-        ".mp4" or ".mkv" or ".mov" or ".avi" or ".webm" => Color.FromRgb(0xFF, 0x3D, 0x9A),
-        ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" or ".psd" or ".heic" => Color.FromRgb(0x2C, 0xF5, 0xA0),
-        ".mp3" or ".wav" or ".flac" or ".m4a" => Color.FromRgb(0xFF, 0xB5, 0x47),
-        ".zip" or ".rar" or ".7z" or ".iso" or ".img" or ".vhdx" => Color.FromRgb(0x8B, 0x5C, 0xF6),
-        ".exe" or ".dll" or ".msi" or ".sys" => Color.FromRgb(0x3B, 0x82, 0xF6),
-        _ => Color.FromRgb(0x7C, 0x8B, 0xA8),
+        ".mp4" or ".mkv" or ".mov" or ".avi" or ".webm" => Color.FromRgb(0xE4, 0x6A, 0xA8),
+        ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" or ".psd" or ".heic" => Color.FromRgb(0x6C, 0xCB, 0x6A),
+        ".mp3" or ".wav" or ".flac" or ".m4a" => Color.FromRgb(0xFF, 0x9F, 0x1C),
+        ".zip" or ".rar" or ".7z" or ".iso" or ".img" or ".vhdx" => Color.FromRgb(0x9C, 0x8F, 0xE0),
+        ".exe" or ".dll" or ".msi" or ".sys" => Color.FromRgb(0x4D, 0xA8, 0xE8),
+        _ => Color.FromRgb(0x83, 0x8A, 0x91),
     };
 
     // ───────────── Squarified-Algorithmus (Bruls, Huizing, van Wijk) ─────────────

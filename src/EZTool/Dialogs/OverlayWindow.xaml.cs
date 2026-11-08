@@ -96,9 +96,9 @@ public partial class OverlayWindow : Window
 
     private static Brush TempBrush(double? t) => t switch
     {
-        >= 85 => new SolidColorBrush(Color.FromRgb(0xFF, 0x4D, 0x6D)),
-        >= 70 => new SolidColorBrush(Color.FromRgb(0xFF, 0xB5, 0x47)),
-        _ => new SolidColorBrush(Color.FromRgb(0x8C, 0x9D, 0xBA)),
+        >= 85 => new SolidColorBrush(Color.FromRgb(0xF0, 0x44, 0x3A)),
+        >= 70 => new SolidColorBrush(Color.FromRgb(0xFF, 0x9F, 0x1C)),
+        _ => new SolidColorBrush(Color.FromRgb(0xA3, 0xA9, 0xAF)),
     };
 
     private void Reposition()
