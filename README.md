@@ -7,7 +7,7 @@
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-6CCB6A)
 ![20 languages](https://img.shields.io/badge/Languages-20-A3A9AF)
 
-A system tool for Windows 10/11 that looks and reads like a measuring instrument: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, a system-wide adblocker, tweaks and key mapping. Free and open source.
+A system tool for Windows 10/11 that looks and reads like a measuring instrument: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, a security centre on top of Microsoft Defender, a system-wide adblocker, tweaks and key mapping. Free and open source.
 
 ![EZTool dashboard](docs/screenshots/en/dashboard.png)
 
@@ -19,7 +19,7 @@ A system tool for Windows 10/11 that looks and reads like a measuring instrument
 | ![Hardware](docs/screenshots/en/hardware.png) **Hardware**: every sensor live, grouped by component | ![Storage cleaner](docs/screenshots/en/cleaner.png) **Storage cleaner**: safe cleanup, including deep clean |
 | ![Windows tweaks](docs/screenshots/en/tweaks.png) **Windows tweaks**: ads out, gaming in, everything reversible | ![Key mapping](docs/screenshots/en/hotkeys.png) **Key mapping**: media keys for any keyboard |
 | ![Settings](docs/screenshots/en/settings.png) **Settings**: language, startup, alerts, overlay, auto-update | ![Adblocker](docs/screenshots/en/adblock.png) **Adblocker**: blocks ads and trackers in every browser and app |
-| ![Network](docs/screenshots/en/network.png) **Network**: live traffic per app, every connection, devices in your network | |
+| ![Network](docs/screenshots/en/network.png) **Network**: live traffic per app, every connection, devices in your network | ![Security](docs/screenshots/en/security.png) **Security**: security score, Defender scans, pro-level hardening |
 
 ## Download
 
@@ -29,7 +29,7 @@ A system tool for Windows 10/11 that looks and reads like a measuring instrument
 **Good to know:**
 - **Administrator rights:** EZTool asks for them at startup. It needs them for temperature sensors, FPS measurement, deep clean and uninstalling.
 - **SmartScreen:** On first launch Windows may show "Windows protected your PC", because the EXE has no paid code-signing certificate. Click **More info → Run anyway**. The full source code is in this repository, and every EXE is built publicly by GitHub Actions.
-- **Automatic updates:** EZTool checks for new releases regularly. Each update is verified via SHA-256, installed, and EZTool restarts. You can turn this off in the settings.
+- **Automatic updates:** EZTool checks for new releases regularly. A yellow bar on every page announces a new version with "What's new" and a one-click update. Each update is verified via SHA-256, installed, and EZTool restarts. You can turn this off in the settings.
 
 ## 🌍 Languages
 
@@ -64,7 +64,8 @@ The navigation is organized into five groups:
 | Software | **Programs** | Uninstall desktop programs and Store apps, then remove the leftovers |
 | | **Updates** | Available updates for all programs via winget, one by one or all with one click |
 | | **Startup** | Turn Run keys, startup folder entries and scheduled tasks on and off |
-| System | **Windows tweaks** | 14 switches for ads, privacy, Explorer and gaming (mouse acceleration, Game DVR …), reversible any time, with restore point |
+| System | **Security** | Security score with 12 checks (virus protection, firewall, SmartScreen, UAC, memory integrity, Secure Boot, TPM, BitLocker, Remote Desktop, SMB 1.0, Windows Update), quick, full, folder and offline scans with Microsoft Defender, ransomware protection, network protection, 16 attack surface reduction rules, suspicious unsigned programs, threat history |
+| | **Windows tweaks** | 14 switches for ads, privacy, Explorer and gaming (mouse acceleration, Game DVR …), reversible any time, with restore point |
 | | **Adblocker** | System-wide ad and tracker blocking through EZTool's own DNS server: blocklists (AdGuard, Steven Black, HaGeZi), live log, allow and block rules, encrypted DNS (Cloudflare, Quad9, Google) |
 | | **Key mapping** | Put media functions (next/previous track, play/pause, volume), other keys, programs or EZTool actions on any key, globally, even in games. Quick start: Page ↑/↓ = next/previous track |
 | | **Settings** | Language, start with Windows, background mode, sensor driver, alerts, overlay, updates |
@@ -104,6 +105,16 @@ A global low-level keyboard hook (`WH_KEYBOARD_LL`) intercepts the mapped key. I
 - **Devices:** the scan pings every address in your home network, reads the MAC addresses from the ARP table and asks the router for the names. The manufacturer comes from the public IEEE list (`standards-oui.ieee.org`, downloaded once). Phones with a private (random) MAC address are marked as such.
 - **Public IP:** only on request, via `api.ipify.org`.
 
+## Security
+
+EZTool doesn't ship its own virus scanner. A homemade engine without a malware lab and a signed kernel driver would be far weaker than Microsoft Defender, which already scores top marks in independent tests. Instead EZTool turns Defender into a security centre:
+
+- **Security check:** reads 12 Windows settings that are otherwise spread over many pages and weights them into a score. EZTool only reads them, and "Fix" opens the right Windows page.
+- **Scans:** quick, full, folder or drive, and the offline scan that runs before Windows starts. They run through `MpCmdRun.exe` and can be cancelled, and signature updates on demand.
+- **Hardening:** ransomware protection (controlled folder access), blocking unwanted apps (PUA), network protection, stricter cloud protection and 16 attack surface reduction rules. All are set via the official `Set-MpPreference` / `Add-MpPreference` commands and read back afterwards. If Tamper Protection blocks a change, EZTool says so and opens Windows Security.
+- **Suspicious programs:** unsigned programs in folders anyone can write to (Temp, Downloads, Desktop, AppData, ProgramData) that start with Windows, are running or are online. Each can be checked with Defender in one click.
+- **Threat history:** everything Defender has found, with severity, file and status, and removing active threats.
+
 ## Adblocker
 
 The adblocker works on the DNS level, so it covers every browser and app at once:
@@ -142,7 +153,7 @@ dotnet run --project src/EZTool
 The app requests administrator rights (UAC).
 
 Command-line options:
-- `--page=<module>` opens a module directly (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `hotkeys`, `settings`).
+- `--page=<module>` opens a module directly (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `hotkeys`, `settings`, `network`, `adblock`, `security`). Append `#tab` to pick a tab in screenshot mode, e.g. `network#apps`.
 - `--tray` starts hidden in the notification area.
 - `--lang=<code>` (or the environment variable `EZTOOL_LANG`) overrides the language, e.g. `--lang=ja`.
 - Environment variable `EZTOOL_DEV=1`: a separate instance for testing that doesn't interfere with a running EZTool.
@@ -196,7 +207,7 @@ src/EZTool/
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
 │                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        18 modules (Dashboard … Settings)
+└── Modules/        19 modules (Dashboard … Settings)
 ```
 
 ## Ideas for later

@@ -14,7 +14,7 @@ public sealed class AdBlockModule : IModule
     public string Id => "adblock";
     public string Title => Loc.T("AdBlock.Title");
     public string Subtitle => Loc.T("AdBlock.Subtitle");
-    public string Icon => "";
+    public string Icon => "";
     public int Order => 405;
 
     public FrameworkElement CreateView() => new AdBlockView { DataContext = new AdBlockViewModel() };

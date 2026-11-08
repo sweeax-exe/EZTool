@@ -79,8 +79,33 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="44" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <!-- Update-Leiste: erscheint auf jeder Seite, sobald es eine neue Version gibt -->
+            <Border x:Name="UpdateBar" Grid.Row="1" Margin="40,0,40,18" CornerRadius="6" Background="{StaticResource Accent}" Padding="18,12" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="&#xE896;" FontFamily="{StaticResource IconFont}" FontSize="20" Foreground="{StaticResource OnAccent}" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Margin="14,0,16,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="UpdateBarTitle" FontFamily="{StaticResource DisplayFont}" FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource OnAccent}" />
+                        <TextBlock x:Name="UpdateBarText" FontSize="12.5" Foreground="{StaticResource OnAccent}" Opacity="0.8" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="UpdateBarNotes" Style="{StaticResource GhostButton}" Content="{l:T AppUpdate.WhatsNew}" Click="UpdateNotes_Click"
+                                Background="Transparent" BorderBrush="#5517191B" Foreground="{StaticResource OnAccent}" Padding="12,6" />
+                        <Button x:Name="UpdateBarInstall" Style="{StaticResource PrimaryButton}" Content="{l:T Settings.UpdateNow}" Click="UpdateInstall_Click"
+                                Background="{StaticResource OnAccent}" Foreground="{StaticResource Accent}" Padding="14,7" Margin="8,0,0,0" />
+                        <Button Style="{StaticResource IconButton}" Content="&#xE711;" Click="UpdateLater_Click" Foreground="{StaticResource OnAccent}" Margin="6,0,-6,0"
+                                ToolTip="{l:T AppUpdate.Later}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
 
             <!-- Titelleiste -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
@@ -90,7 +115,7 @@
             </StackPanel>
 
             <!-- Seitenkopf -->
-            <Grid Grid.Row="1" Margin="40,0,40,24">
+            <Grid Grid.Row="2" Margin="40,0,40,24">
                 <StackPanel>
                     <TextBlock x:Name="PageTitle" Text="" Style="{StaticResource H1}" />
                     <TextBlock x:Name="PageSubtitle" Text="" Style="{StaticResource Body}" Margin="0,2,0,0" />
@@ -99,7 +124,7 @@
                            Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource TextDim}" />
             </Grid>
 
-            <ContentControl x:Name="PageHost" Grid.Row="2" Focusable="False" />
+            <ContentControl x:Name="PageHost" Grid.Row="3" Focusable="False" />
         </Grid>
     </Grid>
 </Window>

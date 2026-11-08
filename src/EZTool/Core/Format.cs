@@ -37,7 +37,7 @@ public static class Format
     public static string Age(DateTime? date)
     {
         if (date is null || date == DateTime.MinValue) return "—";
-        var days = (DateTime.Now - date.Value).TotalDays;
+        var days = (DateTime.Today - date.Value.Date).TotalDays; // nach Kalendertagen: gestern 23 Uhr ist "gestern"
         if (days < 1) return Loc.T("Format.Today");
         if (days < 2) return Loc.T("Format.Yesterday");
         if (days < 60) return Loc.T("Format.DaysAgo", (int)days);
@@ -108,6 +108,23 @@ public sealed class AnyVisibleConverter : IMultiValueConverter
         values.Any(v => v is true) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [];
+}
+
+/// <summary>Sichtbar, wenn alle Werte true sind.</summary>
+public sealed class AllVisibleConverter : IMultiValueConverter
+{
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) =>
+        values.All(v => v is true) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [];
+}
+
+/// <summary>Zahl → true, wenn sie 0 ist (z. B. "Liste leer").</summary>
+public sealed class IsZeroConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is int i && i == 0;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 }
 
 public sealed class NotConverter : IValueConverter

@@ -7,7 +7,7 @@
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-6CCB6A)
 ![20 Sprachen](https://img.shields.io/badge/Sprachen-20-A3A9AF)
 
-System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, systemweiter Adblocker, Tweaks und Tastenbelegung. Kostenlos und Open Source.
+System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, Sicherheitszentrale auf Basis von Microsoft Defender, systemweiter Adblocker, Tweaks und Tastenbelegung. Kostenlos und Open Source.
 
 ![EZTool Dashboard](docs/screenshots/de/dashboard.png)
 
@@ -19,7 +19,7 @@ System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: 
 | ![Hardware](docs/screenshots/de/hardware.png) **Hardware**: alle Sensoren live, nach Bauteil gruppiert | ![Speicher-Cleaner](docs/screenshots/de/cleaner.png) **Speicher-Cleaner**: sicher aufräumen, inklusive Tiefenreinigung |
 | ![Windows-Tweaks](docs/screenshots/de/tweaks.png) **Windows-Tweaks**: Werbung raus, Gaming rein, alles umkehrbar | ![Tastenbelegung](docs/screenshots/de/hotkeys.png) **Tastenbelegung**: Medientasten für jede Tastatur |
 | ![Einstellungen](docs/screenshots/de/settings.png) **Einstellungen**: Sprache, Autostart, Alarme, Overlay, Auto-Update | ![Adblocker](docs/screenshots/de/adblock.png) **Adblocker**: blockiert Werbung und Tracker in allen Browsern und Apps |
-| ![Netzwerk](docs/screenshots/de/network.png) **Netzwerk**: Live-Verkehr pro App, jede Verbindung, Geräte im Heimnetz | |
+| ![Netzwerk](docs/screenshots/de/network.png) **Netzwerk**: Live-Verkehr pro App, jede Verbindung, Geräte im Heimnetz | ![Sicherheit](docs/screenshots/de/security.png) **Sicherheit**: Sicherheitswert, Defender-Scans, Härtung auf Profi-Niveau |
 
 ## Download
 
@@ -29,7 +29,7 @@ System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: 
 **Gut zu wissen:**
 - **Administrator-Rechte:** EZTool fragt beim Start danach. Es braucht sie für Temperatursensoren, FPS-Messung, Tiefenreinigung und Deinstallationen.
 - **SmartScreen:** Beim ersten Start kann Windows „Der Computer wurde durch Windows geschützt“ anzeigen, weil die EXE kein kostenpflichtiges Code-Signing-Zertifikat hat. Dann über **Weitere Informationen → Trotzdem ausführen** starten. Der komplette Quellcode liegt in diesem Repository, und jede EXE wird öffentlich von GitHub Actions gebaut.
-- **Automatische Updates:** EZTool prüft regelmäßig auf neue Releases. Ein Update wird per SHA-256 geprüft und installiert, danach startet EZTool neu. Das lässt sich in den Einstellungen abschalten.
+- **Automatische Updates:** EZTool prüft regelmäßig auf neue Releases. Ein Update wird per SHA-256 geprüft und installiert, danach startet EZTool neu. Eine gelbe Leiste auf jeder Seite kündigt eine neue Version an, mit „Was ist neu“ und Update per Klick. Das lässt sich in den Einstellungen abschalten.
 
 ## 🌍 Sprachen
 
@@ -64,7 +64,8 @@ Die Navigation ist in fünf Gruppen gegliedert:
 | Software | **Programme** | Desktop-Programme und Store-Apps deinstallieren, danach die Reste entfernen |
 | | **Updates** | Verfügbare Updates aller Programme über winget, einzeln oder alle mit einem Klick |
 | | **Autostart** | Run-Keys, Autostart-Ordner und geplante Aufgaben ein- und ausschalten |
-| System | **Windows-Tweaks** | 14 Schalter für Werbung, Datenschutz, Explorer und Gaming (Mausbeschleunigung, Game DVR …), jederzeit rückgängig, mit Wiederherstellungspunkt |
+| System | **Sicherheit** | Sicherheitswert aus 12 Prüfungen (Virenschutz, Firewall, SmartScreen, Benutzerkontensteuerung, Speicher-Integrität, Secure Boot, TPM, BitLocker, Remotedesktop, SMB 1.0, Windows Update), Schnell-, Voll-, Ordner- und Offline-Scan mit Microsoft Defender, Ransomware-Schutz, Netzwerkschutz, 16 Regeln zur Verringerung der Angriffsfläche, auffällige unsignierte Programme, Bedrohungsverlauf |
+| | **Windows-Tweaks** | 14 Schalter für Werbung, Datenschutz, Explorer und Gaming (Mausbeschleunigung, Game DVR …), jederzeit rückgängig, mit Wiederherstellungspunkt |
 | | **Adblocker** | Systemweites Blockieren von Werbung und Trackern über EZTools eigenen DNS-Server: Blocklisten (AdGuard, Steven Black, HaGeZi), Live-Protokoll, Freigabe- und Sperrregeln, verschlüsseltes DNS (Cloudflare, Quad9, Google) |
 | | **Tastenbelegung** | Medienfunktionen (Titel vor/zurück, Play/Pause, Lautstärke), andere Tasten, Programme oder EZTool-Aktionen auf beliebige Tasten legen, global, auch in Spielen. Schnellstart: Bild ↑/↓ = Titel vor/zurück |
 | | **Einstellungen** | Sprache, mit Windows starten, Hintergrundbetrieb, Sensor-Treiber, Alarme, Overlay, Updates |
@@ -104,6 +105,16 @@ Ein globaler Low-Level-Tastatur-Hook (`WH_KEYBOARD_LL`) fängt die belegte Taste
 - **Geräte:** Der Scan pingt jede Adresse im Heimnetz an, liest die MAC-Adressen aus der ARP-Tabelle und fragt den Router nach den Namen. Der Hersteller kommt aus der öffentlichen IEEE-Liste (`standards-oui.ieee.org`, einmal geladen). Handys mit privater (zufälliger) MAC-Adresse werden so gekennzeichnet.
 - **Öffentliche IP:** nur auf Knopfdruck, über `api.ipify.org`.
 
+## Sicherheit
+
+EZTool bringt keinen eigenen Virenscanner mit. Eine selbst gebaute Engine ohne Malware-Labor und signierten Kerneltreiber wäre weit schwächer als Microsoft Defender, der in unabhängigen Tests regelmäßig volle Punktzahl holt. Stattdessen macht EZTool aus Defender eine Sicherheitszentrale:
+
+- **Sicherheits-Check:** liest 12 Windows-Einstellungen, die sonst auf viele Seiten verteilt sind, und gewichtet sie zu einem Wert. EZTool liest nur, „Beheben“ öffnet die passende Windows-Seite.
+- **Scans:** Schnell, vollständig, Ordner oder Laufwerk und der Offline-Scan vor dem Windows-Start. Sie laufen über `MpCmdRun.exe` und lassen sich abbrechen, dazu Signatur-Updates auf Knopfdruck.
+- **Härtung:** Ransomware-Schutz (überwachter Ordnerzugriff), Blockieren unerwünschter Apps (PUA), Netzwerkschutz, strengerer Cloud-Schutz und 16 Regeln zur Verringerung der Angriffsfläche. Alles wird über die offiziellen Befehle `Set-MpPreference` / `Add-MpPreference` gesetzt und danach nachgelesen. Blockiert der Manipulationsschutz eine Änderung, sagt EZTool das und öffnet die Windows-Sicherheit.
+- **Auffällige Programme:** unsignierte Programme in Ordnern, in die jeder schreiben kann (Temp, Downloads, Desktop, AppData, ProgramData), die mit Windows starten, gerade laufen oder online sind. Jedes lässt sich mit einem Klick von Defender prüfen.
+- **Bedrohungsverlauf:** alles, was Defender gefunden hat, mit Schweregrad, Datei und Status, plus Entfernen aktiver Bedrohungen.
+
 ## Adblocker
 
 Der Adblocker arbeitet auf DNS-Ebene und wirkt deshalb in allen Browsern und Apps gleichzeitig:
@@ -142,7 +153,7 @@ dotnet run --project src/EZTool
 Die App fordert Administrator-Rechte an (UAC).
 
 Startparameter:
-- `--page=<modul>` öffnet ein Modul direkt (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `hotkeys`, `settings`).
+- `--page=<modul>` öffnet ein Modul direkt (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `hotkeys`, `settings`, `network`, `adblock`, `security`). Im Screenshot-Modus wählt `#reiter` einen Reiter, z. B. `network#apps`.
 - `--tray` startet unsichtbar im Infobereich.
 - `--lang=<code>` (oder die Umgebungsvariable `EZTOOL_LANG`) überschreibt die Sprache, z. B. `--lang=ja`.
 - Umgebungsvariable `EZTOOL_DEV=1`: eigene Instanz für Tests, die eine laufende EZTool-Instanz nicht stört.
@@ -196,7 +207,7 @@ src/EZTool/
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
 │                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        18 Module (Dashboard … Einstellungen)
+└── Modules/        19 Module (Dashboard … Einstellungen)
 ```
 
 ## Ideen für später

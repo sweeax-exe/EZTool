@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using EZTool.Core;
+using EZTool.Dialogs;
 using EZTool.Services;
 
 namespace EZTool;
@@ -31,6 +32,7 @@ public partial class MainWindow : Window
         {
             UpdateBadge.Visibility = info != null ? Visibility.Visible : Visibility.Collapsed;
             if (info != null) UpdateBadgeText.Text = Loc.T("Shell.UpdateAvailable", info.Version);
+            ShowUpdateBar(info);
         };
 
         _clock.Tick += (_, _) => ClockText.Text = DateTime.Now.ToString(Loc.T("Shell.ClockFormat"), Loc.Culture);
@@ -152,7 +154,7 @@ public partial class MainWindow : Window
             if (module == null || !OpenModule(page)) continue;
             if (parts.Length == 2 && _views[module.Id].DataContext?.GetType().GetProperty("Tab") is { CanWrite: true } tab)
                 tab.SetValue(_views[module.Id].DataContext, parts[1]);
-            await Task.Delay(page == "cleaner" ? 12000 : parts.Length == 2 && parts[1] == "devices" ? 20000 : 5000);
+            await Task.Delay(page == "cleaner" ? 12000 : parts.Length == 2 && parts[1] is "devices" or "suspects" ? 20000 : page == "security" ? 9000 : 5000);
 
             // Sicherheitsnetz: nur fotografieren, wenn wirklich die gewünschte Seite angezeigt wird
             if (PageTitle.Text != module.Title || PageHost.Content != _views[module.Id])
@@ -237,4 +239,53 @@ public partial class MainWindow : Window
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
     private void UpdateBadge_Click(object sender, RoutedEventArgs e) => OpenModule("settings");
+
+    // ───────────── Update-Leiste ─────────────
+
+    private Version? _dismissedUpdate;
+    private bool _installing;
+
+    /// <summary>Gelbe Leiste über jeder Seite, solange eine neuere Version bereitsteht ("Später" blendet sie für diese Version aus).</summary>
+    private void ShowUpdateBar(UpdateInfo? info)
+    {
+        if (_installing) return;
+        bool show = info != null && info.Version != _dismissedUpdate && !App.ScreenshotMode;
+        UpdateBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        if (info == null) return;
+        UpdateBarTitle.Text = Loc.T("AppUpdate.NotifyTitle", info.Version);
+        UpdateBarText.Text = Loc.T("AppUpdate.BannerText", UpdateService.Current);
+    }
+
+    private void UpdateLater_Click(object sender, RoutedEventArgs e)
+    {
+        _dismissedUpdate = UpdateService.Instance.Available?.Version;
+        UpdateBar.Visibility = Visibility.Collapsed;
+    }
+
+    private void UpdateNotes_Click(object sender, RoutedEventArgs e)
+    {
+        if (UpdateService.Instance.Available is not { } info) return;
+        // Release-Notes (Markdown) als Stichpunkte zeigen
+        var lines = info.Notes.Replace("\r", "").Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
+        string Clean(string s) => s.Replace("**", "").Replace("`", "").TrimStart('#', '-', '*', ' ');
+        var intro = lines.FirstOrDefault(l => !l.StartsWith('-') && !l.StartsWith("**Download", StringComparison.Ordinal)) is { } first ? Clean(first) : "";
+        var bullets = lines.Where(l => l.StartsWith("- ", StringComparison.Ordinal)).Select(Clean).ToList();
+        if (NeonDialog.Show(Loc.T("AppUpdate.NotesTitle", info.Version), intro, Loc.T("Settings.UpdateNow"), Loc.T("AppUpdate.Later"),
+                details: bullets.Count > 0 ? bullets : null))
+            UpdateInstall_Click(sender, e);
+    }
+
+    private async void UpdateInstall_Click(object sender, RoutedEventArgs e)
+    {
+        if (_installing || UpdateService.Instance.Available is not { } info) return;
+        _installing = true;
+        UpdateBarInstall.IsEnabled = UpdateBarNotes.IsEnabled = false;
+        var progress = new Progress<string>(m => UpdateBarText.Text = m);
+        var (ok, msg) = await UpdateService.Instance.InstallAsync(info, progress);
+        if (ok) return; // EZTool startet gleich neu
+        _installing = false;
+        UpdateBarInstall.IsEnabled = UpdateBarNotes.IsEnabled = true;
+        ShowUpdateBar(info);
+        NeonDialog.Show(Loc.T("Settings.UpdateFailedTitle"), msg, cancelText: null, danger: true);
+    }
 }
