@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -37,20 +38,21 @@ public sealed class HotkeyService
 {
     public static HotkeyService Instance { get; } = new();
 
-    public static readonly (string Id, string Label, string Icon)[] Actions =
+    /// <summary>Als Property, damit die Texte erst nach dem Laden der Sprache erzeugt werden.</summary>
+    public static (string Id, string Label, string Icon)[] Actions =>
     [
-        ("next", "Nächster Titel", ""),
-        ("prev", "Vorheriger Titel", ""),
-        ("playpause", "Play / Pause", ""),
-        ("stop", "Stopp", ""),
-        ("volup", "Lauter", ""),
-        ("voldown", "Leiser", ""),
-        ("mute", "Stumm", ""),
-        ("key", "Andere Taste senden", ""),
-        ("run", "Programm starten", ""),
-        ("gaming", "Gaming-Modus an/aus", ""),
-        ("overlay", "Overlay an/aus", ""),
-        ("open", "EZTool öffnen", ""),
+        ("next", Loc.T("Hotkeys.Action.Next"), ""),
+        ("prev", Loc.T("Hotkeys.Action.Prev"), ""),
+        ("playpause", Loc.T("Hotkeys.Action.PlayPause"), ""),
+        ("stop", Loc.T("Hotkeys.Action.Stop"), ""),
+        ("volup", Loc.T("Hotkeys.Action.VolUp"), ""),
+        ("voldown", Loc.T("Hotkeys.Action.VolDown"), ""),
+        ("mute", Loc.T("Hotkeys.Action.Mute"), ""),
+        ("key", Loc.T("Hotkeys.Action.Key"), ""),
+        ("run", Loc.T("Hotkeys.Action.Run"), ""),
+        ("gaming", Loc.T("Hotkeys.Action.Gaming"), ""),
+        ("overlay", Loc.T("Hotkeys.Action.Overlay"), ""),
+        ("open", Loc.T("Hotkeys.Action.Open"), ""),
     ];
 
     private const int WH_KEYBOARD_LL = 13, WM_KEYDOWN = 0x100, WM_KEYUP = 0x101, WM_SYSKEYDOWN = 0x104, WM_SYSKEYUP = 0x105;
@@ -238,15 +240,15 @@ public sealed class HotkeyService
         SendInput((uint)list.Count, [.. list], Marshal.SizeOf<INPUT>());
     }
 
-    // ───────────── Tastennamen (deutsch) ─────────────
+    // ───────────── Tastennamen (lokalisiert) ─────────────
 
     public static string Describe(int vk, bool ctrl, bool alt, bool shift, bool win)
     {
         if (vk == 0) return "—";
         var parts = new List<string>();
-        if (ctrl) parts.Add("Strg");
+        if (ctrl) parts.Add(Loc.T("Hotkeys.Mod.Ctrl"));
         if (alt) parts.Add("Alt");
-        if (shift) parts.Add("Umschalt");
+        if (shift) parts.Add(Loc.T("Hotkeys.Mod.Shift"));
         if (win) parts.Add("Win");
         parts.Add(KeyName(vk));
         return string.Join(" + ", parts);
@@ -257,37 +259,37 @@ public sealed class HotkeyService
         var key = KeyInterop.KeyFromVirtualKey(vk);
         return key switch
         {
-            Key.PageUp => "Bild ↑",
-            Key.PageDown => "Bild ↓",
-            Key.Home => "Pos1",
-            Key.End => "Ende",
-            Key.Insert => "Einfg",
-            Key.Delete => "Entf",
+            Key.PageUp => Loc.T("Hotkeys.Key.PageUp"),
+            Key.PageDown => Loc.T("Hotkeys.Key.PageDown"),
+            Key.Home => Loc.T("Hotkeys.Key.Home"),
+            Key.End => Loc.T("Hotkeys.Key.End"),
+            Key.Insert => Loc.T("Hotkeys.Key.Insert"),
+            Key.Delete => Loc.T("Hotkeys.Key.Delete"),
             Key.Up => "↑",
             Key.Down => "↓",
             Key.Left => "←",
             Key.Right => "→",
-            Key.Space => "Leertaste",
-            Key.Return => "Enter",
-            Key.Back => "Rücktaste",
-            Key.Escape => "Esc",
-            Key.Tab => "Tab",
-            Key.CapsLock => "Feststell",
-            Key.Scroll => "Rollen",
-            Key.Pause => "Pause",
-            Key.PrintScreen => "Druck",
-            Key.NumLock => "Num",
-            Key.Apps => "Menü",
-            Key.MediaNextTrack => "Medien ⏭",
-            Key.MediaPreviousTrack => "Medien ⏮",
-            Key.MediaPlayPause => "Medien ⏯",
+            Key.Space => Loc.T("Hotkeys.Key.Space"),
+            Key.Return => Loc.T("Hotkeys.Key.Return"),
+            Key.Back => Loc.T("Hotkeys.Key.Back"),
+            Key.Escape => Loc.T("Hotkeys.Key.Escape"),
+            Key.Tab => Loc.T("Hotkeys.Key.Tab"),
+            Key.CapsLock => Loc.T("Hotkeys.Key.CapsLock"),
+            Key.Scroll => Loc.T("Hotkeys.Key.Scroll"),
+            Key.Pause => Loc.T("Hotkeys.Key.Pause"),
+            Key.PrintScreen => Loc.T("Hotkeys.Key.PrintScreen"),
+            Key.NumLock => Loc.T("Hotkeys.Key.NumLock"),
+            Key.Apps => Loc.T("Hotkeys.Key.Apps"),
+            Key.MediaNextTrack => Loc.T("Hotkeys.Key.MediaNextTrack"),
+            Key.MediaPreviousTrack => Loc.T("Hotkeys.Key.MediaPreviousTrack"),
+            Key.MediaPlayPause => Loc.T("Hotkeys.Key.MediaPlayPause"),
             >= Key.D0 and <= Key.D9 => ((char)('0' + (key - Key.D0))).ToString(),
             >= Key.NumPad0 and <= Key.NumPad9 => "Num " + (key - Key.NumPad0),
             Key.Multiply => "Num *",
             Key.Add => "Num +",
             Key.Subtract => "Num −",
             Key.Divide => "Num /",
-            Key.Decimal => "Num ,",
+            Key.Decimal => Loc.T("Hotkeys.Key.Decimal"),
             _ => key.ToString(),
         };
     }

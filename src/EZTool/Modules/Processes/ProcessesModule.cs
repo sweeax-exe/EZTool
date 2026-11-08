@@ -16,8 +16,8 @@ namespace EZTool.Modules.Processes;
 public sealed class ProcessesModule : IModule
 {
     public string Id => "processes";
-    public string Title => "Prozesse";
-    public string Subtitle => "Was frisst gerade CPU und Arbeitsspeicher? Live, gruppiert nach Programm – mit einem Klick beenden.";
+    public string Title => Loc.T("Processes.Title");
+    public string Subtitle => Loc.T("Processes.Subtitle");
     public string Icon => "";
     public int Order => 20;
 
@@ -194,14 +194,14 @@ public sealed partial class ProcessesViewModel : ObservableObject
     private async Task KillAsync(ProcessGroupVm? g)
     {
         if (g == null || g.IsCritical) return;
-        var what = g.Count > 1 ? $"alle {g.Count} Prozesse von „{g.DisplayName}“" : $"„{g.DisplayName}“";
-        if (!NeonDialog.Show("Prozess beenden?", $"{what} werden sofort beendet. Nicht gespeicherte Daten in diesem Programm gehen verloren.",
-                "Beenden", danger: true))
+        var message = g.Count > 1 ? Loc.T("Processes.KillMessageMany", g.Count, g.DisplayName) : Loc.T("Processes.KillMessageOne", g.DisplayName);
+        if (!NeonDialog.Show(Loc.T("Processes.KillTitle"), message,
+                Loc.T("Processes.Kill"), danger: true))
             return;
 
         var (ok, fail) = await Task.Run(() => ProcessService.Kill(g.Pids));
         if (fail > 0)
-            NeonDialog.Show("Nicht vollständig beendet", $"{ok} beendet, {fail} konnten nicht beendet werden (geschützt oder bereits beendet).", cancelText: null);
+            NeonDialog.Show(Loc.T("Processes.KillPartialTitle"), Loc.T("Processes.KillPartialText", ok, fail), cancelText: null);
         await RefreshAsync();
     }
 }

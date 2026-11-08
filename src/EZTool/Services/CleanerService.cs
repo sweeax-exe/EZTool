@@ -9,7 +9,13 @@ public sealed class CleanRule
     public required string Id { get; init; }
     public required string Name { get; init; }
     public required string Description { get; init; }
+    /// <summary>Angezeigter (übersetzter) Kategoriename – dient auch zur Gruppierung.</summary>
     public required string Category { get; init; }
+
+    /// <summary>Sprachneutrale Kategorie für Logik (z. B. <see cref="DeepCleanCategory"/>).</summary>
+    public string CategoryId { get; init; } = "";
+
+    public const string DeepCleanCategory = "deep";
     public string Icon { get; init; } = "";
     public bool DefaultOn { get; init; } = true;
 
@@ -71,37 +77,37 @@ public static partial class CleanerService
         {
             new()
             {
-                Id = "user-temp", Category = "System", Icon = "",
-                Name = "Temporäre Dateien (Benutzer)",
-                Description = "Reste von Installationen und Programmen im TEMP-Ordner. Nur Dateien älter als 24 Stunden.",
+                Id = "user-temp", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "",
+                Name = Loc.T("Cleaner.Rule.UserTemp.Name"),
+                Description = Loc.T("Cleaner.Rule.UserTemp.Description"),
                 Roots = () => [Path.GetTempPath()], MinAge = TimeSpan.FromHours(24)
             },
             new()
             {
-                Id = "win-temp", Category = "System", Icon = "",
-                Name = "Temporäre Dateien (Windows)",
-                Description = "Systemweiter Temp-Ordner von Windows. Nur Dateien älter als 24 Stunden.",
+                Id = "win-temp", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "",
+                Name = Loc.T("Cleaner.Rule.WinTemp.Name"),
+                Description = Loc.T("Cleaner.Rule.WinTemp.Description"),
                 Roots = () => [Path.Combine(Windows, "Temp")], MinAge = TimeSpan.FromHours(24)
             },
             new()
             {
-                Id = "wu-cache", Category = "System", Icon = "",
-                Name = "Windows-Update-Cache",
-                Description = "Bereits installierte Update-Pakete. Windows lädt sie bei Bedarf erneut.",
+                Id = "wu-cache", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "",
+                Name = Loc.T("Cleaner.Rule.WuCache.Name"),
+                Description = Loc.T("Cleaner.Rule.WuCache.Description"),
                 Roots = () => [Path.Combine(Windows, "SoftwareDistribution", "Download")], MinAge = TimeSpan.FromDays(2)
             },
             new()
             {
-                Id = "delivery-opt", Category = "System", Icon = "",
-                Name = "Übermittlungsoptimierung",
-                Description = "Zwischengespeicherte Update-Dateien für die Peer-to-Peer-Verteilung.",
+                Id = "delivery-opt", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "",
+                Name = Loc.T("Cleaner.Rule.DeliveryOpt.Name"),
+                Description = Loc.T("Cleaner.Rule.DeliveryOpt.Description"),
                 Roots = () => [Path.Combine(Windows, @"ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache")]
             },
             new()
             {
-                Id = "crash", Category = "System", Icon = "",
-                Name = "Absturzberichte & Speicherabbilder",
-                Description = "Fehlerberichte (WER), Minidumps und Crash-Dumps von Programmen.",
+                Id = "crash", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "",
+                Name = Loc.T("Cleaner.Rule.Crash.Name"),
+                Description = Loc.T("Cleaner.Rule.Crash.Description"),
                 Roots = () =>
                 [
                     Path.Combine(Local, "CrashDumps"),
@@ -115,25 +121,25 @@ public static partial class CleanerService
             },
             new()
             {
-                Id = "thumbs", Category = "System", Icon = "", DefaultOn = false,
-                Name = "Miniaturansichten-Cache",
-                Description = "Vorschaubilder des Explorers. Werden automatisch neu erstellt.",
+                Id = "thumbs", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "", DefaultOn = false,
+                Name = Loc.T("Cleaner.Rule.Thumbs.Name"),
+                Description = Loc.T("Cleaner.Rule.Thumbs.Description"),
                 Roots = () => [Path.Combine(Local, @"Microsoft\Windows\Explorer")], Pattern = "thumbcache_*.db",
                 Recursive = false, RemoveEmptyFolders = false
             },
             new()
             {
-                Id = "win-logs", Category = "System", Icon = "", DefaultOn = false,
-                Name = "Windows-Protokolle",
-                Description = "Alte Log-Dateien von Windows-Komponenten (älter als 14 Tage).",
+                Id = "win-logs", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "", DefaultOn = false,
+                Name = Loc.T("Cleaner.Rule.WinLogs.Name"),
+                Description = Loc.T("Cleaner.Rule.WinLogs.Description"),
                 Roots = () => [Path.Combine(Windows, "Logs")], Pattern = "*.log", MinAge = TimeSpan.FromDays(14),
                 RemoveEmptyFolders = false
             },
             new()
             {
-                Id = "recycle", Category = "System", Icon = "", DefaultOn = false, IsRecycleBin = true,
-                Name = "Papierkorb",
-                Description = "Leert den Papierkorb auf allen Laufwerken endgültig."
+                Id = "recycle", Category = Loc.T("Cleaner.Category.System"), CategoryId = "system", Icon = "", DefaultOn = false, IsRecycleBin = true,
+                Name = Loc.T("Cleaner.Rule.Recycle.Name"),
+                Description = Loc.T("Cleaner.Rule.Recycle.Description")
             },
         };
 
@@ -150,9 +156,9 @@ public static partial class CleanerService
         {
             rules.Add(new CleanRule
             {
-                Id = "browser-" + name, Category = "Browser", Icon = "",
-                Name = $"{name} – Cache",
-                Description = "Zwischengespeicherte Webseiten-Daten. Verlauf, Passwörter und Cookies bleiben unangetastet.",
+                Id = "browser-" + name, Category = Loc.T("Cleaner.Category.Browser"), CategoryId = "browser", Icon = "",
+                Name = Loc.T("Cleaner.Rule.Browser.Name", name),
+                Description = Loc.T("Cleaner.Rule.Browser.Description"),
                 Processes = [proc],
                 Roots = () => ChromiumCacheDirs(dir)
             });
@@ -160,9 +166,9 @@ public static partial class CleanerService
 
         rules.Add(new CleanRule
         {
-            Id = "browser-firefox", Category = "Browser", Icon = "",
-            Name = "Mozilla Firefox – Cache",
-            Description = "Zwischengespeicherte Webseiten-Daten. Verlauf, Passwörter und Cookies bleiben unangetastet.",
+            Id = "browser-firefox", Category = Loc.T("Cleaner.Category.Browser"), CategoryId = "browser", Icon = "",
+            Name = Loc.T("Cleaner.Rule.Browser.Name", "Mozilla Firefox"),
+            Description = Loc.T("Cleaner.Rule.Browser.Description"),
             Processes = ["firefox"],
             Roots = () => SubDirs(Path.Combine(Local, @"Mozilla\Firefox\Profiles")).Select(p => Path.Combine(p, "cache2"))
         });
@@ -170,9 +176,9 @@ public static partial class CleanerService
         // ── Anwendungen ──
         rules.Add(new CleanRule
         {
-            Id = "apps-cache", Category = "Anwendungen", Icon = "",
-            Name = "App-Caches (Discord, Steam, VS Code, Teams …)",
-            Description = "Web-Caches von Electron- und Chromium-basierten Programmen.",
+            Id = "apps-cache", Category = Loc.T("Cleaner.Category.Apps"), CategoryId = "apps", Icon = "",
+            Name = Loc.T("Cleaner.Rule.AppsCache.Name"),
+            Description = Loc.T("Cleaner.Rule.AppsCache.Description"),
             Processes = ["discord", "steamwebhelper", "code", "ms-teams", "slack"],
             Roots = () => new[]
             {
@@ -186,9 +192,9 @@ public static partial class CleanerService
 
         rules.Add(new CleanRule
         {
-            Id = "shader", Category = "Anwendungen", Icon = "", DefaultOn = false,
-            Name = "Grafik-Shader-Cache",
-            Description = "DirectX-, NVIDIA- und AMD-Shader. Wird neu aufgebaut – Spiele laden beim ersten Start evtl. etwas länger.",
+            Id = "shader", Category = Loc.T("Cleaner.Category.Apps"), CategoryId = "apps", Icon = "", DefaultOn = false,
+            Name = Loc.T("Cleaner.Rule.Shader.Name"),
+            Description = Loc.T("Cleaner.Rule.Shader.Description"),
             Roots = () =>
             [
                 Path.Combine(Local, "D3DSCache"),
@@ -199,9 +205,9 @@ public static partial class CleanerService
 
         rules.Add(new CleanRule
         {
-            Id = "dev-cache", Category = "Anwendungen", Icon = "", DefaultOn = false,
-            Name = "Entwickler-Caches (npm, pip, Yarn)",
-            Description = "Paket-Caches von Entwicklerwerkzeugen. Pakete werden bei Bedarf neu geladen.",
+            Id = "dev-cache", Category = Loc.T("Cleaner.Category.Apps"), CategoryId = "apps", Icon = "", DefaultOn = false,
+            Name = Loc.T("Cleaner.Rule.DevCache.Name"),
+            Description = Loc.T("Cleaner.Rule.DevCache.Description"),
             Roots = () =>
             [
                 Path.Combine(Local, "npm-cache"),

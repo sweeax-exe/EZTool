@@ -1,6 +1,7 @@
 <UserControl x:Class="EZTool.Modules.Autostart.AutostartView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:EZTool.Core"
              x:Name="Root">
     <Grid Margin="40,0,40,28">
         <Grid.RowDefinitions>
@@ -14,7 +15,7 @@
             <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,16">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="STARTEN MIT WINDOWS" Style="{StaticResource Label}" />
+                        <TextBlock Text="{l:T Autostart.StatEnabled}" Style="{StaticResource Label}" />
                         <TextBlock Text="{Binding EnabledCount}" Style="{StaticResource BigValue}" Foreground="{StaticResource Cyan}" Margin="0,4,0,0" />
                     </StackPanel>
                     <TextBlock Text="&#xE7E8;" Style="{StaticResource Icon}" FontSize="30" HorizontalAlignment="Right" Opacity="0.35" Effect="{StaticResource CyanGlow}" />
@@ -23,7 +24,7 @@
             <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,16">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="AUSGESCHALTET" Style="{StaticResource Label}" />
+                        <TextBlock Text="{l:T Autostart.StatDisabled}" Style="{StaticResource Label}" />
                         <TextBlock Text="{Binding DisabledCount}" Style="{StaticResource BigValue}" Foreground="{StaticResource TextDim}" Margin="0,4,0,0" />
                     </StackPanel>
                     <TextBlock Text="&#xE711;" Style="{StaticResource Icon}" FontSize="28" HorizontalAlignment="Right" Foreground="{StaticResource TextDim}" Opacity="0.35" />
@@ -32,7 +33,7 @@
             <Border Style="{StaticResource Card}" Margin="8,0" Padding="20,16">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="DEFEKT · DATEI FEHLT" Style="{StaticResource Label}" />
+                        <TextBlock Text="{l:T Autostart.StatBroken}" Style="{StaticResource Label}" />
                         <TextBlock Text="{Binding BrokenCount}" Style="{StaticResource BigValue}" Foreground="{StaticResource Amber}" Margin="0,4,0,0" />
                     </StackPanel>
                     <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" FontSize="28" HorizontalAlignment="Right" Foreground="{StaticResource Amber}" Opacity="0.35" />
@@ -45,16 +46,16 @@
             <StackPanel Orientation="Horizontal">
                 <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Alle" IsChecked="True" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="all" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Registry" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="registry" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Autostart-Ordner" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="folder" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Aufgaben" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="task" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Defekt" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="broken" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Autostart.FilterAll}" IsChecked="True" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="all" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Autostart.FilterRegistry}" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="registry" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Autostart.FilterFolder}" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="folder" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Autostart.FilterTasks}" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="task" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Autostart.FilterBroken}" GroupName="asf" Command="{Binding SetFilterCommand}" CommandParameter="broken" />
                     </StackPanel>
                 </Border>
-                <Button Style="{StaticResource IconButton}" Content="&#xE72C;" Command="{Binding LoadCommand}" ToolTip="Neu laden" Margin="8,0,0,0" />
+                <Button Style="{StaticResource IconButton}" Content="&#xE72C;" Command="{Binding LoadCommand}" ToolTip="{l:T Autostart.Reload}" Margin="8,0,0,0" />
             </StackPanel>
-            <TextBox Style="{StaticResource SearchBox}" Width="280" HorizontalAlignment="Right" Tag="Eintrag, Hersteller oder Pfad…"
+            <TextBox Style="{StaticResource SearchBox}" Width="280" HorizontalAlignment="Right" Tag="{l:T Autostart.SearchPlaceholder}"
                      Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
@@ -88,7 +89,7 @@
                                 <TextBlock x:Name="name" Text="{Binding Name}" Foreground="{StaticResource Text}" FontSize="13.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="380" />
                                 <Border Style="{StaticResource Chip}" Padding="6,0" Margin="8,0,0,0" Background="#1AFFB547" BorderBrush="#55FFB547"
                                         Visibility="{Binding FileMissing, Converter={StaticResource Vis}}">
-                                    <TextBlock Text="Datei fehlt" FontSize="10.5" Foreground="{StaticResource Amber}" />
+                                    <TextBlock Text="{l:T Autostart.FileMissing}" FontSize="10.5" Foreground="{StaticResource Amber}" />
                                 </Border>
                                 <Border Style="{StaticResource Chip}" Padding="6,0" Margin="8,0,0,0" Background="#0AFFFFFF" BorderBrush="{StaticResource StrokeSoft}"
                                         Visibility="{Binding IsWindows, Converter={StaticResource Vis}}">
@@ -108,13 +109,13 @@
 
                         <!-- Schalter -->
                         <CheckBox Grid.Column="3" Style="{StaticResource Toggle}" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center"
-                                  ToolTip="Beim Windows-Start ausführen" />
+                                  ToolTip="{l:T Autostart.ToggleTip}" />
 
                         <!-- Aktionen -->
                         <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Speicherort öffnen"
+                            <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="{l:T Autostart.Reveal}"
                                     Command="{Binding DataContext.RevealCommand, ElementName=Root}" CommandParameter="{Binding}" />
-                            <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Dauerhaft entfernen" Margin="4,0,0,0" Foreground="{StaticResource Red}"
+                            <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="{l:T Autostart.DeleteTip}" Margin="4,0,0,0" Foreground="{StaticResource Red}"
                                     Command="{Binding DataContext.DeleteCommand, ElementName=Root}" CommandParameter="{Binding}" />
                         </StackPanel>
                     </Grid>
@@ -128,7 +129,7 @@
         </ListBox>
 
         <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsLoading, Converter={StaticResource Vis}}">
-            <TextBlock Text="Autostart-Einträge werden gelesen…" Style="{StaticResource H2}" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:T Autostart.Loading}" Style="{StaticResource H2}" HorizontalAlignment="Center" />
             <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" Width="260" Margin="0,16,0,0" />
         </StackPanel>
     </Grid>

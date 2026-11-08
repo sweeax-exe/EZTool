@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -13,7 +14,7 @@ public static class StartupTaskService
 
     private static dynamic Connect()
     {
-        var type = Type.GetTypeFromProgID("Schedule.Service") ?? throw new InvalidOperationException("Aufgabenplanung nicht verfügbar.");
+        var type = Type.GetTypeFromProgID("Schedule.Service") ?? throw new InvalidOperationException(Loc.T("Settings.TaskSchedulerUnavailable"));
         dynamic svc = Activator.CreateInstance(type)!;
         svc.Connect();
         return svc;
@@ -31,12 +32,12 @@ public static class StartupTaskService
 
     public static void Enable()
     {
-        var exe = Environment.ProcessPath ?? throw new InvalidOperationException("Programmpfad unbekannt.");
+        var exe = Environment.ProcessPath ?? throw new InvalidOperationException(Loc.T("Settings.ProgramPathUnknown"));
         var user = WindowsIdentity.GetCurrent().Name;
 
         dynamic svc = Connect();
         dynamic def = svc.NewTask(0);
-        def.RegistrationInfo.Description = "Startet EZTool beim Anmelden im Infobereich.";
+        def.RegistrationInfo.Description = Loc.T("Settings.StartupTaskDescription");
         def.RegistrationInfo.Author = "EZTool";
         def.Principal.UserId = user;
         def.Principal.LogonType = 3;   // TASK_LOGON_INTERACTIVE_TOKEN

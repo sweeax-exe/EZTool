@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Скасувати",
+  "Common.UnexpectedError": "Неочікувана помилка",
+
+  "Window.Minimize": "Згорнути",
+  "Window.Maximize": "Розгорнути",
+  "Window.Close": "Закрити",
+
+  "Shell.Module": "МОДУЛЬ {0:00} / {1:00}",
+  "Shell.Admin": "Адміністратор",
+  "Shell.Limited": "Обмежений",
+  "Shell.UpdateAvailable": "Доступне оновлення {0}",
+  "Shell.UpdateAvailableShort": "Є оновлення",
+  "Shell.ClockFormat": "dddd, d MMMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool працює у фоні",
+  "Shell.TrayHintText": "Моніторинг і сповіщення залишаються активними. Щоб вийти, клацніть піктограму правою кнопкою миші.",
+
+  "Nav.Group.Monitor": "Моніторинг",
+  "Nav.Group.Gaming": "Ігри",
+  "Nav.Group.Cleanup": "Очищення",
+  "Nav.Group.Software": "Програми",
+  "Nav.Group.System": "Система",
+
+  "Format.Today": "сьогодні",
+  "Format.Yesterday": "учора",
+  "Format.DaysAgo": "{0} дн. тому",
+  "Format.MonthsAgo": "{0} міс. тому",
+  "Format.YearsAgo": "{0} р. тому",
+  "Format.DurationDays": "{0} д {1} год",
+  "Format.DurationHours": "{0} год {1} хв",
+  "Format.DurationMinutes": "{0} хв",
+
+  "Tray.Open": "Відкрити EZTool",
+  "Tray.GamingStart": "Увімкнути ігровий режим",
+  "Tray.GamingStop": "Вимкнути ігровий режим",
+  "Tray.Overlay": "Показати оверлей",
+  "Tray.Exit": "Вихід",
+  "Tray.SessionReady": "Звіт про сесію готовий",
+  "Tray.SessionText": "{0}: сер. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU перегрівається",
+  "Alert.CpuHotText": "{0}: {1:0} °C (ліміт {2} °C).",
+  "Alert.GpuHotTitle": "Відеокарта перегрівається",
+  "Alert.GpuHotText": "{0}: {1:0} °C (ліміт {2} °C).",
+  "Alert.DriveFullTitle": "Диск {0} майже заповнений",
+  "Alert.DriveFullText": "Вільно лише {0} ({1:0} %). Клацніть, щоб очистити.",
+  "Alert.TestTitle": "Сповіщення EZTool активні",
+  "Alert.TestText": "Так виглядає попередження, коли ліміт перевищено.",
+
+  "Chart.Empty": "Даних поки немає – історія поповнюється кожні 5 секунд.",
+  "System.RamModules": "{0} · {1}× модуль",
+  "Hardware.LocalDisk": "Локальний диск",
+
+  "Language.Title": "Мова",
+  "Language.Subtitle": "EZTool вашою мовою – автоматично, як у Windows.",
+  "Language.Auto": "Автоматично ({0})",
+  "Language.RestartTitle": "Змінити мову",
+  "Language.RestartText": "EZTool швидко перезапуститься, щоб нова мова застосувалася всюди.",
+  "Language.RestartNow": "Перезапустити",
+  "Language.Later": "Пізніше"
+}

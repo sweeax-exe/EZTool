@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Cancel",
+  "Common.UnexpectedError": "Unexpected error",
+
+  "Window.Minimize": "Minimize",
+  "Window.Maximize": "Maximize",
+  "Window.Close": "Close",
+
+  "Shell.Module": "MODULE {0:00} / {1:00}",
+  "Shell.Admin": "Administrator",
+  "Shell.Limited": "Limited",
+  "Shell.UpdateAvailable": "Update {0} available",
+  "Shell.UpdateAvailableShort": "Update available",
+  "Shell.ClockFormat": "dddd, MMM dd · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool keeps running in the background",
+  "Shell.TrayHintText": "Monitoring and alerts stay active. Right-click the icon to exit.",
+
+  "Nav.Group.Monitor": "Monitor",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Clean up",
+  "Nav.Group.Software": "Software",
+  "Nav.Group.System": "System",
+
+  "Format.Today": "today",
+  "Format.Yesterday": "yesterday",
+  "Format.DaysAgo": "{0} days ago",
+  "Format.MonthsAgo": "{0} months ago",
+  "Format.YearsAgo": "{0} years ago",
+  "Format.DurationDays": "{0} d {1} h",
+  "Format.DurationHours": "{0} h {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Open EZTool",
+  "Tray.GamingStart": "Start gaming mode",
+  "Tray.GamingStop": "Stop gaming mode",
+  "Tray.Overlay": "Show overlay",
+  "Tray.Exit": "Exit",
+  "Tray.SessionReady": "Session report ready",
+  "Tray.SessionText": "{0}: avg {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU is getting hot",
+  "Alert.CpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.GpuHotTitle": "Graphics card is getting hot",
+  "Alert.GpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.DriveFullTitle": "Drive {0} almost full",
+  "Alert.DriveFullText": "Only {0} free ({1:0} %). Click here to clean up.",
+  "Alert.TestTitle": "EZTool alerts are active",
+  "Alert.TestText": "This is what a warning looks like when a limit is exceeded.",
+
+  "Chart.Empty": "No data yet – the history fills up every 5 seconds.",
+  "System.RamModules": "{0} · {1}× module",
+  "Hardware.LocalDisk": "Local disk",
+
+  "Language.Title": "Language",
+  "Language.Subtitle": "EZTool in your language – automatically matched to Windows.",
+  "Language.Auto": "Automatic ({0})",
+  "Language.RestartTitle": "Change language",
+  "Language.RestartText": "EZTool will restart briefly so the new language is applied everywhere.",
+  "Language.RestartNow": "Restart now",
+  "Language.Later": "Later"
+}

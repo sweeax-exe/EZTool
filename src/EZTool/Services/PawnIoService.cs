@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
+using EZTool.Core;
 using Microsoft.Win32;
 
 namespace EZTool.Services;
@@ -54,7 +55,7 @@ public static class PawnIoService
         http.DefaultRequestHeaders.UserAgent.ParseAdd("EZTool/" + typeof(PawnIoService).Assembly.GetName().Version?.ToString(3));
 
         // 1) Download-Adresse der neuesten offiziellen Version ermitteln
-        progress?.Report("Suche aktuelle PawnIO-Version…");
+        progress?.Report(Loc.T("PawnIo.SearchingVersion"));
         var url = FallbackUrl;
         try
         {
@@ -72,7 +73,7 @@ public static class PawnIoService
         catch { /* Fallback-Adresse verwenden */ }
 
         // 2) Herunterladen
-        progress?.Report("Lade offiziellen Installer…");
+        progress?.Report(Loc.T("PawnIo.Downloading"));
         try
         {
             await using var src = await http.GetStreamAsync(url, token);
@@ -82,43 +83,43 @@ public static class PawnIoService
         catch (OperationCanceledException) { throw; }
         catch (Exception ex)
         {
-            return new Result(false, "Download fehlgeschlagen: " + ex.Message);
+            return new Result(false, Loc.T("PawnIo.DownloadFailed", ex.Message));
         }
 
         // 3) Digitale Signatur prüfen – ohne gültige Signatur wird nichts ausgeführt
-        progress?.Report("Prüfe digitale Signatur…");
+        progress?.Report(Loc.T("PawnIo.CheckingSignature"));
         if (!VerifySignature(file, out var signer))
         {
             TryDelete(file);
-            return new Result(false, "Die digitale Signatur des Installers ist ungültig. Aus Sicherheitsgründen wurde nichts installiert.");
+            return new Result(false, Loc.T("PawnIo.SignatureInvalid"));
         }
 
         // 4) Offiziellen Installer starten (er zeigt seinen eigenen Dialog)
-        progress?.Report("Installer läuft…");
+        progress?.Report(Loc.T("PawnIo.InstallerRunning"));
         int exit;
         try
         {
             using var proc = Process.Start(new ProcessStartInfo(file, "-install") { UseShellExecute = true })
-                             ?? throw new InvalidOperationException("Installer konnte nicht gestartet werden.");
+                             ?? throw new InvalidOperationException(Loc.T("PawnIo.InstallerNotStarted"));
             await proc.WaitForExitAsync(token);
             exit = proc.ExitCode;
         }
         catch (OperationCanceledException) { throw; }
         catch (Exception ex)
         {
-            return new Result(false, "Installer konnte nicht gestartet werden: " + ex.Message);
+            return new Result(false, Loc.T("PawnIo.InstallerStartFailed", ex.Message));
         }
         finally
         {
             TryDelete(file);
         }
 
-        if (!IsInstalled) return new Result(false, $"PawnIO wurde nicht installiert (Code {exit}).");
+        if (!IsInstalled) return new Result(false, Loc.T("PawnIo.NotInstalled", exit));
 
         // 5) Sensoren neu initialisieren – ab jetzt gibt es CPU-Temperaturen
         HardwareService.Instance.Reinitialize();
-        var msg = $"PawnIO {InstalledVersion} wurde installiert (signiert von {signer}). CPU-Temperatur, -Takt und -Leistung erscheinen in wenigen Sekunden.";
-        if (exit == 3010) msg += "\n\nWindows meldet, dass ein Neustart nötig ist, damit alles greift.";
+        var msg = Loc.T("PawnIo.Installed", InstalledVersion, signer);
+        if (exit == 3010) msg += "\n\n" + Loc.T("PawnIo.RebootRequired");
         return new Result(true, msg);
     }
 
@@ -206,19 +207,16 @@ public static class PawnIoService
     public static async Task InstallWithDialogsAsync()
     {
         var update = NeedsUpdate;
-        if (!Dialogs.NeonDialog.Show(update ? "PawnIO aktualisieren?" : "PawnIO installieren?",
-                "Für CPU-Temperatur, -Takt und -Leistung braucht EZTool den kostenlosen Open-Source-Treiber PawnIO " +
-                "(wird auch von LibreHardwareMonitor genutzt).\n\n" +
-                "EZTool lädt dafür den offiziellen Installer (ca. 3,4 MB) von github.com/namazso/PawnIO.Setup, " +
-                "prüft dessen digitale Signatur und startet ihn. Der Installer zeigt danach seinen eigenen Dialog.",
-                update ? "Aktualisieren" : "Installieren"))
+        if (!Dialogs.NeonDialog.Show(update ? Loc.T("PawnIo.ConfirmUpdateTitle") : Loc.T("PawnIo.ConfirmInstallTitle"),
+                Loc.T("PawnIo.ConfirmText"),
+                update ? Loc.T("PawnIo.Update") : Loc.T("PawnIo.Install")))
             return;
 
         Result result;
         try { result = await InstallAsync(); }
         catch (Exception ex) { result = new Result(false, ex.Message); }
 
-        Dialogs.NeonDialog.Show(result.Success ? "PawnIO ist bereit" : "Installation nicht abgeschlossen", result.Message,
+        Dialogs.NeonDialog.Show(result.Success ? Loc.T("PawnIo.ReadyTitle") : Loc.T("PawnIo.FailedTitle"), result.Message,
             cancelText: null, danger: !result.Success);
     }
 }

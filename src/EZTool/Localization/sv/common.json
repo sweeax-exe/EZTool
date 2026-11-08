@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Avbryt",
+  "Common.UnexpectedError": "Oväntat fel",
+
+  "Window.Minimize": "Minimera",
+  "Window.Maximize": "Maximera",
+  "Window.Close": "Stäng",
+
+  "Shell.Module": "MODUL {0:00} / {1:00}",
+  "Shell.Admin": "Administratör",
+  "Shell.Limited": "Begränsad",
+  "Shell.UpdateAvailable": "Uppdatering {0} tillgänglig",
+  "Shell.UpdateAvailableShort": "Uppdatering tillgänglig",
+  "Shell.ClockFormat": "dddd d MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool fortsätter köras i bakgrunden",
+  "Shell.TrayHintText": "Övervakning och varningar är fortfarande aktiva. Högerklicka på ikonen för att avsluta.",
+
+  "Nav.Group.Monitor": "Övervakning",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Rensa",
+  "Nav.Group.Software": "Programvara",
+  "Nav.Group.System": "System",
+
+  "Format.Today": "i dag",
+  "Format.Yesterday": "i går",
+  "Format.DaysAgo": "för {0} dagar sedan",
+  "Format.MonthsAgo": "för {0} månader sedan",
+  "Format.YearsAgo": "för {0} år sedan",
+  "Format.DurationDays": "{0} d {1} tim",
+  "Format.DurationHours": "{0} tim {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Öppna EZTool",
+  "Tray.GamingStart": "Starta spelläge",
+  "Tray.GamingStop": "Stoppa spelläge",
+  "Tray.Overlay": "Visa overlay",
+  "Tray.Exit": "Avsluta",
+  "Tray.SessionReady": "Sessionsrapport klar",
+  "Tray.SessionText": "{0}: snitt {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU:n blir varm",
+  "Alert.CpuHotText": "{0}: {1:0} °C (gräns {2} °C).",
+  "Alert.GpuHotTitle": "Grafikkortet blir varmt",
+  "Alert.GpuHotText": "{0}: {1:0} °C (gräns {2} °C).",
+  "Alert.DriveFullTitle": "Enhet {0} nästan full",
+  "Alert.DriveFullText": "Bara {0} ledigt ({1:0} %). Klicka här för att rensa.",
+  "Alert.TestTitle": "EZTool-varningar är aktiva",
+  "Alert.TestText": "Så här ser en varning ut när en gräns överskrids.",
+
+  "Chart.Empty": "Inga data än – historiken fylls på var 5:e sekund.",
+  "System.RamModules": "{0} · {1}× modul",
+  "Hardware.LocalDisk": "Lokal disk",
+
+  "Language.Title": "Språk",
+  "Language.Subtitle": "EZTool på ditt språk – anpassas automatiskt efter Windows.",
+  "Language.Auto": "Automatiskt ({0})",
+  "Language.RestartTitle": "Byt språk",
+  "Language.RestartText": "EZTool startas om en kort stund så att det nya språket används överallt.",
+  "Language.RestartNow": "Starta om nu",
+  "Language.Later": "Senare"
+}

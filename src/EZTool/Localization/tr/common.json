@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "Tamam",
+  "Common.Cancel": "İptal",
+  "Common.UnexpectedError": "Beklenmeyen hata",
+
+  "Window.Minimize": "Simge durumuna küçült",
+  "Window.Maximize": "Ekranı kapla",
+  "Window.Close": "Kapat",
+
+  "Shell.Module": "MODÜL {0:00} / {1:00}",
+  "Shell.Admin": "Yönetici",
+  "Shell.Limited": "Sınırlı",
+  "Shell.UpdateAvailable": "{0} güncellemesi mevcut",
+  "Shell.UpdateAvailableShort": "Güncelleme mevcut",
+  "Shell.ClockFormat": "d MMMM dddd · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool arka planda çalışmaya devam ediyor",
+  "Shell.TrayHintText": "İzleme ve uyarılar etkin kalır. Çıkmak için simgeye sağ tıkla.",
+
+  "Nav.Group.Monitor": "İzleme",
+  "Nav.Group.Gaming": "Oyun",
+  "Nav.Group.Cleanup": "Temizlik",
+  "Nav.Group.Software": "Yazılım",
+  "Nav.Group.System": "Sistem",
+
+  "Format.Today": "bugün",
+  "Format.Yesterday": "dün",
+  "Format.DaysAgo": "{0} gün önce",
+  "Format.MonthsAgo": "{0} ay önce",
+  "Format.YearsAgo": "{0} yıl önce",
+  "Format.DurationDays": "{0} g {1} sa",
+  "Format.DurationHours": "{0} sa {1} dk",
+  "Format.DurationMinutes": "{0} dk",
+
+  "Tray.Open": "EZTool'u aç",
+  "Tray.GamingStart": "Oyun modunu başlat",
+  "Tray.GamingStop": "Oyun modunu durdur",
+  "Tray.Overlay": "Kaplamayı göster",
+  "Tray.Exit": "Çıkış",
+  "Tray.SessionReady": "Oturum raporu hazır",
+  "Tray.SessionText": "{0}: ort. {1} FPS · %1 düşük {2}",
+
+  "Alert.CpuHotTitle": "CPU ısınıyor",
+  "Alert.CpuHotText": "{0}: {1:0} °C (sınır {2} °C).",
+  "Alert.GpuHotTitle": "Ekran kartı ısınıyor",
+  "Alert.GpuHotText": "{0}: {1:0} °C (sınır {2} °C).",
+  "Alert.DriveFullTitle": "{0} sürücüsü neredeyse dolu",
+  "Alert.DriveFullText": "Yalnızca {0} boş (%{1:0}). Temizlemek için buraya tıkla.",
+  "Alert.TestTitle": "EZTool uyarıları etkin",
+  "Alert.TestText": "Bir sınır aşıldığında uyarı böyle görünür.",
+
+  "Chart.Empty": "Henüz veri yok – geçmiş her 5 saniyede bir dolar.",
+  "System.RamModules": "{0} · {1}× modül",
+  "Hardware.LocalDisk": "Yerel Disk",
+
+  "Language.Title": "Dil",
+  "Language.Subtitle": "EZTool senin dilinde – Windows'a otomatik olarak uyarlanır.",
+  "Language.Auto": "Otomatik ({0})",
+  "Language.RestartTitle": "Dili değiştir",
+  "Language.RestartText": "Yeni dilin her yerde uygulanması için EZTool kısa süreliğine yeniden başlatılır.",
+  "Language.RestartNow": "Şimdi yeniden başlat",
+  "Language.Later": "Daha sonra"
+}

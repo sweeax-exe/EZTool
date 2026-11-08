@@ -1,6 +1,7 @@
 <UserControl x:Class="EZTool.Modules.Programs.ProgramsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:EZTool.Core"
              x:Name="Root">
     <UserControl.Resources>
         <!-- gemeinsame Spaltenbreiten für Kopf und Zeilen -->
@@ -23,27 +24,27 @@
         <!-- ═══ Werkzeugleiste ═══ -->
         <Grid Margin="0,0,0,16">
             <StackPanel Orientation="Horizontal">
-                <TextBox Style="{StaticResource SearchBox}" Width="300" Tag="Programm oder Hersteller suchen…"
+                <TextBox Style="{StaticResource SearchBox}" Width="300" Tag="{l:T Programs.SearchPlaceholder}"
                          Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
                 <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" Margin="12,0,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Name" IsChecked="True" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="name" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Größe" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="size" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Neueste" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="date" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortName}" IsChecked="True" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="name" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortSize}" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="size" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortNewest}" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="date" />
                     </StackPanel>
                 </Border>
                 <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" Margin="12,0,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Alle" IsChecked="True" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="all" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Desktop" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="desktop" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="Store-Apps" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="store" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindAll}" IsChecked="True" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="all" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindDesktop}" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="desktop" />
+                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindStore}" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="store" />
                     </StackPanel>
                 </Border>
-                <Button Style="{StaticResource IconButton}" Content="&#xE72C;" Command="{Binding LoadCommand}" ToolTip="Liste neu laden" Margin="8,0,0,0" />
+                <Button Style="{StaticResource IconButton}" Content="&#xE72C;" Command="{Binding LoadCommand}" ToolTip="{l:T Programs.Reload}" Margin="8,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding QuietMode}" Content="Stille Deinstallation" VerticalAlignment="Center"
-                          ToolTip="Nutzt – wenn vom Hersteller angeboten – die Deinstallation ohne Assistent." />
+                <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding QuietMode}" Content="{l:T Programs.QuietMode}" VerticalAlignment="Center"
+                          ToolTip="{l:T Programs.QuietModeTip}" />
             </StackPanel>
         </Grid>
 
@@ -59,11 +60,11 @@
                 <ColumnDefinition Width="{StaticResource ColActions}" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="2" Style="{StaticResource Label}">
-                <Run Text="{Binding Count, Mode=OneWay}" /><Run Text=" Programme · " /><Run Text="{Binding TotalSize, Mode=OneWay, Converter={StaticResource Bytes}}" />
+                <Run Text="{Binding Count, Mode=OneWay}" /><Run Text="{l:T Programs.CountSuffix}" /><Run Text="{Binding TotalSize, Mode=OneWay, Converter={StaticResource Bytes}}" />
             </TextBlock>
-            <TextBlock Grid.Column="3" Text="Version" Style="{StaticResource Label}" />
-            <TextBlock Grid.Column="4" Text="Installiert" Style="{StaticResource Label}" />
-            <TextBlock Grid.Column="5" Text="Größe" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+            <TextBlock Grid.Column="3" Text="{l:T Programs.ColVersion}" Style="{StaticResource Label}" />
+            <TextBlock Grid.Column="4" Text="{l:T Programs.ColInstalled}" Style="{StaticResource Label}" />
+            <TextBlock Grid.Column="5" Text="{l:T Programs.ColSize}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
         </Grid>
 
         <!-- ═══ Liste ═══ -->
@@ -101,21 +102,21 @@
                                     <TextBlock Text="{Binding Scope}" FontSize="10" Foreground="{StaticResource TextMute}" />
                                 </Border>
                                 <Border Style="{StaticResource Chip}" Padding="5,0" Margin="6,0,0,0" Background="#14FFB547" BorderBrush="#44FFB547"
-                                        Visibility="{Binding IsProtected, Converter={StaticResource Vis}}" ToolTip="Wird von Windows benötigt und daher nicht zum Entfernen angeboten.">
-                                    <TextBlock Text="Systemrelevant" FontSize="10" Foreground="{StaticResource Amber}" />
+                                        Visibility="{Binding IsProtected, Converter={StaticResource Vis}}" ToolTip="{l:T Programs.ProtectedTip}">
+                                    <TextBlock Text="{l:T Programs.Protected}" FontSize="10" Foreground="{StaticResource Amber}" />
                                 </Border>
                                 <TextBlock Text="{Binding Status}" FontSize="11.5" Foreground="{StaticResource Amber}" Margin="8,0,0,0" />
                             </StackPanel>
                         </StackPanel>
 
                         <TextBlock Grid.Column="3" Text="{Binding Version}" Style="{StaticResource Body}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
-                        <TextBlock Grid.Column="4" Text="{Binding InstallDate, StringFormat={}{0:dd.MM.yyyy}, TargetNullValue=—}" Style="{StaticResource Body}" FontSize="12" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="4" Text="{Binding InstallDate, StringFormat={l:T Programs.DateFormat}, TargetNullValue=—}" Style="{StaticResource Body}" FontSize="12" VerticalAlignment="Center" />
                         <TextBlock Grid.Column="5" Text="{Binding Size, Converter={StaticResource Bytes}, ConverterParameter=dash}" Style="{StaticResource Value}" FontSize="13" VerticalAlignment="Center" HorizontalAlignment="Right" />
 
                         <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Installationsordner öffnen"
+                            <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="{l:T Programs.OpenFolder}"
                                     Command="{Binding DataContext.OpenLocationCommand, ElementName=Root}" CommandParameter="{Binding}" />
-                            <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Deinstallieren" Margin="4,0,0,0" Foreground="{StaticResource Red}" IsEnabled="{Binding CanUninstall}"
+                            <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="{l:T Programs.Uninstall}" Margin="4,0,0,0" Foreground="{StaticResource Red}" IsEnabled="{Binding CanUninstall}"
                                     Command="{Binding DataContext.UninstallOneCommand, ElementName=Root}" CommandParameter="{Binding}" />
                         </StackPanel>
                     </Grid>
@@ -125,7 +126,7 @@
 
         <!-- Laden -->
         <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsLoading, Converter={StaticResource Vis}}">
-            <TextBlock Text="Installierte Programme werden gelesen…" Style="{StaticResource H2}" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:T Programs.Loading}" Style="{StaticResource H2}" HorizontalAlignment="Center" />
             <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" Width="260" Margin="0,16,0,0" />
         </StackPanel>
 
@@ -136,15 +137,15 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="&#xE73E;" Style="{StaticResource Icon}" Foreground="{StaticResource Magenta}" />
                     <TextBlock Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{StaticResource Text}" FontFamily="{StaticResource DisplayFont}" FontSize="14">
-                        <Run Text="{Binding SelectedCount, Mode=OneWay}" /><Run Text=" ausgewählt · " /><Run Text="{Binding SelectedSize, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Magenta}" />
+                        <Run Text="{Binding SelectedCount, Mode=OneWay}" /><Run Text="{l:T Programs.SelectedSuffix}" /><Run Text="{Binding SelectedSize, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Magenta}" />
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource GhostButton}" Content="Auswahl aufheben" Command="{Binding ClearSelectionCommand}" Margin="0,0,10,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="{l:T Programs.ClearSelection}" Command="{Binding ClearSelectionCommand}" Margin="0,0,10,0" />
                     <Button Style="{StaticResource DangerButton}" Command="{Binding UninstallSelectedCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE74D;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
-                            <TextBlock Text="Ausgewählte deinstallieren" Margin="10,0,0,0" />
+                            <TextBlock Text="{l:T Programs.UninstallSelected}" Margin="10,0,0,0" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -155,14 +156,12 @@
         <Grid Grid.RowSpan="4" Visibility="{Binding IsUninstalling, Converter={StaticResource Vis}}" Background="#B004060C">
             <Border Style="{StaticResource Card}" Width="480" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="28">
                 <StackPanel>
-                    <TextBlock Text="DEINSTALLATION LÄUFT" Style="{StaticResource Label}" Foreground="{StaticResource Magenta}" />
+                    <TextBlock Text="{l:T Programs.UninstallRunning}" Style="{StaticResource Label}" Foreground="{StaticResource Magenta}" />
                     <TextBlock Text="{Binding CurrentName}" Style="{StaticResource H2}" FontSize="20" Margin="0,6,0,0" TextWrapping="Wrap" />
                     <TextBlock Text="{Binding QueueText}" Style="{StaticResource Body}" Margin="0,6,0,0" />
                     <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" Foreground="{StaticResource HotGradient}" Margin="0,18,0,0" />
-                    <TextBlock Style="{StaticResource Body}" FontSize="12" Margin="0,16,0,0">
-                        Folge den Anweisungen im Fenster des Herstellers. EZTool wartet, bis das Programm wirklich entfernt ist.
-                    </TextBlock>
-                    <Button Style="{StaticResource GhostButton}" Content="Überspringen" Command="{Binding SkipCurrentCommand}" HorizontalAlignment="Right" Margin="0,18,0,0" />
+                    <TextBlock Style="{StaticResource Body}" FontSize="12" Margin="0,16,0,0" Text="{l:T Programs.UninstallHint}" />
+                    <Button Style="{StaticResource GhostButton}" Content="{l:T Programs.Skip}" Command="{Binding SkipCurrentCommand}" HorizontalAlignment="Right" Margin="0,18,0,0" />
                 </StackPanel>
             </Border>
         </Grid>

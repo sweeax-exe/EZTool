@@ -13,8 +13,8 @@ namespace EZTool.Modules.StorageMap;
 public sealed class StorageMapModule : IModule
 {
     public string Id => "storagemap";
-    public string Title => "Speicher-Karte";
-    public string Subtitle => "Dein Laufwerk als Karte: Je größer die Kachel, desto mehr Platz. Klick zoomt hinein, Rechtsklick zurück.";
+    public string Title => Loc.T("StorageMap.Title");
+    public string Subtitle => Loc.T("StorageMap.Subtitle");
     public string Icon => "";
     public int Order => 220;
 
@@ -30,7 +30,7 @@ public sealed partial class StorageMapViewModel : ObservableObject
     [ObservableProperty] private MapNode? _current;
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ScanCommand))] private bool _isBusy;
     [ObservableProperty] private string _progressText = "";
-    [ObservableProperty] private string _hoverText = "Fahre über eine Kachel für Details.";
+    [ObservableProperty] private string _hoverText = Loc.T("StorageMap.HoverHint");
     [ObservableProperty] private string _summary = "";
     [ObservableProperty] private bool _hasMap;
 
@@ -47,7 +47,7 @@ public sealed partial class StorageMapViewModel : ObservableObject
             }
             catch { /* nicht bereit */ }
         }
-        Roots.Add(new RootOption { Label = "Benutzerordner", Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) });
+        Roots.Add(new RootOption { Label = Loc.T("StorageMap.UserFolder"), Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) });
     }
 
     partial void OnCurrentChanged(MapNode? value)
@@ -57,13 +57,13 @@ public sealed partial class StorageMapViewModel : ObservableObject
         Children.Clear();
         if (value == null) return;
         foreach (var c in value.Children.Take(40)) Children.Add(c);
-        Summary = $"{Format.Bytes(value.Size)} · {value.Files:N0} Dateien";
+        Summary = Loc.T("StorageMap.Summary", Format.Bytes(value.Size), value.Files);
     }
 
     [RelayCommand]
     private void BrowseRoot()
     {
-        var dlg = new OpenFolderDialog { Title = "Ordner für die Speicher-Karte wählen" };
+        var dlg = new OpenFolderDialog { Title = Loc.T("StorageMap.BrowseTitle") };
         if (dlg.ShowDialog() != true) return;
         foreach (var r in Roots) r.IsSelected = false;
         Roots.Add(new RootOption { Label = Path.GetFileName(dlg.FolderName.TrimEnd('\\')) is { Length: > 0 } n ? n : dlg.FolderName, Path = dlg.FolderName, IsSelected = true });
@@ -79,17 +79,17 @@ public sealed partial class StorageMapViewModel : ObservableObject
         _cts = new CancellationTokenSource();
         IsBusy = true;
         var sw = Stopwatch.StartNew();
-        var progress = new Progress<DiskMapService.ScanProgress>(p => ProgressText = $"{p.Files:N0} Dateien · {Format.Bytes(p.Bytes)} · {p.Current}");
+        var progress = new Progress<DiskMapService.ScanProgress>(p => ProgressText = Loc.T("StorageMap.Progress", p.Files, Format.Bytes(p.Bytes), p.Current));
         try
         {
             var tree = await Task.Run(() => DiskMapService.Scan(root, progress, _cts.Token));
             Current = tree;
             HasMap = true;
-            HoverText = $"Fertig in {sw.Elapsed.TotalSeconds:0.0} s – fahre über eine Kachel für Details.";
+            HoverText = Loc.T("StorageMap.Done", sw.Elapsed.TotalSeconds);
         }
         catch (OperationCanceledException)
         {
-            HoverText = "Analyse abgebrochen.";
+            HoverText = Loc.T("StorageMap.Cancelled");
         }
         finally
         {
@@ -116,8 +116,8 @@ public sealed partial class StorageMapViewModel : ObservableObject
     public void Hover(MapNode? node)
     {
         if (node == null) return;
-        HoverText = $"{node.Path}  ·  {Format.Bytes(node.Size)}" + (node.IsDir ? $"  ·  {node.Files:N0} Dateien" : "") +
-                    (node.Parent is { Size: > 0 } p ? $"  ·  {node.Size * 100.0 / p.Size:0.0} % von {p.Name}" : "");
+        HoverText = $"{node.Path}  ·  {Format.Bytes(node.Size)}" + (node.IsDir ? "  ·  " + Loc.T("StorageMap.Hover.Files", node.Files) : "") +
+                    (node.Parent is { Size: > 0 } p ? "  ·  " + Loc.T("StorageMap.Hover.Share", node.Size * 100.0 / p.Size, p.Name) : "");
     }
 
     [RelayCommand]

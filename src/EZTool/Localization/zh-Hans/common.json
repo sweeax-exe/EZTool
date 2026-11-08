@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "确定",
+  "Common.Cancel": "取消",
+  "Common.UnexpectedError": "意外错误",
+
+  "Window.Minimize": "最小化",
+  "Window.Maximize": "最大化",
+  "Window.Close": "关闭",
+
+  "Shell.Module": "模块 {0:00} / {1:00}",
+  "Shell.Admin": "管理员",
+  "Shell.Limited": "受限",
+  "Shell.UpdateAvailable": "有可用更新 {0}",
+  "Shell.UpdateAvailableShort": "有可用更新",
+  "Shell.ClockFormat": "M'月'd'日' dddd · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool 会在后台继续运行",
+  "Shell.TrayHintText": "监控和警报保持开启。右键单击图标即可退出。",
+
+  "Nav.Group.Monitor": "监控",
+  "Nav.Group.Gaming": "游戏",
+  "Nav.Group.Cleanup": "清理",
+  "Nav.Group.Software": "软件",
+  "Nav.Group.System": "系统",
+
+  "Format.Today": "今天",
+  "Format.Yesterday": "昨天",
+  "Format.DaysAgo": "{0} 天前",
+  "Format.MonthsAgo": "{0} 个月前",
+  "Format.YearsAgo": "{0} 年前",
+  "Format.DurationDays": "{0} 天 {1} 小时",
+  "Format.DurationHours": "{0} 小时 {1} 分钟",
+  "Format.DurationMinutes": "{0} 分钟",
+
+  "Tray.Open": "打开 EZTool",
+  "Tray.GamingStart": "启动游戏模式",
+  "Tray.GamingStop": "停止游戏模式",
+  "Tray.Overlay": "显示叠加层",
+  "Tray.Exit": "退出",
+  "Tray.SessionReady": "会话报告已生成",
+  "Tray.SessionText": "{0}：平均 {1} FPS · 1% 低帧 {2}",
+
+  "Alert.CpuHotTitle": "CPU 温度正在升高",
+  "Alert.CpuHotText": "{0}：{1:0} °C（上限 {2} °C）。",
+  "Alert.GpuHotTitle": "显卡温度正在升高",
+  "Alert.GpuHotText": "{0}：{1:0} °C（上限 {2} °C）。",
+  "Alert.DriveFullTitle": "驱动器 {0} 快满了",
+  "Alert.DriveFullText": "仅剩 {0} 可用（{1:0} %）。点击此处进行清理。",
+  "Alert.TestTitle": "EZTool 警报已启用",
+  "Alert.TestText": "超出上限时，警告就是这个样子。",
+
+  "Chart.Empty": "暂无数据 – 历史记录每 5 秒更新一次。",
+  "System.RamModules": "{0} · {1}× 内存条",
+  "Hardware.LocalDisk": "本地磁盘",
+
+  "Language.Title": "语言",
+  "Language.Subtitle": "用你的语言使用 EZTool – 自动匹配 Windows。",
+  "Language.Auto": "自动（{0}）",
+  "Language.RestartTitle": "更改语言",
+  "Language.RestartText": "EZTool 将短暂重启，以便在所有位置应用新语言。",
+  "Language.RestartNow": "立即重启",
+  "Language.Later": "稍后"
+}

@@ -49,7 +49,7 @@ public sealed class TimeChart : FrameworkElement
         double dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
         if (series == null || times == null || times.Count < 2 || w < 80 || h < 60)
         {
-            var empty = new FormattedText("Noch keine Daten – der Verlauf füllt sich alle 5 Sekunden.", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Face, 13, Axis, dpi);
+            var empty = new FormattedText(Core.Loc.T("Chart.Empty"), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Face, 13, Axis, dpi);
             dc.DrawText(empty, new Point((w - empty.Width) / 2, (h - empty.Height) / 2));
             return;
         }

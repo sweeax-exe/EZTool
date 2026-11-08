@@ -92,8 +92,9 @@
     </LinearGradientBrush>
 
     <!-- ═══════════════════════════ FONTS ═══════════════════════════ -->
-    <FontFamily x:Key="DisplayFont">Bahnschrift</FontFamily>
-    <FontFamily x:Key="BodyFont">Segoe UI Variable Text, Segoe UI</FontFamily>
+    <!-- "Global User Interface" wählt für Japanisch, Chinesisch, Koreanisch, Hindi … automatisch eine passende Schrift -->
+    <FontFamily x:Key="DisplayFont">Bahnschrift, Global User Interface</FontFamily>
+    <FontFamily x:Key="BodyFont">Segoe UI Variable Text, Segoe UI, Global User Interface</FontFamily>
     <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
     <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas</FontFamily>
 

@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Annulla",
+  "Common.UnexpectedError": "Errore imprevisto",
+
+  "Window.Minimize": "Riduci a icona",
+  "Window.Maximize": "Ingrandisci",
+  "Window.Close": "Chiudi",
+
+  "Shell.Module": "MODULO {0:00} / {1:00}",
+  "Shell.Admin": "Amministratore",
+  "Shell.Limited": "Limitato",
+  "Shell.UpdateAvailable": "Aggiornamento {0} disponibile",
+  "Shell.UpdateAvailableShort": "Aggiornamento disponibile",
+  "Shell.ClockFormat": "dddd d MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool resta attivo in background",
+  "Shell.TrayHintText": "Monitoraggio e avvisi restano attivi. Fai clic destro sull'icona per uscire.",
+
+  "Nav.Group.Monitor": "Monitoraggio",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Pulizia",
+  "Nav.Group.Software": "Software",
+  "Nav.Group.System": "Sistema",
+
+  "Format.Today": "oggi",
+  "Format.Yesterday": "ieri",
+  "Format.DaysAgo": "{0} giorni fa",
+  "Format.MonthsAgo": "{0} mesi fa",
+  "Format.YearsAgo": "{0} anni fa",
+  "Format.DurationDays": "{0} g {1} h",
+  "Format.DurationHours": "{0} h {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Apri EZTool",
+  "Tray.GamingStart": "Avvia modalità gaming",
+  "Tray.GamingStop": "Arresta modalità gaming",
+  "Tray.Overlay": "Mostra overlay",
+  "Tray.Exit": "Esci",
+  "Tray.SessionReady": "Report della sessione pronto",
+  "Tray.SessionText": "{0}: media {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "La CPU si sta scaldando",
+  "Alert.CpuHotText": "{0}: {1:0} °C (limite {2} °C).",
+  "Alert.GpuHotTitle": "La scheda video si sta scaldando",
+  "Alert.GpuHotText": "{0}: {1:0} °C (limite {2} °C).",
+  "Alert.DriveFullTitle": "Unità {0} quasi piena",
+  "Alert.DriveFullText": "Solo {0} liberi ({1:0} %). Fai clic qui per fare pulizia.",
+  "Alert.TestTitle": "Gli avvisi di EZTool sono attivi",
+  "Alert.TestText": "Ecco come appare un avviso quando viene superato un limite.",
+
+  "Chart.Empty": "Ancora nessun dato – la cronologia si riempie ogni 5 secondi.",
+  "System.RamModules": "{0} · {1}× modulo",
+  "Hardware.LocalDisk": "Disco locale",
+
+  "Language.Title": "Lingua",
+  "Language.Subtitle": "EZTool nella tua lingua – adattata automaticamente a Windows.",
+  "Language.Auto": "Automatica ({0})",
+  "Language.RestartTitle": "Cambia lingua",
+  "Language.RestartText": "EZTool si riavvierà brevemente per applicare la nuova lingua ovunque.",
+  "Language.RestartNow": "Riavvia ora",
+  "Language.Later": "Più tardi"
+}

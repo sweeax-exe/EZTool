@@ -8,8 +8,8 @@ namespace EZTool.Modules.Dashboard;
 public sealed class DashboardModule : IModule
 {
     public string Id => "dashboard";
-    public string Title => "Dashboard";
-    public string Subtitle => "Live-Überblick über Auslastung, Temperaturen und dein System.";
+    public string Title => Loc.T("Dashboard.Title");
+    public string Subtitle => Loc.T("Dashboard.Subtitle");
     public string Icon => "";
     public int Order => 10;
 
@@ -19,7 +19,7 @@ public sealed class DashboardModule : IModule
 public sealed partial class DashboardViewModel : ObservableObject
 {
     // CPU
-    [ObservableProperty] private string _cpuName = "Prozessor";
+    [ObservableProperty] private string _cpuName = Loc.T("Dashboard.Processor");
     [ObservableProperty] private double _cpuLoad;
     [ObservableProperty] private string _cpuLoadText = "—";
     [ObservableProperty] private string _cpuTempText = "—";
@@ -29,7 +29,7 @@ public sealed partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private double[] _threadLoads = [];
 
     // GPU
-    [ObservableProperty] private string _gpuName = "Grafikkarte";
+    [ObservableProperty] private string _gpuName = Loc.T("Dashboard.DefaultGpu");
     [ObservableProperty] private double _gpuLoad;
     [ObservableProperty] private string _gpuLoadText = "—";
     [ObservableProperty] private string _gpuTempText = "—";
@@ -96,18 +96,18 @@ public sealed partial class DashboardViewModel : ObservableObject
         CpuLoad = s.CpuLoad;
         CpuLoadText = s.CpuLoad.ToString("0");
         CpuTemp = s.CpuTemp ?? 0;
-        CpuTempText = s.CpuTemp is { } ct ? $"{ct:0} °C" : "n/a";
+        CpuTempText = s.CpuTemp is { } ct ? $"{ct:0} °C" : Loc.T("Dashboard.NotAvailable");
         CpuClockText = s.CpuClock is { } cc ? $"{cc / 1000:0.00} GHz" : "—";
         CpuPowerText = s.CpuPower is { } cp ? $"{cp:0} W" : "—";
         ThreadLoads = s.ThreadLoads;
 
-        GpuName = s.GpuName ?? "Keine GPU erkannt";
+        GpuName = s.GpuName ?? Loc.T("Dashboard.NoGpu");
         GpuLoad = s.GpuLoad ?? 0;
         GpuLoadText = s.GpuLoad is { } gl ? gl.ToString("0") : "—";
         GpuTemp = s.GpuTemp ?? 0;
-        GpuTempText = s.GpuTemp is { } gt ? $"{gt:0} °C" : "n/a";
+        GpuTempText = s.GpuTemp is { } gt ? $"{gt:0} °C" : Loc.T("Dashboard.NotAvailable");
         GpuHotSpot = s.GpuHotSpot ?? 0;
-        GpuHotSpotText = s.GpuHotSpot is { } gh ? $"{gh:0} °C" : "n/a";
+        GpuHotSpotText = s.GpuHotSpot is { } gh ? $"{gh:0} °C" : Loc.T("Dashboard.NotAvailable");
         GpuMemText = s.GpuMemUsed is { } mu && s.GpuMemTotal is { } mt && mt > 0
             ? $"{mu / 1024:0.0} / {mt / 1024:0} GB"
             : "—";
@@ -145,9 +145,9 @@ public sealed partial class DashboardViewModel : ObservableObject
         ShowDriverHint = s.CpuTemp is null;
         CanInstallDriver = IsAdmin && HardwareService.Instance.LowLevelDriverMissing;
         DriverHint = !IsAdmin
-            ? "CPU-Temperatur, -Takt und -Leistung sind nur mit Administrator-Rechten verfügbar. Starte EZTool als Administrator."
+            ? Loc.T("Dashboard.HintNoAdmin")
             : HardwareService.Instance.LowLevelDriverMissing
-                ? "CPU-Temperaturen benötigen den kostenlosen PawnIO-Treiber (pawnio.eu). GPU-, RAM- und Laufwerksdaten funktionieren auch ohne."
-                : "Für diese CPU wurden keine Temperatursensoren gefunden.";
+                ? Loc.T("Dashboard.HintNoDriver")
+                : Loc.T("Dashboard.HintNoSensors");
     }
 }

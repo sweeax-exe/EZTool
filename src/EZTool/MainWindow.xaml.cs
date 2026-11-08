@@ -30,12 +30,12 @@ public partial class MainWindow : Window
         UpdateService.Instance.Changed += info =>
         {
             UpdateBadge.Visibility = info != null ? Visibility.Visible : Visibility.Collapsed;
-            if (info != null) UpdateBadgeText.Text = $"Update {info.Version} verfügbar";
+            if (info != null) UpdateBadgeText.Text = Loc.T("Shell.UpdateAvailable", info.Version);
         };
 
-        _clock.Tick += (_, _) => ClockText.Text = DateTime.Now.ToString("dddd, dd. MMM · HH:mm:ss", new System.Globalization.CultureInfo("de-DE"));
+        _clock.Tick += (_, _) => ClockText.Text = DateTime.Now.ToString(Loc.T("Shell.ClockFormat"), Loc.Culture);
         _clock.Start();
-        StatusText.Text = $"{(IsAdmin ? "Administrator" : "Eingeschränkt")} · v{typeof(App).Assembly.GetName().Version?.ToString(3)}";
+        StatusText.Text = $"{(IsAdmin ? Loc.T("Shell.Admin") : Loc.T("Shell.Limited"))} · v{typeof(App).Assembly.GetName().Version?.ToString(3)}";
         StartAurora();
     }
 
@@ -137,7 +137,7 @@ public partial class MainWindow : Window
             _views[module.Id] = view;
         }
 
-        PageEyebrow.Text = $"MODUL {_modules.ToList().IndexOf(module) + 1:00} / {_modules.Count:00}";
+        PageEyebrow.Text = Loc.T("Shell.Module", _modules.ToList().IndexOf(module) + 1, _modules.Count);
         PageTitle.Text = module.Title;
         PageSubtitle.Text = module.Subtitle;
 
@@ -230,8 +230,7 @@ public partial class MainWindow : Window
             if (!_trayHintShown)
             {
                 _trayHintShown = true;
-                TrayService.Instance?.Notify("EZTool läuft im Hintergrund weiter",
-                    "Überwachung und Alarme bleiben aktiv. Rechtsklick auf das Symbol zum Beenden.");
+                TrayService.Instance?.Notify(Loc.T("Shell.TrayHintTitle"), Loc.T("Shell.TrayHintText"));
             }
             return;
         }

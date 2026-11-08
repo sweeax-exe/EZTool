@@ -15,8 +15,8 @@ namespace EZTool.Modules.History;
 public sealed class HistoryModule : IModule
 {
     public string Id => "history";
-    public string Title => "Verlauf";
-    public string Subtitle => "Wie heiß wurde es heute beim Zocken? Temperaturen und Auslastung der letzten 24 Stunden.";
+    public string Title => Loc.T("History.Title");
+    public string Subtitle => Loc.T("History.Subtitle");
     public string Icon => "";
     public int Order => 40;
 
@@ -92,9 +92,9 @@ public sealed partial class HistoryViewModel : ObservableObject
         var maxCpu = all.Where(s => s.CpuTemp != null).MaxBy(s => s.CpuTemp);
         var maxGpu = all.Where(s => s.GpuTemp != null).MaxBy(s => s.GpuTemp);
         CpuTempMax = maxCpu != null ? $"{maxCpu.CpuTemp:0} °C" : "—";
-        CpuTempMaxAt = maxCpu != null ? $"um {maxCpu.Time:HH:mm} Uhr" : "keine Daten";
+        CpuTempMaxAt = maxCpu != null ? Loc.T("History.MaxAt", maxCpu.Time) : Loc.T("History.NoData");
         GpuTempMax = maxGpu != null ? $"{maxGpu.GpuTemp:0} °C" : "—";
-        GpuTempMaxAt = maxGpu != null ? $"um {maxGpu.Time:HH:mm} Uhr" : "keine Daten";
+        GpuTempMaxAt = maxGpu != null ? Loc.T("History.MaxAt", maxGpu.Time) : Loc.T("History.NoData");
         CpuLoadAvg = all.Count > 0 ? $"{all.Average(s => s.CpuLoad):0} %" : "—";
         GpuLoadAvg = all.Any(s => s.GpuLoad != null) ? $"{all.Where(s => s.GpuLoad != null).Average(s => s.GpuLoad):0} %" : "—";
     }
@@ -104,8 +104,8 @@ public sealed partial class HistoryViewModel : ObservableObject
     {
         var dlg = new SaveFileDialog
         {
-            Title = "Verlauf exportieren",
-            Filter = "CSV-Datei (Excel)|*.csv",
+            Title = Loc.T("History.ExportTitle"),
+            Filter = Loc.T("History.CsvFilter"),
             FileName = $"EZTool-Verlauf-{DateTime.Now:yyyy-MM-dd-HHmm}.csv",
         };
         if (dlg.ShowDialog() != true) return;

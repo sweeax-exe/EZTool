@@ -1,4 +1,5 @@
 using System.Management;
+using EZTool.Core;
 using LibreHardwareMonitor.Hardware;
 
 namespace EZTool.Services;
@@ -14,7 +15,7 @@ public sealed class DiskHealth
 
     /// <summary>0 = gut, 1 = Warnung, 2 = kritisch, sonst unbekannt.</summary>
     public int Status { get; init; } = -1;
-    public string StatusText => Status switch { 0 => "Gesund", 1 => "Warnung", 2 => "Kritisch", _ => "Unbekannt" };
+    public string StatusText => Status switch { 0 => Loc.T("Disks.Status.Healthy"), 1 => Loc.T("Disks.Status.Warning"), 2 => Loc.T("Disks.Status.Critical"), _ => Loc.T("Disks.Status.Unknown") };
 
     public double? RemainingLife { get; init; }
     public double? Temperature { get; init; }
@@ -27,8 +28,8 @@ public sealed class DiskHealth
 
     public double LifeGauge => RemainingLife ?? 0;
     public string LifeText => RemainingLife is { } r ? $"{r:0}" : "—";
-    public string TempText => Temperature is { } t ? $"{t:0} °C" + (TemperatureMax is { } m and > 0 ? $"  (max {m:0} °C)" : "") : "—";
-    public string HoursText => PowerOnHours is { } h ? $"{h:N0} Std" + (h > 24 * 60 ? $" · {h / 24.0 / 365:0.0} Jahre" : "") : "—";
+    public string TempText => Temperature is { } t ? $"{t:0} °C" + (TemperatureMax is { } m and > 0 ? Loc.T("Disks.TempMax", m) : "") : "—";
+    public string HoursText => PowerOnHours is { } h ? Loc.T("Disks.Hours", h) + (h > 24 * 60 ? Loc.T("Disks.Years", h / 24.0 / 365) : "") : "—";
     public string WrittenText => WrittenTb is { } w ? $"{w:0.00} TB" : "—";
     public string ReadText => ReadTb is { } r ? $"{r:0.00} TB" : "—";
     public string ErrorsText => ReadErrors is null && WriteErrors is null ? "—" : $"{ReadErrors ?? 0:N0} / {WriteErrors ?? 0:N0}";
@@ -54,10 +55,11 @@ public static class DiskHealthService
                 try
                 {
                     int number = int.TryParse(disk["DeviceId"]?.ToString(), out var n) ? n : -1;
-                    var model = (disk["FriendlyName"]?.ToString() ?? "Datenträger").Trim();
+                    var model = (disk["FriendlyName"]?.ToString() ?? Loc.T("Disks.Kind.Generic")).Trim();
                     var media = Convert.ToInt32(disk["MediaType"] ?? 0);
                     var bus = Convert.ToInt32(disk["BusType"] ?? 0);
-                    var kind = bus == 17 ? "NVMe-SSD" : media == 4 ? "SSD" : media == 3 ? "Festplatte (HDD)" : bus == 7 ? "USB" : "Datenträger";
+                    var kind = bus == 17 ? Loc.T("Disks.Kind.Nvme") : media == 4 ? "SSD" : media == 3 ? Loc.T("Disks.Kind.Hdd") : bus == 7 ? "USB" : Loc.T("Disks.Kind.Generic");
+                    bool isSsd = bus == 17 || media == 4;
 
                     // Zuverlässigkeitszähler (benötigt Admin-Rechte)
                     double? wear = null, temp = null, tempMax = null;
@@ -88,7 +90,7 @@ public static class DiskHealthService
                     var lifeLhm = Sensor(SensorType.Level, "Remaining Life");
                     var usedLhm = Sensor(SensorType.Level, "Percentage Used");
                     double? remaining = lifeLhm ?? (usedLhm != null ? 100 - usedLhm : null) ?? (wear is > 0 ? 100 - wear : null)
-                                        ?? (kind.Contains("SSD") && wear == 0 ? 100 : null);
+                                        ?? (isSsd && wear == 0 ? 100 : null);
                     temp ??= Sensor(SensorType.Temperature, "Temperature", "Composite Temperature");
                     if (temp is 0) temp = Sensor(SensorType.Temperature, "Temperature", "Composite Temperature");
 

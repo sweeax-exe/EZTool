@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,12 +12,21 @@ namespace EZTool.Modules.Settings;
 public sealed class SettingsModule : IModule
 {
     public string Id => "settings";
-    public string Title => "Einstellungen";
-    public string Subtitle => "Autostart, Hintergrundbetrieb, Sensor-Treiber, Alarme und Overlay.";
+    public string Title => Loc.T("Settings.Title");
+    public string Subtitle => Loc.T("Settings.Subtitle");
     public string Icon => "";
     public int Order => 1000;
 
     public FrameworkElement CreateView() => new SettingsView { DataContext = new SettingsViewModel() };
+}
+
+/// <summary>Eine Auswahlmöglichkeit in der Sprach-Karte ("auto" oder Sprachcode).</summary>
+public sealed partial class LanguageChoice : ObservableObject
+{
+    public required string Code { get; init; }
+    public required string Label { get; init; }
+    public string? ToolTip { get; init; }
+    [ObservableProperty] private bool _isSelected;
 }
 
 public sealed partial class SettingsViewModel : ObservableObject, IActivatable
@@ -30,7 +40,7 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
 
     [ObservableProperty] private string _driverStatus = "";
     [ObservableProperty] private bool _driverOk;
-    [ObservableProperty] private string _driverButtonText = "PawnIO installieren";
+    [ObservableProperty] private string _driverButtonText = Loc.T("Settings.DriverInstall");
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(InstallDriverCommand))]
     private bool _isInstalling;
 
@@ -54,6 +64,39 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
 
     public string RepoUrl => UpdateService.RepoUrl;
 
+    // ── Sprache ──
+    public ObservableCollection<LanguageChoice> Languages { get; } = [];
+
+    private static string CurrentLanguageSetting =>
+        string.IsNullOrEmpty(SettingsService.Current.Language) ? "auto" : SettingsService.Current.Language;
+
+    private void BuildLanguages()
+    {
+        var current = CurrentLanguageSetting;
+        if (current != "auto" && Loc.Languages.All(l => l.Code != current)) current = "auto";
+        Languages.Add(new LanguageChoice
+        {
+            Code = "auto",
+            Label = Loc.T("Language.Auto", Loc.DetectedLanguage.NativeName),
+            ToolTip = Loc.DetectedLanguage.EnglishName,
+            IsSelected = current == "auto",
+        });
+        foreach (var l in Loc.Languages)
+            Languages.Add(new LanguageChoice { Code = l.Code, Label = l.NativeName, ToolTip = l.EnglishName, IsSelected = current == l.Code });
+    }
+
+    [RelayCommand]
+    private void SelectLanguage(string code)
+    {
+        foreach (var l in Languages) l.IsSelected = l.Code == code;
+        if (code == CurrentLanguageSetting) return;
+
+        _cfg.Language = code;
+        SettingsService.Save();
+        if (NeonDialog.Show(Loc.T("Language.RestartTitle"), Loc.T("Language.RestartText"), Loc.T("Language.RestartNow"), Loc.T("Language.Later")))
+            ((App)Application.Current).Restart();
+    }
+
     partial void OnAutoUpdateCheckChanged(bool value) => Save(c => c.AutoUpdateCheck = value);
     partial void OnAutoUpdateInstallChanged(bool value) => Save(c => c.AutoUpdateInstall = value);
 
@@ -62,10 +105,10 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
         UpdateAvailable = info != null;
         UpdateNotes = info?.Notes.Trim() ?? "";
         UpdateStatus = info != null
-            ? $"Version {info.Version} ist verfügbar (installiert: {UpdateService.Current})."
+            ? Loc.T("Settings.UpdateAvailable", info.Version, UpdateService.Current)
             : UpdateService.Instance.LastCheck is { } t
-                ? $"EZTool {UpdateService.Current} ist aktuell · geprüft um {t:HH:mm} Uhr"
-                : $"Installiert: EZTool {UpdateService.Current}";
+                ? Loc.T("Settings.UpdateUpToDate", UpdateService.Current, t)
+                : Loc.T("Settings.UpdateInstalled", UpdateService.Current);
     }
 
     private bool CanUpdate() => !IsUpdating;
@@ -74,7 +117,7 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
     private async Task CheckUpdatesAsync()
     {
         IsUpdating = true;
-        UpdateStatus = "Frage GitHub nach neuen Versionen…";
+        UpdateStatus = Loc.T("Settings.UpdateChecking");
         try { ShowUpdate(await UpdateService.Instance.CheckAsync()); }
         finally { IsUpdating = false; }
     }
@@ -90,7 +133,7 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
         if (!ok)
         {
             IsUpdating = false;
-            NeonDialog.Show("Update nicht installiert", msg, cancelText: null, danger: true);
+            NeonDialog.Show(Loc.T("Settings.UpdateFailedTitle"), msg, cancelText: null, danger: true);
         }
     }
 
@@ -105,6 +148,7 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
     public SettingsViewModel()
     {
         _loading = true;
+        BuildLanguages();
         CloseToTray = _cfg.CloseToTray;
         IntervalIndex = Math.Max(0, Array.IndexOf(Intervals, _cfg.UpdateIntervalMs));
         AlertsEnabled = _cfg.AlertsEnabled;
@@ -138,10 +182,10 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
     {
         var v = PawnIoService.InstalledVersion;
         DriverOk = v != null && !PawnIoService.NeedsUpdate;
-        DriverStatus = v == null ? "Nicht installiert – CPU-Temperatur, -Takt und -Leistung sind nicht verfügbar."
-            : PawnIoService.NeedsUpdate ? $"Version {v} ist veraltet – bitte aktualisieren."
-            : $"Version {v} installiert – alle Sensoren aktiv.";
-        DriverButtonText = v == null ? "PawnIO installieren" : "Neu installieren / aktualisieren";
+        DriverStatus = v == null ? Loc.T("Settings.DriverMissing")
+            : PawnIoService.NeedsUpdate ? Loc.T("Settings.DriverOutdated", v)
+            : Loc.T("Settings.DriverOk", v);
+        DriverButtonText = v == null ? Loc.T("Settings.DriverInstall") : Loc.T("Settings.DriverReinstall");
     }
 
     // ── Speichern bei jeder Änderung ──
@@ -175,8 +219,8 @@ public sealed partial class SettingsViewModel : ObservableObject, IActivatable
             _loading = true;
             StartWithWindows = !value;
             _loading = false;
-            NeonDialog.Show("Nicht möglich", "Der Windows-Autostart konnte nicht geändert werden" +
-                (IsAdmin ? "." : " – dafür sind Administrator-Rechte nötig.") + "\n\n" + ex.Message, cancelText: null, danger: true);
+            NeonDialog.Show(Loc.T("Settings.NotPossible"), (IsAdmin ? Loc.T("Settings.StartupFailed") : Loc.T("Settings.StartupFailedNoAdmin")) +
+                "\n\n" + ex.Message, cancelText: null, danger: true);
         }
     }
 

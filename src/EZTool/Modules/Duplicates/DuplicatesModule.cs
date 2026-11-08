@@ -14,8 +14,8 @@ namespace EZTool.Modules.Duplicates;
 public sealed class DuplicatesModule : IModule
 {
     public string Id => "duplicates";
-    public string Title => "Duplikate";
-    public string Subtitle => "Findet doppelte Fotos, Videos, Musik und Dokumente – Byte für Byte verglichen, nicht nur nach Namen.";
+    public string Title => Loc.T("Duplicates.Title");
+    public string Subtitle => Loc.T("Duplicates.Subtitle");
     public string Icon => "";
     public int Order => 240;
 
@@ -35,21 +35,21 @@ public sealed partial class DuplicatesViewModel : ObservableObject
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ScanCommand), nameof(RecycleCommand))] private bool _isBusy;
     [ObservableProperty] private string _phase = "";
     [ObservableProperty] private string _detail = "";
-    [ObservableProperty] private string _resultText = "Wähle einen Ort und starte die Suche.";
+    [ObservableProperty] private string _resultText = Loc.T("Duplicates.ResultHint");
     [ObservableProperty] private bool _hasResults;
     [ObservableProperty] private long _wastedTotal;
     [ObservableProperty] private int _selectedCount;
     [ObservableProperty] private long _selectedSize;
 
-    public string SizeLabel => "ab " + Format.Bytes(SizeSteps[SizeIndex]);
+    public string SizeLabel => Loc.T("Duplicates.SizeLabel", Format.Bytes(SizeSteps[SizeIndex]));
 
     private CancellationTokenSource? _cts;
 
     public DuplicatesViewModel()
     {
-        Roots.Add(new RootOption { Label = "Benutzerordner", Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), IsSelected = true });
-        Roots.Add(new RootOption { Label = "Bilder", Path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) });
-        Roots.Add(new RootOption { Label = "Downloads", Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads") });
+        Roots.Add(new RootOption { Label = Loc.T("Duplicates.Root.UserFolder"), Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), IsSelected = true });
+        Roots.Add(new RootOption { Label = Loc.T("Duplicates.Root.Pictures"), Path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) });
+        Roots.Add(new RootOption { Label = Loc.T("Duplicates.Root.Downloads"), Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads") });
         foreach (var d in DriveInfo.GetDrives())
         {
             try
@@ -66,7 +66,7 @@ public sealed partial class DuplicatesViewModel : ObservableObject
     [RelayCommand]
     private void BrowseRoot()
     {
-        var dlg = new OpenFolderDialog { Title = "Ordner nach Duplikaten durchsuchen" };
+        var dlg = new OpenFolderDialog { Title = Loc.T("Duplicates.BrowseTitle") };
         if (dlg.ShowDialog() != true) return;
         foreach (var r in Roots) r.IsSelected = false;
         Roots.Add(new RootOption { Label = Path.GetFileName(dlg.FolderName.TrimEnd('\\')) is { Length: > 0 } n ? n : dlg.FolderName, Path = dlg.FolderName, IsSelected = true });
@@ -108,13 +108,13 @@ public sealed partial class DuplicatesViewModel : ObservableObject
             WastedTotal = found.Sum(g => g.Wasted);
             HasResults = Groups.Count > 0;
             ResultText = found.Count == 0
-                ? "Keine Duplikate gefunden – alles einzigartig. ✨"
-                : $"{found.Count:N0} Gruppen · {found.Sum(g => g.Files.Count - 1):N0} überflüssige Kopien" +
-                  (found.Count > MaxGroupsShown ? $" (die {MaxGroupsShown} größten werden angezeigt)" : "");
+                ? Loc.T("Duplicates.NoneFound")
+                : Loc.T("Duplicates.Found", found.Count, found.Sum(g => g.Files.Count - 1)) +
+                  (found.Count > MaxGroupsShown ? " " + Loc.T("Duplicates.FoundLimited", MaxGroupsShown) : "");
         }
         catch (OperationCanceledException)
         {
-            ResultText = "Suche abgebrochen.";
+            ResultText = Loc.T("Duplicates.Cancelled");
         }
         finally
         {
@@ -182,16 +182,16 @@ public sealed partial class DuplicatesViewModel : ObservableObject
         var allInGroup = Groups.Where(g => g.Files.Where(f => !f.IsRemoved).All(f => f.IsChecked)).ToList();
         if (allInGroup.Count > 0)
         {
-            NeonDialog.Show("Mindestens eine Kopie behalten",
-                $"In {allInGroup.Count} Gruppe(n) sind alle Exemplare ausgewählt. Bitte lass in jeder Gruppe mindestens eine Datei stehen.",
+            NeonDialog.Show(Loc.T("Duplicates.KeepOne.Title"),
+                Loc.T("Duplicates.KeepOne.Message", allInGroup.Count),
                 cancelText: null, danger: true, details: allInGroup.Take(10).Select(g => g.Files[0].Name));
             return;
         }
 
         var chosen = Groups.SelectMany(g => g.Files.Where(f => f.IsChecked && !f.IsRemoved)).ToList();
-        if (!NeonDialog.Show("Duplikate in den Papierkorb?",
-                $"{chosen.Count:N0} Dateien ({Format.Bytes(SelectedSize)}) werden in den Papierkorb verschoben. In jeder Gruppe bleibt mindestens ein Exemplar erhalten.",
-                "Verschieben", danger: true))
+        if (!NeonDialog.Show(Loc.T("Duplicates.Confirm.Title"),
+                Loc.T("Duplicates.Confirm.Message", chosen.Count, Format.Bytes(SelectedSize)),
+                Loc.T("Duplicates.Confirm.Move"), danger: true))
             return;
 
         IsBusy = true;
@@ -209,7 +209,7 @@ public sealed partial class DuplicatesViewModel : ObservableObject
         }
         IsBusy = false;
         Detail = "";
-        ResultText = $"{ok:N0} Duplikate in den Papierkorb verschoben" + (fail > 0 ? $" · {fail} fehlgeschlagen" : "");
+        ResultText = Loc.T("Duplicates.Recycled", ok) + (fail > 0 ? " · " + Loc.T("Duplicates.Failed", fail) : "");
         Recalc();
     }
 }

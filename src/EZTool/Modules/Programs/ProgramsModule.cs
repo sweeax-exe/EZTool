@@ -14,8 +14,8 @@ namespace EZTool.Modules.Programs;
 public sealed class ProgramsModule : IModule
 {
     public string Id => "programs";
-    public string Title => "Programme";
-    public string Subtitle => "Installierte Software verwalten – auswählen, deinstallieren und Reste gleich mit entfernen.";
+    public string Title => Loc.T("Programs.Title");
+    public string Subtitle => Loc.T("Programs.Subtitle");
     public string Icon => "";
     public int Order => 310;
 
@@ -142,7 +142,7 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
         if (p == null) return;
         var dir = Directory.Exists(p.InstallLocation) ? p.InstallLocation : Path.GetDirectoryName(ProgramService.SplitCommand(p.UninstallString).Exe);
         if (dir != null && Directory.Exists(dir)) Process.Start(new ProcessStartInfo("explorer.exe", $"\"{dir}\"") { UseShellExecute = true });
-        else NeonDialog.Show("Kein Ordner", "Für dieses Programm ist kein Installationsordner hinterlegt.", cancelText: null);
+        else NeonDialog.Show(Loc.T("Programs.NoFolderTitle"), Loc.T("Programs.NoFolderText"), cancelText: null);
     }
 
     [RelayCommand]
@@ -160,10 +160,10 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
         if (list.Count == 0 || IsUninstalling) return;
 
         var msg = list.Count == 1
-            ? $"„{list[0].Name}“ wird deinstalliert. Das Deinstallationsprogramm des Herstellers wird gestartet."
-            : $"{list.Count} Programme werden nacheinander deinstalliert. Für jedes Programm startet das Deinstallationsprogramm des Herstellers.";
-        msg += "\n\nDanach sucht EZTool nach übrig gebliebenen Ordnern und Registry-Einträgen.";
-        if (!NeonDialog.Show("Deinstallieren?", msg, "Deinstallieren", danger: true,
+            ? Loc.T("Programs.ConfirmOne", list[0].Name)
+            : Loc.T("Programs.ConfirmMany", list.Count);
+        msg += "\n\n" + Loc.T("Programs.ConfirmLeftoverHint");
+        if (!NeonDialog.Show(Loc.T("Programs.ConfirmTitle"), msg, Loc.T("Programs.Uninstall"), danger: true,
                 details: list.Count > 1 ? list.Select(p => $"{p.Name}  ·  {Format.Bytes(p.Size)}") : null))
             return;
 
@@ -176,8 +176,8 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
         {
             var p = list[i];
             CurrentName = p.Name;
-            QueueText = list.Count > 1 ? $"Programm {i + 1} von {list.Count}" : "Warte auf das Deinstallationsprogramm…";
-            p.Status = "Wird deinstalliert…";
+            QueueText = list.Count > 1 ? Loc.T("Programs.QueueProgress", i + 1, list.Count) : Loc.T("Programs.QueueWaiting");
+            p.Status = Loc.T("Programs.StatusUninstalling");
             _skip = new CancellationTokenSource();
 
             bool ok;
@@ -203,14 +203,14 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
             else if (ok)
             {
                 removed.Add(p.Name);
-                QueueText = "Suche nach Resten…";
+                QueueText = Loc.T("Programs.QueueSearchingLeftovers");
                 var remaining = await Task.Run(ProgramService.LoadAll);
                 leftovers.AddRange(await Task.Run(() => ProgramService.FindLeftovers(p, remaining)));
             }
             else
             {
                 failed.Add(p.Name);
-                p.Status = "Nicht entfernt";
+                p.Status = Loc.T("Programs.StatusNotRemoved");
             }
         }
 
@@ -224,19 +224,19 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
             if (chosen.Count > 0)
             {
                 var (ok, fail) = await Task.Run(() => ProgramService.RemoveLeftovers(chosen));
-                NeonDialog.Show("Reste entfernt",
-                    $"{ok} Einträge entfernt" + (fail > 0 ? $", {fail} konnten nicht entfernt werden (evtl. in Benutzung)." : ".") +
-                    $"\n\nRegistry-Sicherungen: {ProgramService.BackupFolder}", cancelText: null);
+                NeonDialog.Show(Loc.T("Programs.LeftoversRemovedTitle"),
+                    (fail > 0 ? Loc.T("Programs.LeftoversRemovedPartial", ok, fail) : Loc.T("Programs.LeftoversRemoved", ok)) +
+                    "\n\n" + Loc.T("Programs.RegistryBackups", ProgramService.BackupFolder), cancelText: null);
             }
         }
         else if (removed.Count > 0 && failed.Count == 0)
         {
-            NeonDialog.Show("Fertig", removed.Count == 1 ? $"„{removed[0]}“ wurde vollständig entfernt. Keine Reste gefunden." :
-                $"{removed.Count} Programme wurden vollständig entfernt. Keine Reste gefunden.", cancelText: null);
+            NeonDialog.Show(Loc.T("Programs.DoneTitle"), removed.Count == 1 ? Loc.T("Programs.DoneOne", removed[0]) :
+                Loc.T("Programs.DoneMany", removed.Count), cancelText: null);
         }
 
         if (failed.Count > 0)
-            NeonDialog.Show("Nicht alles entfernt", "Diese Programme sind noch installiert (abgebrochen oder übersprungen):", cancelText: null, details: failed);
+            NeonDialog.Show(Loc.T("Programs.NotAllRemovedTitle"), Loc.T("Programs.NotAllRemovedText"), cancelText: null, details: failed);
 
         await LoadAsync();
     }

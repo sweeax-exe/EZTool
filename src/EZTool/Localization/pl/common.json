@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Anuluj",
+  "Common.UnexpectedError": "Nieoczekiwany błąd",
+
+  "Window.Minimize": "Minimalizuj",
+  "Window.Maximize": "Maksymalizuj",
+  "Window.Close": "Zamknij",
+
+  "Shell.Module": "MODUŁ {0:00} / {1:00}",
+  "Shell.Admin": "Administrator",
+  "Shell.Limited": "Ograniczony",
+  "Shell.UpdateAvailable": "Dostępna aktualizacja {0}",
+  "Shell.UpdateAvailableShort": "Dostępna aktualizacja",
+  "Shell.ClockFormat": "dddd, d MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool działa dalej w tle",
+  "Shell.TrayHintText": "Monitorowanie i alerty pozostają aktywne. Kliknij ikonę prawym przyciskiem, aby zakończyć.",
+
+  "Nav.Group.Monitor": "Monitor",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Porządki",
+  "Nav.Group.Software": "Oprogramowanie",
+  "Nav.Group.System": "System",
+
+  "Format.Today": "dzisiaj",
+  "Format.Yesterday": "wczoraj",
+  "Format.DaysAgo": "{0} dni temu",
+  "Format.MonthsAgo": "{0} mies. temu",
+  "Format.YearsAgo": "{0} l. temu",
+  "Format.DurationDays": "{0} d {1} godz.",
+  "Format.DurationHours": "{0} godz. {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Otwórz EZTool",
+  "Tray.GamingStart": "Włącz tryb gry",
+  "Tray.GamingStop": "Wyłącz tryb gry",
+  "Tray.Overlay": "Pokaż nakładkę",
+  "Tray.Exit": "Zakończ",
+  "Tray.SessionReady": "Raport z sesji gotowy",
+  "Tray.SessionText": "{0}: śr. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU się nagrzewa",
+  "Alert.CpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.GpuHotTitle": "Karta graficzna się nagrzewa",
+  "Alert.GpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.DriveFullTitle": "Dysk {0} jest prawie pełny",
+  "Alert.DriveFullText": "Wolne tylko {0} ({1:0} %). Kliknij tutaj, aby posprzątać.",
+  "Alert.TestTitle": "Alerty EZTool są aktywne",
+  "Alert.TestText": "Tak wygląda ostrzeżenie po przekroczeniu limitu.",
+
+  "Chart.Empty": "Brak danych – historia uzupełnia się co 5 sekund.",
+  "System.RamModules": "{0} · {1}× moduł",
+  "Hardware.LocalDisk": "Dysk lokalny",
+
+  "Language.Title": "Język",
+  "Language.Subtitle": "EZTool w Twoim języku – automatycznie dopasowany do Windows.",
+  "Language.Auto": "Automatycznie ({0})",
+  "Language.RestartTitle": "Zmień język",
+  "Language.RestartText": "EZTool uruchomi się na chwilę ponownie, aby nowy język był wszędzie zastosowany.",
+  "Language.RestartNow": "Uruchom ponownie",
+  "Language.Later": "Później"
+}

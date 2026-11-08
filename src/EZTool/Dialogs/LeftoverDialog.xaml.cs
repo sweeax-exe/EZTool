@@ -21,7 +21,7 @@ public partial class LeftoverDialog : Window
         var d = new LeftoverDialog();
         if (Application.Current?.MainWindow is { IsLoaded: true } owner) d.Owner = owner;
         d.List.ItemsSource = leftovers;
-        d.SubText.Text = $"{leftovers.Count} Einträge · {Core.Format.Bytes(leftovers.Sum(l => l.Size))}";
+        d.SubText.Text = Core.Loc.T("Leftover.Summary", leftovers.Count, Core.Format.Bytes(leftovers.Sum(l => l.Size)));
         return d.ShowDialog() == true ? leftovers.Where(l => l.IsChecked).ToList() : [];
     }
 

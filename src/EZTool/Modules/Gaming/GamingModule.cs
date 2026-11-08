@@ -12,8 +12,8 @@ namespace EZTool.Modules.Gaming;
 public sealed class GamingModule : IModule
 {
     public string Id => "gaming";
-    public string Title => "Gaming-Modus";
-    public string Subtitle => "Ein Klick: Höchstleistung, freier Arbeitsspeicher, Ruhe im Hintergrund – plus Live-FPS und Bericht nach jeder Session.";
+    public string Title => Loc.T("Gaming.Title");
+    public string Subtitle => Loc.T("Gaming.Subtitle");
     public string Icon => "";
     public int Order => 110;
 
@@ -45,7 +45,7 @@ public sealed partial class GamingViewModel : ObservableObject
 
     [ObservableProperty] private string _fpsText = "0";
     [ObservableProperty] private string _frameTimeText = "";
-    [ObservableProperty] private string _gameName = "Kein Spiel im Vordergrund";
+    [ObservableProperty] private string _gameName = Loc.T("Gaming.NoForegroundGame");
     [ObservableProperty] private double[] _fpsHistory = [];
     [ObservableProperty] private string _cpuTemp = "—";
     [ObservableProperty] private string _gpuTemp = "—";
@@ -80,7 +80,7 @@ public sealed partial class GamingViewModel : ObservableObject
         {
             CpuTemp = s.CpuTemp is { } c ? $"{c:0} °C" : "—";
             GpuTemp = s.GpuTemp is { } t ? $"{t:0} °C" : "—";
-            if (IsActive) SinceText = $"aktiv seit {Format.Duration(DateTime.Now - g.Since)}";
+            if (IsActive) SinceText = Loc.T("Gaming.ActiveSince", Format.Duration(DateTime.Now - g.Since));
         };
         foreach (var s in GamingService.LoadSessions()) Sessions.Add(s);
         SelectedSession = Sessions.FirstOrDefault();
@@ -100,7 +100,7 @@ public sealed partial class GamingViewModel : ObservableObject
         if (visible)
         {
             FpsService.Instance.Acquire();
-            MeasureHint = FpsService.Instance.Error ?? "Wechsle ins Spiel – die FPS des Fensters im Vordergrund werden gemessen.";
+            MeasureHint = FpsService.Instance.Error ?? Loc.T("Gaming.MeasureHint");
             _ = LoadAppsAsync();
         }
         else FpsService.Instance.Release();
@@ -111,14 +111,14 @@ public sealed partial class GamingViewModel : ObservableObject
         if (r != null)
         {
             FpsText = $"{r.Fps:0}";
-            FrameTimeText = $"{r.FrameTimeMs:0.0} ms Frametime";
+            FrameTimeText = Loc.T("Gaming.FrameTime", r.FrameTimeMs);
             GameName = r.Process;
         }
         else
         {
             FpsText = "0";
             FrameTimeText = "";
-            GameName = "Kein Spiel im Vordergrund";
+            GameName = Loc.T("Gaming.NoForegroundGame");
         }
         _fpsQueue.Enqueue(r?.Fps ?? 0);
         while (_fpsQueue.Count > 60) _fpsQueue.Dequeue();
@@ -131,8 +131,8 @@ public sealed partial class GamingViewModel : ObservableObject
         IsActive = g.IsActive;
         Actions.Clear();
         foreach (var a in g.AppliedActions) Actions.Add(a);
-        if (g.IsActive && Actions.Count == 0) Actions.Add("FPS- und Temperatur-Aufzeichnung läuft");
-        SinceText = g.IsActive ? $"aktiv seit {Format.Duration(DateTime.Now - g.Since)}" : "";
+        if (g.IsActive && Actions.Count == 0) Actions.Add(Loc.T("Gaming.Recording"));
+        SinceText = g.IsActive ? Loc.T("Gaming.ActiveSince", Format.Duration(DateTime.Now - g.Since)) : "";
     }
 
     private bool CanToggle() => !IsBusy;
@@ -147,8 +147,8 @@ public sealed partial class GamingViewModel : ObservableObject
             {
                 var report = await GamingService.Instance.DeactivateAsync();
                 if (report != null)
-                    TrayService.Instance?.Notify("Session-Bericht bereit",
-                        $"{report.Game}: Ø {report.FpsText} FPS · 1 % Low {report.LowText} · max {report.TempText}", openModule: "gaming");
+                    TrayService.Instance?.Notify(Loc.T("Tray.SessionReady"),
+                        Loc.T("Gaming.SessionNotify", report.Game, report.FpsText, report.LowText, report.TempText), openModule: "gaming");
             }
             else
             {

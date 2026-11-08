@@ -5,6 +5,9 @@ namespace EZTool.Services;
 /// <summary>Alle Einstellungen – gespeichert als JSON unter %LOCALAPPDATA%\EZTool\settings.json.</summary>
 public sealed class AppSettings
 {
+    /// <summary>"auto" = Sprache von Windows, sonst Sprachcode (z. B. "de", "ja").</summary>
+    public string Language { get; set; } = "auto";
+
     // Start & Hintergrund
     public bool CloseToTray { get; set; } = true;
 

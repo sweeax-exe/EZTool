@@ -15,7 +15,9 @@ public partial class NeonDialog : Window
     }
 
     /// <summary>Zeigt einen gestylten Dialog. Gibt true zurück, wenn bestätigt wurde.</summary>
-    public static bool Show(string title, string message, string confirmText = "OK", string? cancelText = "Abbrechen",
+    /// <param name="confirmText">null = "OK" in der aktiven Sprache.</param>
+    /// <param name="cancelText">"" = "Abbrechen" in der aktiven Sprache, null = keine Abbrechen-Schaltfläche.</param>
+    public static bool Show(string title, string message, string? confirmText = null, string? cancelText = "",
         bool danger = false, IEnumerable<string>? details = null)
     {
         var d = new NeonDialog();
@@ -25,10 +27,10 @@ public partial class NeonDialog : Window
 
         d.TitleText.Text = title;
         d.MessageText.Text = message;
-        d.ConfirmButton.Content = confirmText;
+        d.ConfirmButton.Content = confirmText ?? Core.Loc.T("Common.Ok");
 
         if (cancelText == null) d.CancelButton.Visibility = Visibility.Collapsed;
-        else d.CancelButton.Content = cancelText;
+        else d.CancelButton.Content = cancelText.Length == 0 ? Core.Loc.T("Common.Cancel") : cancelText;
 
         if (danger)
         {

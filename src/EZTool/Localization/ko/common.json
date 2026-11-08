@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "확인",
+  "Common.Cancel": "취소",
+  "Common.UnexpectedError": "예기치 않은 오류",
+
+  "Window.Minimize": "최소화",
+  "Window.Maximize": "최대화",
+  "Window.Close": "닫기",
+
+  "Shell.Module": "모듈 {0:00} / {1:00}",
+  "Shell.Admin": "관리자",
+  "Shell.Limited": "제한됨",
+  "Shell.UpdateAvailable": "업데이트 {0} 사용 가능",
+  "Shell.UpdateAvailableShort": "업데이트 사용 가능",
+  "Shell.ClockFormat": "M'월' d'일' dddd · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool이 백그라운드에서 계속 실행돼요",
+  "Shell.TrayHintText": "모니터링과 알림은 계속 켜져 있어요. 종료하려면 아이콘을 마우스 오른쪽 버튼으로 클릭하세요.",
+
+  "Nav.Group.Monitor": "모니터",
+  "Nav.Group.Gaming": "게이밍",
+  "Nav.Group.Cleanup": "정리",
+  "Nav.Group.Software": "소프트웨어",
+  "Nav.Group.System": "시스템",
+
+  "Format.Today": "오늘",
+  "Format.Yesterday": "어제",
+  "Format.DaysAgo": "{0}일 전",
+  "Format.MonthsAgo": "{0}개월 전",
+  "Format.YearsAgo": "{0}년 전",
+  "Format.DurationDays": "{0}일 {1}시간",
+  "Format.DurationHours": "{0}시간 {1}분",
+  "Format.DurationMinutes": "{0}분",
+
+  "Tray.Open": "EZTool 열기",
+  "Tray.GamingStart": "게이밍 모드 시작",
+  "Tray.GamingStop": "게이밍 모드 중지",
+  "Tray.Overlay": "오버레이 표시",
+  "Tray.Exit": "종료",
+  "Tray.SessionReady": "세션 보고서가 준비됐어요",
+  "Tray.SessionText": "{0}: 평균 {1} FPS · 1% Low {2}",
+
+  "Alert.CpuHotTitle": "CPU가 뜨거워지고 있어요",
+  "Alert.CpuHotText": "{0}: {1:0} °C (한도 {2} °C).",
+  "Alert.GpuHotTitle": "그래픽 카드가 뜨거워지고 있어요",
+  "Alert.GpuHotText": "{0}: {1:0} °C (한도 {2} °C).",
+  "Alert.DriveFullTitle": "드라이브 {0} 공간이 거의 없어요",
+  "Alert.DriveFullText": "여유 공간이 {0}({1:0} %)밖에 없어요. 여기를 클릭해 정리하세요.",
+  "Alert.TestTitle": "EZTool 알림이 켜져 있어요",
+  "Alert.TestText": "한도를 넘으면 이런 경고가 표시돼요.",
+
+  "Chart.Empty": "아직 데이터가 없어요 – 기록은 5초마다 쌓여요.",
+  "System.RamModules": "{0} · {1}× 모듈",
+  "Hardware.LocalDisk": "로컬 디스크",
+
+  "Language.Title": "언어",
+  "Language.Subtitle": "EZTool을 내 언어로 – Windows에 맞춰 자동으로 설정돼요.",
+  "Language.Auto": "자동({0})",
+  "Language.RestartTitle": "언어 변경",
+  "Language.RestartText": "새 언어를 모든 곳에 적용하기 위해 EZTool을 잠시 다시 시작해요.",
+  "Language.RestartNow": "지금 다시 시작",
+  "Language.Later": "나중에"
+}

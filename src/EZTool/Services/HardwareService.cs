@@ -222,7 +222,7 @@ public sealed class HardwareService : IDisposable
             try
             {
                 if (!d.IsReady || d.DriveType is not (DriveType.Fixed or DriveType.Removable)) continue;
-                drives.Add(new DriveSnapshot(d.Name.TrimEnd('\\'), string.IsNullOrWhiteSpace(d.VolumeLabel) ? "Lokaler Datenträger" : d.VolumeLabel,
+                drives.Add(new DriveSnapshot(d.Name.TrimEnd('\\'), string.IsNullOrWhiteSpace(d.VolumeLabel) ? Core.Loc.T("Hardware.LocalDisk") : d.VolumeLabel,
                     d.DriveFormat, d.TotalSize, d.TotalFreeSpace));
             }
             catch { /* Laufwerk nicht bereit */ }
@@ -238,7 +238,7 @@ public sealed class HardwareService : IDisposable
 
         return new HardwareSnapshot
         {
-            CpuName = Clean(cpu?.Name) ?? SystemInfo.Current?.CpuName ?? "Prozessor",
+            CpuName = Clean(cpu?.Name) ?? SystemInfo.Current?.CpuName ?? "CPU",
             CpuLoad = cpuLoad,
             CpuTemp = cpuTemp,
             CpuClock = cpuClock,

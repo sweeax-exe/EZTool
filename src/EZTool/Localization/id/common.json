@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Batal",
+  "Common.UnexpectedError": "Kesalahan tak terduga",
+
+  "Window.Minimize": "Minimalkan",
+  "Window.Maximize": "Maksimalkan",
+  "Window.Close": "Tutup",
+
+  "Shell.Module": "MODUL {0:00} / {1:00}",
+  "Shell.Admin": "Administrator",
+  "Shell.Limited": "Terbatas",
+  "Shell.UpdateAvailable": "Pembaruan {0} tersedia",
+  "Shell.UpdateAvailableShort": "Pembaruan tersedia",
+  "Shell.ClockFormat": "dddd, dd MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool tetap berjalan di latar belakang",
+  "Shell.TrayHintText": "Pemantauan dan peringatan tetap aktif. Klik kanan ikon untuk keluar.",
+
+  "Nav.Group.Monitor": "Pantau",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Bersihkan",
+  "Nav.Group.Software": "Perangkat lunak",
+  "Nav.Group.System": "Sistem",
+
+  "Format.Today": "hari ini",
+  "Format.Yesterday": "kemarin",
+  "Format.DaysAgo": "{0} hari lalu",
+  "Format.MonthsAgo": "{0} bulan lalu",
+  "Format.YearsAgo": "{0} tahun lalu",
+  "Format.DurationDays": "{0} hr {1} jam",
+  "Format.DurationHours": "{0} jam {1} mnt",
+  "Format.DurationMinutes": "{0} mnt",
+
+  "Tray.Open": "Buka EZTool",
+  "Tray.GamingStart": "Mulai mode gaming",
+  "Tray.GamingStop": "Hentikan mode gaming",
+  "Tray.Overlay": "Tampilkan overlay",
+  "Tray.Exit": "Keluar",
+  "Tray.SessionReady": "Laporan sesi siap",
+  "Tray.SessionText": "{0}: rata-rata {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU mulai panas",
+  "Alert.CpuHotText": "{0}: {1:0} °C (batas {2} °C).",
+  "Alert.GpuHotTitle": "Kartu grafis mulai panas",
+  "Alert.GpuHotText": "{0}: {1:0} °C (batas {2} °C).",
+  "Alert.DriveFullTitle": "Drive {0} hampir penuh",
+  "Alert.DriveFullText": "Tinggal {0} kosong ({1:0} %). Klik di sini untuk membersihkan.",
+  "Alert.TestTitle": "Peringatan EZTool aktif",
+  "Alert.TestText": "Seperti inilah tampilan peringatan saat batas terlampaui.",
+
+  "Chart.Empty": "Belum ada data – riwayat terisi setiap 5 detik.",
+  "System.RamModules": "{0} · {1}× modul",
+  "Hardware.LocalDisk": "Disk Lokal",
+
+  "Language.Title": "Bahasa",
+  "Language.Subtitle": "EZTool dalam bahasamu – otomatis menyesuaikan Windows.",
+  "Language.Auto": "Otomatis ({0})",
+  "Language.RestartTitle": "Ganti bahasa",
+  "Language.RestartText": "EZTool akan dimulai ulang sebentar agar bahasa baru diterapkan di mana-mana.",
+  "Language.RestartNow": "Mulai ulang sekarang",
+  "Language.Later": "Nanti"
+}

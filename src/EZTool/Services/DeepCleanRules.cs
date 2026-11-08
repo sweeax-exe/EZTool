@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Security.Principal;
+using EZTool.Core;
 using Microsoft.Win32;
 
 namespace EZTool.Services;
@@ -26,10 +27,9 @@ public static partial class CleanerService
         // ── Komponentenspeicher (WinSxS) ──
         yield return new CleanRule
         {
-            Id = "winsxs", Category = "Tiefenreinigung", Icon = "\uE895", DefaultOn = false, SizeUnknown = true,
-            Name = "Alte Windows-Updates (Komponentenspeicher)",
-            Description = "Entfernt durch neuere Updates ersetzte Systemkomponenten über DISM. Sicher, dauert aber 5–20 Minuten. " +
-                          "Bereits installierte Updates bleiben deinstallierbar.",
+            Id = "winsxs", Category = Loc.T("Cleaner.Category.DeepClean"), CategoryId = CleanRule.DeepCleanCategory, Icon = "\uE895", DefaultOn = false, SizeUnknown = true,
+            Name = Loc.T("Cleaner.Rule.WinSxS.Name"),
+            Description = Loc.T("Cleaner.Rule.WinSxS.Description"),
             Available = () => true,
             CustomScan = _ => new ScanResult(),
             CustomClean = _ =>
@@ -52,9 +52,9 @@ public static partial class CleanerService
         var old = Path.Combine(SystemDrive, "Windows.old");
         yield return new CleanRule
         {
-            Id = "windows-old", Category = "Tiefenreinigung", Icon = "\uE7B8", DefaultOn = false,
-            Name = "Vorherige Windows-Installation (Windows.old)",
-            Description = "Bleibt nach einem großen Windows-Update zurück. Danach ist kein Zurücksetzen auf die alte Version mehr möglich.",
+            Id = "windows-old", Category = Loc.T("Cleaner.Category.DeepClean"), CategoryId = CleanRule.DeepCleanCategory, Icon = "\uE7B8", DefaultOn = false,
+            Name = Loc.T("Cleaner.Rule.WindowsOld.Name"),
+            Description = Loc.T("Cleaner.Rule.WindowsOld.Description"),
             Available = () => Directory.Exists(old),
             CustomScan = token =>
             {

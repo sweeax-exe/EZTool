@@ -13,8 +13,8 @@ namespace EZTool.Modules.Folders;
 public sealed class FoldersModule : IModule
 {
     public string Id => "folders";
-    public string Title => "Ordner-Analyse";
-    public string Subtitle => "Große, lange nicht genutzte, leere oder verwaiste Ordner finden – und sicher in den Papierkorb verschieben.";
+    public string Title => Loc.T("Folders.Title");
+    public string Subtitle => Loc.T("Folders.Subtitle");
     public string Icon => "";
     public int Order => 230;
 
@@ -49,7 +49,7 @@ public sealed partial class FoldersViewModel : ObservableObject
     private bool _isBusy;
 
     [ObservableProperty] private string _progressText = "";
-    [ObservableProperty] private string _resultText = "Wähle einen Modus und starte die Analyse.";
+    [ObservableProperty] private string _resultText = Loc.T("Folders.ResultHint");
     [ObservableProperty] private int _selectedCount;
     [ObservableProperty] private long _selectedSize;
     [ObservableProperty] private bool _hasResults;
@@ -58,9 +58,9 @@ public sealed partial class FoldersViewModel : ObservableObject
 
     public string AgeLabel => AgeSteps[AgeIndex] switch
     {
-        0 => "egal",
-        < 365 and var d => $"{d / 30} Monate",
-        var d => d / 365 == 1 ? "1 Jahr" : $"{d / 365} Jahre"
+        0 => Loc.T("Folders.Age.Any"),
+        < 365 and var d => Loc.T("Folders.Age.Months", d / 30),
+        var d => d / 365 == 1 ? Loc.T("Folders.Age.OneYear") : Loc.T("Folders.Age.Years", d / 365)
     };
 
     public string SizeLabel => Format.Bytes(SizeSteps[SizeIndex]);
@@ -69,15 +69,15 @@ public sealed partial class FoldersViewModel : ObservableObject
 
     public string ModeHint => Mode switch
     {
-        "stale" => "Findet Ordner, deren Inhalt seit langer Zeit nicht verändert wurde. Programm- und Systemordner werden ausgelassen – Programme bitte über „Programme“ entfernen.",
-        "orphans" => "Durchsucht AppData und ProgramData nach Ordnern, zu denen kein installiertes Programm mehr passt. Bitte vor dem Löschen prüfen – nichts ist vorausgewählt.",
-        _ => "Findet Ordner ohne Dateien (auch mit nur leeren Unterordnern)."
+        "stale" => Loc.T("Folders.Mode.Stale.Hint"),
+        "orphans" => Loc.T("Folders.Mode.Orphans.Hint"),
+        _ => Loc.T("Folders.Mode.Empty.Hint")
     };
 
     public FoldersViewModel()
     {
         var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        Roots.Add(new RootOption { Label = "Benutzerordner", Path = profile, IsSelected = true });
+        Roots.Add(new RootOption { Label = Loc.T("Folders.UserFolder"), Path = profile, IsSelected = true });
         foreach (var d in DriveInfo.GetDrives())
         {
             try
@@ -94,14 +94,14 @@ public sealed partial class FoldersViewModel : ObservableObject
         Mode = m;
         Results.Clear();
         HasResults = false;
-        ResultText = "Wähle einen Modus und starte die Analyse.";
+        ResultText = Loc.T("Folders.ResultHint");
         Recalc();
     }
 
     [RelayCommand]
     private void BrowseRoot()
     {
-        var dlg = new OpenFolderDialog { Title = "Ordner für die Analyse wählen" };
+        var dlg = new OpenFolderDialog { Title = Loc.T("Folders.BrowseTitle") };
         if (dlg.ShowDialog() != true) return;
         foreach (var r in Roots) r.IsSelected = false;
         var existing = Roots.FirstOrDefault(r => r.Path.Equals(dlg.FolderName, StringComparison.OrdinalIgnoreCase));
@@ -147,12 +147,12 @@ public sealed partial class FoldersViewModel : ObservableObject
             }
             HasResults = Results.Count > 0;
             ResultText = Results.Count == 0
-                ? "Nichts gefunden – hier ist alles aufgeräumt. ✨"
-                : $"{Results.Count} Ordner gefunden · zusammen {Format.Bytes(Results.Sum(r => r.Size))}";
+                ? Loc.T("Folders.NothingFound")
+                : Loc.T("Folders.Found", Results.Count, Format.Bytes(Results.Sum(r => r.Size)));
         }
         catch (OperationCanceledException)
         {
-            ResultText = "Analyse abgebrochen.";
+            ResultText = Loc.T("Folders.Cancelled");
         }
         finally
         {
@@ -197,9 +197,9 @@ public sealed partial class FoldersViewModel : ObservableObject
     private async Task RecycleAsync()
     {
         var chosen = Results.Where(r => r.IsChecked).ToList();
-        if (!NeonDialog.Show("In den Papierkorb verschieben?",
-                $"{chosen.Count} Ordner ({Format.Bytes(chosen.Sum(c => c.Size))}) werden in den Papierkorb verschoben. Du kannst sie dort jederzeit wiederherstellen.",
-                "Verschieben", danger: true, details: chosen.Select(c => c.Path)))
+        if (!NeonDialog.Show(Loc.T("Folders.Confirm.Title"),
+                Loc.T("Folders.Confirm.Message", chosen.Count, Format.Bytes(chosen.Sum(c => c.Size))),
+                Loc.T("Folders.Confirm.Move"), danger: true, details: chosen.Select(c => c.Path)))
             return;
 
         IsBusy = true;
@@ -215,13 +215,13 @@ public sealed partial class FoldersViewModel : ObservableObject
             else
             {
                 fail++;
-                c.Status = "Konnte nicht verschoben werden (in Benutzung?)";
+                c.Status = Loc.T("Folders.MoveFailed");
             }
         }
         IsBusy = false;
         ProgressText = "";
         HasResults = Results.Count > 0;
-        ResultText = $"{ok} Ordner in den Papierkorb verschoben" + (fail > 0 ? $" · {fail} fehlgeschlagen" : "");
+        ResultText = Loc.T("Folders.Recycled", ok) + (fail > 0 ? " · " + Loc.T("Folders.Failed", fail) : "");
         Recalc();
     }
 }

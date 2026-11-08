@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "キャンセル",
+  "Common.UnexpectedError": "予期しないエラー",
+
+  "Window.Minimize": "最小化",
+  "Window.Maximize": "最大化",
+  "Window.Close": "閉じる",
+
+  "Shell.Module": "モジュール {0:00} / {1:00}",
+  "Shell.Admin": "管理者",
+  "Shell.Limited": "制限付き",
+  "Shell.UpdateAvailable": "アップデート {0} があります",
+  "Shell.UpdateAvailableShort": "アップデートあり",
+  "Shell.ClockFormat": "M'月'd'日' dddd · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool はバックグラウンドで動作中です",
+  "Shell.TrayHintText": "監視とアラートは有効のままです。終了するにはアイコンを右クリックします。",
+
+  "Nav.Group.Monitor": "モニター",
+  "Nav.Group.Gaming": "ゲーミング",
+  "Nav.Group.Cleanup": "クリーンアップ",
+  "Nav.Group.Software": "ソフトウェア",
+  "Nav.Group.System": "システム",
+
+  "Format.Today": "今日",
+  "Format.Yesterday": "昨日",
+  "Format.DaysAgo": "{0} 日前",
+  "Format.MonthsAgo": "{0} か月前",
+  "Format.YearsAgo": "{0} 年前",
+  "Format.DurationDays": "{0} 日 {1} 時間",
+  "Format.DurationHours": "{0} 時間 {1} 分",
+  "Format.DurationMinutes": "{0} 分",
+
+  "Tray.Open": "EZTool を開く",
+  "Tray.GamingStart": "ゲーミング モードを開始",
+  "Tray.GamingStop": "ゲーミング モードを停止",
+  "Tray.Overlay": "オーバーレイを表示",
+  "Tray.Exit": "終了",
+  "Tray.SessionReady": "セッション レポートの準備ができました",
+  "Tray.SessionText": "{0}: 平均 {1} FPS · 1% Low {2}",
+
+  "Alert.CpuHotTitle": "CPU が熱くなっています",
+  "Alert.CpuHotText": "{0}: {1:0} °C (上限 {2} °C)。",
+  "Alert.GpuHotTitle": "グラフィックス カードが熱くなっています",
+  "Alert.GpuHotText": "{0}: {1:0} °C (上限 {2} °C)。",
+  "Alert.DriveFullTitle": "ドライブ {0} の空きが残りわずかです",
+  "Alert.DriveFullText": "空きは {0} ({1:0} %) のみです。クリックしてクリーンアップします。",
+  "Alert.TestTitle": "EZTool のアラートは有効です",
+  "Alert.TestText": "上限を超えると、このような警告が表示されます。",
+
+  "Chart.Empty": "まだデータがありません – 履歴は 5 秒ごとに記録されます。",
+  "System.RamModules": "{0} · {1}× モジュール",
+  "Hardware.LocalDisk": "ローカル ディスク",
+
+  "Language.Title": "言語",
+  "Language.Subtitle": "EZTool をあなたの言語で – Windows に合わせて自動設定。",
+  "Language.Auto": "自動 ({0})",
+  "Language.RestartTitle": "言語の変更",
+  "Language.RestartText": "新しい言語をすべてに反映するため、EZTool を一度再起動します。",
+  "Language.RestartNow": "今すぐ再起動",
+  "Language.Later": "後で"
+}

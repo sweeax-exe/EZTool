@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using CommunityToolkit.Mvvm.ComponentModel;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -85,7 +86,7 @@ public static class DuplicateService
             if ((DateTime.UtcNow - last).TotalMilliseconds > 150)
             {
                 last = DateTime.UtcNow;
-                progress?.Report(new Progress($"Durchsuche Dateien · {scanned:N0}", dir.FullName));
+                progress?.Report(new Progress(Loc.T("Duplicates.Phase.Scanning", scanned), dir.FullName));
             }
         }
 
@@ -114,7 +115,7 @@ public static class DuplicateService
             if ((DateTime.UtcNow - last).TotalMilliseconds > 150)
             {
                 last = DateTime.UtcNow;
-                progress?.Report(new Progress($"Vergleiche Inhalte · {done:N0} / {total:N0}", files[0].FullName));
+                progress?.Report(new Progress(Loc.T("Duplicates.Phase.Comparing", done, total), files[0].FullName));
             }
         }
 

@@ -14,7 +14,7 @@
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <AssemblyName>EZTool</AssemblyName>
     <RootNamespace>EZTool</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Product>EZTool</Product>
     <Description>Futuristisches System-Monitoring und Reinigungs-Tool für Windows</Description>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -30,6 +30,11 @@
 
   <ItemGroup>
     <Resource Include="Assets\app.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Sprachdateien: Localization\<Sprache>\*.json → Ressource "lang/<Sprache>/<Datei>.json" -->
+    <EmbeddedResource Include="Localization\**\*.json" LogicalName="lang/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>

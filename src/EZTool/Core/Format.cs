@@ -5,7 +5,7 @@ namespace EZTool.Core;
 
 public static class Format
 {
-    private static readonly CultureInfo De = CultureInfo.GetCultureInfo("de-DE");
+    private static CultureInfo De => Loc.Culture;
     private static readonly string[] Units = ["B", "KB", "MB", "GB", "TB", "PB"];
 
     public static string Bytes(long bytes) => Bytes((double)bytes);
@@ -29,20 +29,20 @@ public static class Format
 
     public static string Duration(TimeSpan t)
     {
-        if (t.TotalDays >= 1) return $"{(int)t.TotalDays} T {t.Hours} Std";
-        if (t.TotalHours >= 1) return $"{t.Hours} Std {t.Minutes} Min";
-        return $"{t.Minutes} Min";
+        if (t.TotalDays >= 1) return Loc.T("Format.DurationDays", (int)t.TotalDays, t.Hours);
+        if (t.TotalHours >= 1) return Loc.T("Format.DurationHours", t.Hours, t.Minutes);
+        return Loc.T("Format.DurationMinutes", t.Minutes);
     }
 
     public static string Age(DateTime? date)
     {
         if (date is null || date == DateTime.MinValue) return "—";
         var days = (DateTime.Now - date.Value).TotalDays;
-        if (days < 1) return "heute";
-        if (days < 2) return "gestern";
-        if (days < 60) return $"vor {(int)days} Tagen";
-        if (days < 730) return $"vor {(int)(days / 30)} Monaten";
-        return $"vor {(int)(days / 365)} Jahren";
+        if (days < 1) return Loc.T("Format.Today");
+        if (days < 2) return Loc.T("Format.Yesterday");
+        if (days < 60) return Loc.T("Format.DaysAgo", (int)days);
+        if (days < 730) return Loc.T("Format.MonthsAgo", (int)(days / 30));
+        return Loc.T("Format.YearsAgo", (int)(days / 365));
     }
 }
 

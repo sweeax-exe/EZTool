@@ -1,4 +1,5 @@
 using System.Windows;
+using EZTool.Core;
 using Forms = System.Windows.Forms;
 using Drawing = System.Drawing;
 
@@ -24,35 +25,35 @@ public sealed class TrayService : IDisposable
 
         var menu = new Forms.ContextMenuStrip { Renderer = new Forms.ToolStripProfessionalRenderer(new DarkColors()), ShowImageMargin = false };
         menu.Font = new Drawing.Font("Segoe UI", 9.5f);
-        menu.Items.Add(Item("EZTool öffnen", () => _show(null), bold: true));
+        menu.Items.Add(Item(Loc.T("Tray.Open"), () => _show(null), bold: true));
         menu.Items.Add(new Forms.ToolStripSeparator());
-        menu.Items.Add(Item("Dashboard", () => _show("dashboard")));
-        menu.Items.Add(Item("Speicher-Cleaner", () => _show("cleaner")));
-        menu.Items.Add(Item("Prozesse", () => _show("processes")));
+        menu.Items.Add(Item(Loc.T("Dashboard.Title"), () => _show("dashboard")));
+        menu.Items.Add(Item(Loc.T("Cleaner.Title"), () => _show("cleaner")));
+        menu.Items.Add(Item(Loc.T("Processes.Title"), () => _show("processes")));
         menu.Items.Add(new Forms.ToolStripSeparator());
-        _gamingItem = Item("Gaming-Modus starten", async () =>
+        _gamingItem = Item(Loc.T("Tray.GamingStart"), async () =>
         {
             var g = GamingService.Instance;
             if (g.IsActive)
             {
                 var report = await g.DeactivateAsync();
-                if (report != null) Notify("Session-Bericht bereit", $"{report.Game}: Ø {report.FpsText} FPS · 1 % Low {report.LowText}", openModule: "gaming");
+                if (report != null) Notify(Loc.T("Tray.SessionReady"), Loc.T("Tray.SessionText", report.Game, report.FpsText, report.LowText), openModule: "gaming");
             }
             else await g.ActivateAsync();
         });
         menu.Items.Add(_gamingItem);
-        _overlayItem = Item("Overlay anzeigen", () =>
+        _overlayItem = Item(Loc.T("Tray.Overlay"), () =>
         {
             SettingsService.Current.OverlayEnabled = !SettingsService.Current.OverlayEnabled;
             SettingsService.Save();
         });
         menu.Items.Add(_overlayItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
-        menu.Items.Add(Item("Beenden", () => _exit()));
+        menu.Items.Add(Item(Loc.T("Tray.Exit"), () => _exit()));
         menu.Opening += (_, _) =>
         {
             _overlayItem.Checked = SettingsService.Current.OverlayEnabled;
-            _gamingItem.Text = GamingService.Instance.IsActive ? "Gaming-Modus beenden" : "Gaming-Modus starten";
+            _gamingItem.Text = GamingService.Instance.IsActive ? Loc.T("Tray.GamingStop") : Loc.T("Tray.GamingStart");
             _gamingItem.Checked = GamingService.Instance.IsActive;
         };
 

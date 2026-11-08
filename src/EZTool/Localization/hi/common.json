@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "ठीक है",
+  "Common.Cancel": "रद्द करें",
+  "Common.UnexpectedError": "अनपेक्षित त्रुटि",
+
+  "Window.Minimize": "छोटा करें",
+  "Window.Maximize": "बड़ा करें",
+  "Window.Close": "बंद करें",
+
+  "Shell.Module": "मॉड्यूल {0:00} / {1:00}",
+  "Shell.Admin": "व्यवस्थापक",
+  "Shell.Limited": "सीमित",
+  "Shell.UpdateAvailable": "अपडेट {0} उपलब्ध",
+  "Shell.UpdateAvailableShort": "अपडेट उपलब्ध",
+  "Shell.ClockFormat": "dddd, dd MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool बैकग्राउंड में चलता रहता है",
+  "Shell.TrayHintText": "मॉनिटरिंग और अलर्ट चालू रहते हैं। बाहर निकलने के लिए आइकन पर राइट-क्लिक करें।",
+
+  "Nav.Group.Monitor": "मॉनिटर",
+  "Nav.Group.Gaming": "गेमिंग",
+  "Nav.Group.Cleanup": "सफ़ाई",
+  "Nav.Group.Software": "सॉफ़्टवेयर",
+  "Nav.Group.System": "सिस्टम",
+
+  "Format.Today": "आज",
+  "Format.Yesterday": "कल",
+  "Format.DaysAgo": "{0} दिन पहले",
+  "Format.MonthsAgo": "{0} महीने पहले",
+  "Format.YearsAgo": "{0} साल पहले",
+  "Format.DurationDays": "{0} दिन {1} घं",
+  "Format.DurationHours": "{0} घं {1} मि",
+  "Format.DurationMinutes": "{0} मि",
+
+  "Tray.Open": "EZTool खोलें",
+  "Tray.GamingStart": "गेमिंग मोड शुरू करें",
+  "Tray.GamingStop": "गेमिंग मोड बंद करें",
+  "Tray.Overlay": "ओवरले दिखाएँ",
+  "Tray.Exit": "बाहर निकलें",
+  "Tray.SessionReady": "सत्र रिपोर्ट तैयार",
+  "Tray.SessionText": "{0}: औसत {1} FPS · 1% लो {2}",
+
+  "Alert.CpuHotTitle": "CPU गर्म हो रहा है",
+  "Alert.CpuHotText": "{0}: {1:0} °C (सीमा {2} °C)।",
+  "Alert.GpuHotTitle": "ग्राफ़िक्स कार्ड गर्म हो रहा है",
+  "Alert.GpuHotText": "{0}: {1:0} °C (सीमा {2} °C)।",
+  "Alert.DriveFullTitle": "ड्राइव {0} लगभग भर गई",
+  "Alert.DriveFullText": "केवल {0} खाली ({1:0} %)। सफ़ाई के लिए यहाँ क्लिक करें।",
+  "Alert.TestTitle": "EZTool अलर्ट चालू हैं",
+  "Alert.TestText": "सीमा पार होने पर चेतावनी ऐसी दिखती है।",
+
+  "Chart.Empty": "अभी कोई डेटा नहीं – इतिहास हर 5 सेकंड में भरता है।",
+  "System.RamModules": "{0} · {1}× मॉड्यूल",
+  "Hardware.LocalDisk": "लोकल डिस्क",
+
+  "Language.Title": "भाषा",
+  "Language.Subtitle": "EZTool आपकी भाषा में – Windows के अनुसार अपने-आप।",
+  "Language.Auto": "स्वचालित ({0})",
+  "Language.RestartTitle": "भाषा बदलें",
+  "Language.RestartText": "नई भाषा हर जगह लागू करने के लिए EZTool कुछ पल के लिए पुनः आरंभ होगा।",
+  "Language.RestartNow": "अभी पुनः आरंभ करें",
+  "Language.Later": "बाद में"
+}

@@ -12,8 +12,8 @@ namespace EZTool.Modules.Hardware;
 public sealed class HardwareModule : IModule
 {
     public string Id => "hardware";
-    public string Title => "Hardware";
-    public string Subtitle => "Alle Sensoren deiner Komponenten – Temperaturen, Takt, Spannungen, Lüfter und mehr.";
+    public string Title => Loc.T("Hardware.Title");
+    public string Subtitle => Loc.T("Hardware.Subtitle");
     public string Icon => "";
     public int Order => 30;
 
@@ -111,19 +111,19 @@ public sealed partial class HardwareNodeVm : ObservableObject
         Name = node.Name;
         (TypeLabel, Icon) = node.Type switch
         {
-            HardwareType.Cpu => ("Prozessor", ""),
-            HardwareType.GpuNvidia => ("NVIDIA Grafik", ""),
-            HardwareType.GpuAmd => ("AMD Grafik", ""),
-            HardwareType.GpuIntel => ("Intel Grafik", ""),
-            HardwareType.Memory => ("Arbeitsspeicher", ""),
-            HardwareType.Motherboard => ("Mainboard", ""),
-            HardwareType.SuperIO => ("Super-I/O · Mainboard-Sensoren", ""),
-            HardwareType.EmbeddedController => ("Embedded Controller", ""),
-            HardwareType.Storage => ("Datenträger", ""),
-            HardwareType.Network => ("Netzwerk", ""),
-            HardwareType.Cooler => ("Kühlung", ""),
-            HardwareType.Battery => ("Akku", ""),
-            HardwareType.Psu => ("Netzteil", ""),
+            HardwareType.Cpu => (Loc.T("Hardware.Type.Cpu"), ""),
+            HardwareType.GpuNvidia => (Loc.T("Hardware.Type.GpuNvidia"), ""),
+            HardwareType.GpuAmd => (Loc.T("Hardware.Type.GpuAmd"), ""),
+            HardwareType.GpuIntel => (Loc.T("Hardware.Type.GpuIntel"), ""),
+            HardwareType.Memory => (Loc.T("Hardware.Type.Memory"), ""),
+            HardwareType.Motherboard => (Loc.T("Hardware.Type.Motherboard"), ""),
+            HardwareType.SuperIO => (Loc.T("Hardware.Type.SuperIO"), ""),
+            HardwareType.EmbeddedController => (Loc.T("Hardware.Type.EmbeddedController"), ""),
+            HardwareType.Storage => (Loc.T("Hardware.Type.Storage"), ""),
+            HardwareType.Network => (Loc.T("Hardware.Type.Network"), ""),
+            HardwareType.Cooler => (Loc.T("Hardware.Type.Cooler"), ""),
+            HardwareType.Battery => (Loc.T("Hardware.Type.Battery"), ""),
+            HardwareType.Psu => (Loc.T("Hardware.Type.Psu"), ""),
             _ => (node.Type.ToString(), "")
         };
 
@@ -162,22 +162,22 @@ public sealed partial class SensorGroupVm : ObservableObject
         Sensors = sensors;
         Title = type switch
         {
-            SensorType.Temperature => "Temperaturen",
-            SensorType.Load => "Auslastung",
-            SensorType.Clock => "Taktraten",
-            SensorType.Power => "Leistung",
-            SensorType.Fan => "Lüfter",
-            SensorType.Control => "Lüftersteuerung",
-            SensorType.Voltage => "Spannungen",
-            SensorType.Current => "Stromstärke",
-            SensorType.Data => "Daten",
-            SensorType.SmallData => "Speicher",
-            SensorType.Throughput => "Durchsatz",
-            SensorType.Level => "Füllstand / Zustand",
-            SensorType.Factor => "Faktoren",
-            SensorType.Frequency => "Frequenz",
-            SensorType.Energy => "Energie",
-            SensorType.TimeSpan => "Zeit",
+            SensorType.Temperature => Loc.T("Hardware.Group.Temperature"),
+            SensorType.Load => Loc.T("Hardware.Group.Load"),
+            SensorType.Clock => Loc.T("Hardware.Group.Clock"),
+            SensorType.Power => Loc.T("Hardware.Group.Power"),
+            SensorType.Fan => Loc.T("Hardware.Group.Fan"),
+            SensorType.Control => Loc.T("Hardware.Group.Control"),
+            SensorType.Voltage => Loc.T("Hardware.Group.Voltage"),
+            SensorType.Current => Loc.T("Hardware.Group.Current"),
+            SensorType.Data => Loc.T("Hardware.Group.Data"),
+            SensorType.SmallData => Loc.T("Hardware.Group.SmallData"),
+            SensorType.Throughput => Loc.T("Hardware.Group.Throughput"),
+            SensorType.Level => Loc.T("Hardware.Group.Level"),
+            SensorType.Factor => Loc.T("Hardware.Group.Factor"),
+            SensorType.Frequency => Loc.T("Hardware.Group.Frequency"),
+            SensorType.Energy => Loc.T("Hardware.Group.Energy"),
+            SensorType.TimeSpan => Loc.T("Hardware.Group.TimeSpan"),
             _ => type.ToString()
         };
     }
@@ -185,7 +185,7 @@ public sealed partial class SensorGroupVm : ObservableObject
 
 public sealed partial class SensorVm : ObservableObject
 {
-    private static readonly CultureInfo De = CultureInfo.GetCultureInfo("de-DE");
+    private static CultureInfo De => Loc.Culture;
 
     public string Id { get; }
     public string Name { get; }
@@ -210,7 +210,7 @@ public sealed partial class SensorVm : ObservableObject
     public void Update(SensorReading r)
     {
         ValueText = Fmt(r.Value);
-        RangeText = r.Min.HasValue && r.Max.HasValue ? $"min {Fmt(r.Min)} · max {Fmt(r.Max)}" : "";
+        RangeText = r.Min.HasValue && r.Max.HasValue ? Loc.T("Hardware.Range", Fmt(r.Min), Fmt(r.Max)) : "";
         RawValue = r.Value ?? 0;
         Percent = Math.Clamp(RawValue, 0, 100);
     }

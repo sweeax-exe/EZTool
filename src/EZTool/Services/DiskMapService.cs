@@ -1,3 +1,5 @@
+using EZTool.Core;
+
 namespace EZTool.Services;
 
 public sealed class MapNode
@@ -77,7 +79,7 @@ public static class DiskMapService
                 var restSize = fileList.OrderByDescending(f => f.Size).Skip(FilesPerFolder).Sum(f => f.Size);
                 node.Children.Add(new MapNode
                 {
-                    Name = $"{fileList.Count - FilesPerFolder:N0} weitere Dateien", Path = dir.FullName, Size = restSize,
+                    Name = Loc.T("StorageMap.MoreFiles", fileList.Count - FilesPerFolder), Path = dir.FullName, Size = restSize,
                     Files = fileList.Count - FilesPerFolder, IsAggregate = true, Parent = node
                 });
                 fileBytes += restSize;

@@ -17,6 +17,19 @@ Futuristisches System-Tool für Windows 10/11 im Glas-Design: Hardware-Monitorin
 | ![Windows-Tweaks](docs/screenshots/tweaks.png) **Windows-Tweaks** – Werbung raus, Gaming rein, alles umkehrbar | ![Tastenbelegung](docs/screenshots/hotkeys.png) **Tastenbelegung** – Medientasten für jede Tastatur |
 | ![Einstellungen](docs/screenshots/settings.png) **Einstellungen** – Autostart, Alarme, Overlay, Auto-Update | |
 
+## 🌍 Sprachen
+
+EZTool erkennt die Windows-Sprache automatisch. In den Einstellungen lässt sie sich jederzeit ändern.
+
+Deutsch · English · Español · Français · Italiano · Português · Nederlands · Polski · Čeština · Svenska · Türkçe · Русский · Українська · 日本語 · 한국어 · 简体中文 · 繁體中文 · हिन्दी · Bahasa Indonesia · Tiếng Việt
+
+**Neue Sprache beitragen:**
+1. Den Ordner `src/EZTool/Localization/en` nach `Localization/<code>` kopieren und die Texte übersetzen.
+2. Platzhalter wie `{0}` nicht verändern.
+3. Die Sprache in `Core/Loc.cs` bei `Languages` eintragen und einen Pull Request stellen.
+
+Fehlt in einer Sprache ein Text, zeigt EZTool automatisch den englischen an.
+
 ## Download
 
 1. Unter [**Releases**](https://github.com/sweeax-exe/EZTool/releases/latest) die Datei **`EZTool.exe`** herunterladen.

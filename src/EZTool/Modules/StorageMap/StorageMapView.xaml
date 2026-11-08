@@ -1,6 +1,7 @@
 <UserControl x:Class="EZTool.Modules.StorageMap.StorageMapView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:EZTool.Core"
              xmlns:c="clr-namespace:EZTool.Controls"
              x:Name="Root">
     <Grid Margin="40,0,40,28">
@@ -27,15 +28,15 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Button Style="{StaticResource IconButton}" Content="&#xE838;" Command="{Binding BrowseRootCommand}" ToolTip="Anderen Ordner wählen" Margin="4,0,0,0" />
+                <Button Style="{StaticResource IconButton}" Content="&#xE838;" Command="{Binding BrowseRootCommand}" ToolTip="{l:T StorageMap.BrowseTooltip}" Margin="4,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource GhostButton}" Content="Abbrechen" Command="{Binding CancelCommand}" Padding="12,8" Margin="0,0,8,0"
+                <Button Style="{StaticResource GhostButton}" Content="{l:T Common.Cancel}" Command="{Binding CancelCommand}" Padding="12,8" Margin="0,0,8,0"
                         Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" />
                 <Button Style="{StaticResource PrimaryButton}" Command="{Binding ScanCommand}" Padding="18,9">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xEB05;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
-                        <TextBlock Text="Karte erstellen" Margin="10,0,0,0" />
+                        <TextBlock Text="{l:T StorageMap.Create}" Margin="10,0,0,0" />
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -44,7 +45,7 @@
         <!-- Brotkrumen-Navigation -->
         <Grid Grid.Row="1" Margin="0,0,0,10" Visibility="{Binding HasMap, Converter={StaticResource Vis}}">
             <StackPanel Orientation="Horizontal">
-                <Button Style="{StaticResource IconButton}" Content="&#xE72B;" Command="{Binding UpCommand}" ToolTip="Eine Ebene zurück (Rechtsklick)" Width="30" Height="30" />
+                <Button Style="{StaticResource IconButton}" Content="&#xE72B;" Command="{Binding UpCommand}" ToolTip="{l:T StorageMap.UpTooltip}" Width="30" Height="30" />
                 <ItemsControl ItemsSource="{Binding Breadcrumb}" VerticalAlignment="Center" Margin="6,0,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -87,8 +88,8 @@
                             <Ellipse Stroke="{StaticResource AccentGradientDiag}" StrokeThickness="1.5" Opacity="0.5" StrokeDashArray="2 4" />
                             <TextBlock Text="&#xEB05;" Style="{StaticResource Icon}" FontSize="40" HorizontalAlignment="Center" Effect="{StaticResource CyanGlow}" />
                         </Grid>
-                        <TextBlock Text="Wähle ein Laufwerk und erstelle die Karte" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,16,0,0" />
-                        <TextBlock Text="Ein ganzes Laufwerk dauert je nach Größe 30 Sekunden bis wenige Minuten." Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                        <TextBlock Text="{l:T StorageMap.EmptyTitle}" Style="{StaticResource H2}" HorizontalAlignment="Center" Margin="0,16,0,0" />
+                        <TextBlock Text="{l:T StorageMap.EmptyText}" Style="{StaticResource Body}" HorizontalAlignment="Center" Margin="0,4,0,0" />
                         <StackPanel Visibility="{Binding IsBusy, Converter={StaticResource Vis}}" Margin="0,18,0,0" Width="420">
                             <ProgressBar Style="{StaticResource NeonBar}" IsIndeterminate="True" />
                             <TextBlock Text="{Binding ProgressText}" Style="{StaticResource Body}" FontSize="11.5" Margin="0,8,0,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
@@ -104,7 +105,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="GRÖSSTE EINTRÄGE" Style="{StaticResource Label}" Margin="4,0,0,8" />
+                    <TextBlock Text="{l:T StorageMap.Largest}" Style="{StaticResource Label}" Margin="4,0,0,8" />
                     <ListBox Grid.Row="1" Style="{StaticResource CleanList}" ItemsSource="{Binding Children}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -120,7 +121,7 @@
                                         </Grid>
                                         <ProgressBar Style="{StaticResource NeonBar}" Height="3" Value="{Binding Share, Mode=OneWay}" Margin="0,5,0,0" />
                                     </StackPanel>
-                                    <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8A7;" Width="28" Height="28" Margin="6,0,0,0" ToolTip="Im Explorer zeigen"
+                                    <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8A7;" Width="28" Height="28" Margin="6,0,0,0" ToolTip="{l:T StorageMap.Reveal}"
                                             Command="{Binding DataContext.RevealCommand, ElementName=Root}" CommandParameter="{Binding}" />
                                 </Grid>
                             </DataTemplate>

@@ -12,8 +12,8 @@ namespace EZTool.Modules.Hotkeys;
 public sealed class HotkeysModule : IModule
 {
     public string Id => "hotkeys";
-    public string Title => "Tastenbelegung";
-    public string Subtitle => "Keine Medientasten? Leg „Nächster Titel“, „Lauter“ & Co. auf jede beliebige Taste – funktioniert überall in Windows.";
+    public string Title => Loc.T("Hotkeys.Title");
+    public string Subtitle => Loc.T("Hotkeys.Subtitle");
     public string Icon => "";
     public int Order => 415;
 
@@ -27,8 +27,8 @@ public sealed partial class BindingVm : ObservableObject
 
     public string ActionText => Model.Action switch
     {
-        "key" => "Taste: " + HotkeyService.Describe(Model.TargetVk, Model.TargetCtrl, Model.TargetAlt, Model.TargetShift, false),
-        "run" => "Startet: " + Path.GetFileName(Model.Path),
+        "key" => Loc.T("Hotkeys.SendsKey", HotkeyService.Describe(Model.TargetVk, Model.TargetCtrl, Model.TargetAlt, Model.TargetShift, false)),
+        "run" => Loc.T("Hotkeys.Starts", Path.GetFileName(Model.Path)),
         _ => HotkeyService.Actions.FirstOrDefault(a => a.Id == Model.Action).Label ?? Model.Action,
     };
 
@@ -64,8 +64,8 @@ public sealed partial class HotkeysViewModel : ObservableObject
     // ── Editor ──
     [ObservableProperty] private bool _isRecording;
     [ObservableProperty] private bool _isRecordingTarget;
-    [ObservableProperty] private string _keyText = "Noch keine Taste";
-    [ObservableProperty] private string _targetText = "Noch keine Taste";
+    [ObservableProperty] private string _keyText = Loc.T("Hotkeys.NoKey");
+    [ObservableProperty] private string _targetText = Loc.T("Hotkeys.NoKey");
     [ObservableProperty] private string _selectedAction = "next";
     [ObservableProperty] private string _programPath = "";
     [ObservableProperty] private string _conflict = "";
@@ -112,19 +112,19 @@ public sealed partial class HotkeysViewModel : ObservableObject
     private void RecordKey()
     {
         IsRecording = true;
-        KeyText = "Drück jetzt eine Taste … (Esc = Abbrechen)";
+        KeyText = Loc.T("Hotkeys.PressKey");
         HotkeyService.Instance.Record((vk, ctrl, alt, shift, win) =>
         {
             IsRecording = false;
             if (vk == 0)
             {
-                KeyText = _draft.Vk == 0 ? "Noch keine Taste" : HotkeyService.Describe(_draft.Vk, _draft.Ctrl, _draft.Alt, _draft.Shift, _draft.Win);
+                KeyText = _draft.Vk == 0 ? Loc.T("Hotkeys.NoKey") : HotkeyService.Describe(_draft.Vk, _draft.Ctrl, _draft.Alt, _draft.Shift, _draft.Win);
                 return;
             }
             _draft.Vk = vk; _draft.Ctrl = ctrl; _draft.Alt = alt; _draft.Shift = shift; _draft.Win = win;
             KeyText = HotkeyService.Describe(vk, ctrl, alt, shift, win);
             var existing = Bindings.FirstOrDefault(b => b.Model.Vk == vk && b.Model.Ctrl == ctrl && b.Model.Alt == alt && b.Model.Shift == shift && b.Model.Win == win);
-            Conflict = existing != null ? $"Diese Taste ist schon belegt ({existing.ActionText}) – die alte Belegung wird ersetzt." : "";
+            Conflict = existing != null ? Loc.T("Hotkeys.Conflict", existing.ActionText) : "";
         });
     }
 
@@ -132,11 +132,11 @@ public sealed partial class HotkeysViewModel : ObservableObject
     private void RecordTarget()
     {
         IsRecordingTarget = true;
-        TargetText = "Drück jetzt die Ziel-Taste …";
+        TargetText = Loc.T("Hotkeys.PressTargetKey");
         HotkeyService.Instance.Record((vk, ctrl, alt, shift, _) =>
         {
             IsRecordingTarget = false;
-            if (vk == 0) { TargetText = "Noch keine Taste"; return; }
+            if (vk == 0) { TargetText = Loc.T("Hotkeys.NoKey"); return; }
             _draft.TargetVk = vk; _draft.TargetCtrl = ctrl; _draft.TargetAlt = alt; _draft.TargetShift = shift;
             TargetText = HotkeyService.Describe(vk, ctrl, alt, shift, false);
         });
@@ -145,7 +145,7 @@ public sealed partial class HotkeysViewModel : ObservableObject
     [RelayCommand]
     private void BrowseProgram()
     {
-        var dlg = new OpenFileDialog { Title = "Programm oder Datei wählen", Filter = "Programme|*.exe;*.lnk;*.bat;*.cmd|Alle Dateien|*.*" };
+        var dlg = new OpenFileDialog { Title = Loc.T("Hotkeys.BrowseTitle"), Filter = Loc.T("Hotkeys.BrowseFilterPrograms") + "|*.exe;*.lnk;*.bat;*.cmd|" + Loc.T("Hotkeys.BrowseFilterAll") + "|*.*" };
         if (dlg.ShowDialog() == true) ProgramPath = dlg.FileName;
     }
 
@@ -154,17 +154,17 @@ public sealed partial class HotkeysViewModel : ObservableObject
     {
         if (_draft.Vk == 0)
         {
-            NeonDialog.Show("Erst eine Taste aufnehmen", "Klicke auf „Taste aufnehmen“ und drück die Taste, die du belegen möchtest.", cancelText: null);
+            NeonDialog.Show(Loc.T("Hotkeys.NeedKeyTitle"), Loc.T("Hotkeys.NeedKeyText"), cancelText: null);
             return;
         }
         if (SelectedAction == "key" && _draft.TargetVk == 0)
         {
-            NeonDialog.Show("Ziel-Taste fehlt", "Nimm noch die Taste auf, die stattdessen gesendet werden soll.", cancelText: null);
+            NeonDialog.Show(Loc.T("Hotkeys.NeedTargetTitle"), Loc.T("Hotkeys.NeedTargetText"), cancelText: null);
             return;
         }
         if (SelectedAction == "run" && string.IsNullOrWhiteSpace(ProgramPath))
         {
-            NeonDialog.Show("Programm fehlt", "Wähle das Programm oder die Datei, die gestartet werden soll.", cancelText: null);
+            NeonDialog.Show(Loc.T("Hotkeys.NeedProgramTitle"), Loc.T("Hotkeys.NeedProgramText"), cancelText: null);
             return;
         }
 
@@ -177,7 +177,7 @@ public sealed partial class HotkeysViewModel : ObservableObject
         Save();
 
         _draft = new KeyBinding();
-        KeyText = TargetText = "Noch keine Taste";
+        KeyText = TargetText = Loc.T("Hotkeys.NoKey");
         ProgramPath = Conflict = "";
     }
 

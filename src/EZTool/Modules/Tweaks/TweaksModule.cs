@@ -13,8 +13,8 @@ namespace EZTool.Modules.Tweaks;
 public sealed class TweaksModule : IModule
 {
     public string Id => "tweaks";
-    public string Title => "Windows-Tweaks";
-    public string Subtitle => "Werbung raus, Datenschutz rein, Gaming-Optimierungen – alles per Schalter und jederzeit rückgängig.";
+    public string Title => Loc.T("Tweaks.Title");
+    public string Subtitle => Loc.T("Tweaks.Subtitle");
     public string Icon => "";
     public int Order => 410;
 
@@ -28,7 +28,7 @@ public sealed partial class TweakVm : ObservableObject
     public string Description => Tweak.Description;
     public string Category => Tweak.Category;
     public string Icon => Tweak.Icon;
-    public string NeedsText => Tweak.Needs switch { "explorer" => "Explorer-Neustart", "reboot" => "Neustart nötig", _ => "" };
+    public string NeedsText => Tweak.Needs switch { "explorer" => Loc.T("Tweaks.NeedsExplorer"), "reboot" => Loc.T("Tweaks.NeedsReboot"), _ => "" };
     public bool IsLocked { get; }
 
     [ObservableProperty] private bool _isOn;
@@ -88,7 +88,7 @@ public sealed partial class TweaksViewModel : ObservableObject, IActivatable
             _loading = true;
             vm.IsOn = !vm.IsOn;
             _loading = false;
-            NeonDialog.Show("Nicht möglich", $"„{vm.Name}“ konnte nicht geändert werden.\n\n{ex.Message}", cancelText: null, danger: true);
+            NeonDialog.Show(Loc.T("Tweaks.NotPossible"), Loc.T("Tweaks.ChangeFailed", vm.Name, ex.Message), cancelText: null, danger: true);
         }
         ActiveCount = Items.Count(i => i.IsOn);
     }
@@ -104,13 +104,13 @@ public sealed partial class TweaksViewModel : ObservableObject, IActivatable
     private async Task CreateRestorePointAsync()
     {
         var (ok, msg) = await Task.Run(TweakService.CreateRestorePoint);
-        NeonDialog.Show(ok ? "Gesichert" : "Nicht möglich", msg, cancelText: null, danger: !ok);
+        NeonDialog.Show(ok ? Loc.T("Tweaks.RestorePointSaved") : Loc.T("Tweaks.NotPossible"), msg, cancelText: null, danger: !ok);
     }
 
     [RelayCommand]
     private void ResetAll()
     {
-        if (!NeonDialog.Show("Alle Tweaks zurücksetzen?", "Alle hier aufgeführten Einstellungen werden auf den Windows-Standard zurückgesetzt.", "Zurücksetzen"))
+        if (!NeonDialog.Show(Loc.T("Tweaks.ResetTitle"), Loc.T("Tweaks.ResetText"), Loc.T("Tweaks.Reset")))
             return;
         foreach (var i in Items.Where(i => i.IsOn && !i.IsLocked)) i.IsOn = false;
     }

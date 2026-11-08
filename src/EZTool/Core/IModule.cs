@@ -28,11 +28,11 @@ public interface IModule
     /// <summary>Gruppe in der Navigation (Überschrift). Module mit gleicher Gruppe stehen zusammen.</summary>
     string Group => Order switch
     {
-        < 100 => "Monitor",
-        < 200 => "Gaming",
-        < 300 => "Aufräumen",
-        < 400 => "Software",
-        _ => "System",
+        < 100 => Loc.T("Nav.Group.Monitor"),
+        < 200 => Loc.T("Nav.Group.Gaming"),
+        < 300 => Loc.T("Nav.Group.Cleanup"),
+        < 400 => Loc.T("Nav.Group.Software"),
+        _ => Loc.T("Nav.Group.System"),
     };
 
     /// <summary>Erzeugt die Ansicht. Wird nur einmal aufgerufen und danach gecacht.</summary>

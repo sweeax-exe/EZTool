@@ -1,6 +1,8 @@
 <UserControl x:Class="EZTool.Modules.Settings.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:EZTool.Core"
+             x:Name="Root">
     <UserControl.Resources>
         <!-- Kopfzeile einer Einstellungs-Karte -->
         <Style x:Key="SectionIcon" TargetType="Border">
@@ -26,6 +28,38 @@
 
             <!-- ═══════════ Linke Spalte ═══════════ -->
             <StackPanel>
+                <!-- Sprache -->
+                <Border Style="{StaticResource Card}" Padding="22" Margin="0,0,0,18">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource SectionIcon}">
+                                <TextBlock Text="&#xE774;" Style="{StaticResource Icon}" HorizontalAlignment="Center" />
+                            </Border>
+                            <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{l:T Language.Title}" Style="{StaticResource H2}" />
+                                <TextBlock Text="{l:T Language.Subtitle}" Style="{StaticResource Body}" FontSize="12" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Border Margin="0,20,0,0" Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3">
+                            <ItemsControl ItemsSource="{Binding Languages}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Style="{StaticResource SegmentButton}" Content="{Binding Label}" ToolTip="{Binding ToolTip}" GroupName="lang"
+                                                     IsChecked="{Binding IsSelected, Mode=OneWay}"
+                                                     Command="{Binding DataContext.SelectLanguageCommand, ElementName=Root}" CommandParameter="{Binding Code}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
                 <!-- Start & Hintergrund -->
                 <Border Style="{StaticResource Card}" Padding="22">
                     <StackPanel>
@@ -34,33 +68,33 @@
                                 <TextBlock Text="&#xE7E8;" Style="{StaticResource Icon}" HorizontalAlignment="Center" />
                             </Border>
                             <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Start &amp; Hintergrund" Style="{StaticResource H2}" />
-                                <TextBlock Text="EZTool im Infobereich – immer im Blick, nie im Weg." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.StartTitle}" Style="{StaticResource H2}" />
+                                <TextBlock Text="{l:T Settings.StartSubtitle}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                         </StackPanel>
 
                         <Grid Style="{StaticResource Row}" Margin="0,22,0,0">
                             <StackPanel Margin="0,0,70,0">
-                                <TextBlock Text="Mit Windows starten" Foreground="{StaticResource Text}" FontSize="13.5" />
-                                <TextBlock Text="Startet beim Anmelden unsichtbar im Infobereich – mit Admin-Rechten, ohne UAC-Abfrage." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.StartWithWindows}" Foreground="{StaticResource Text}" FontSize="13.5" />
+                                <TextBlock Text="{l:T Settings.StartWithWindowsHint}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding StartWithWindows}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                         <Grid Style="{StaticResource Row}">
                             <StackPanel Margin="0,0,70,0">
-                                <TextBlock Text="Beim Schließen im Hintergrund weiterlaufen" Foreground="{StaticResource Text}" FontSize="13.5" />
-                                <TextBlock Text="Das X minimiert in den Infobereich. Beenden über Rechtsklick auf das Symbol." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.CloseToTray}" Foreground="{StaticResource Text}" FontSize="13.5" />
+                                <TextBlock Text="{l:T Settings.CloseToTrayHint}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding CloseToTray}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                         <Grid Style="{StaticResource Row}">
                             <StackPanel>
-                                <TextBlock Text="Aktualisierung der Sensoren" Foreground="{StaticResource Text}" FontSize="13.5" />
-                                <TextBlock Text="Schneller = flüssiger, langsamer = sparsamer." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.Interval}" Foreground="{StaticResource Text}" FontSize="13.5" />
+                                <TextBlock Text="{l:T Settings.IntervalHint}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                             <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3">
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource SegmentButton}" Content="0,5 s" GroupName="iv" Command="{Binding SetIntervalCommand}" CommandParameter="0"
+                                    <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Settings.Interval05}" GroupName="iv" Command="{Binding SetIntervalCommand}" CommandParameter="0"
                                                  IsChecked="{Binding IntervalIndex, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=0}" />
                                     <RadioButton Style="{StaticResource SegmentButton}" Content="1 s" GroupName="iv" Command="{Binding SetIntervalCommand}" CommandParameter="1"
                                                  IsChecked="{Binding IntervalIndex, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=1}" />
@@ -80,8 +114,8 @@
                                 <TextBlock Text="&#xE9CA;" Style="{StaticResource Icon}" HorizontalAlignment="Center" />
                             </Border>
                             <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Sensor-Treiber (PawnIO)" Style="{StaticResource H2}" />
-                                <TextBlock Text="Nötig für CPU-Temperatur, -Takt und -Leistung." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.DriverTitle}" Style="{StaticResource H2}" />
+                                <TextBlock Text="{l:T Settings.DriverSubtitle}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                         </StackPanel>
 
@@ -117,10 +151,7 @@
                             </StackPanel>
                         </Border>
 
-                        <TextBlock Style="{StaticResource Body}" FontSize="12" Margin="0,14,0,0" LineHeight="18">
-                            PawnIO ist ein kostenloser Open-Source-Treiber, den auch LibreHardwareMonitor verwendet. EZTool lädt den offiziellen,
-                            digital signierten Installer und startet ihn – du siehst dabei den Dialog des Herstellers.
-                        </TextBlock>
+                        <TextBlock Style="{StaticResource Body}" FontSize="12" Margin="0,14,0,0" LineHeight="18" Text="{l:T Settings.DriverInfo}" />
                         <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                             <Button Style="{StaticResource PrimaryButton}" Command="{Binding InstallDriverCommand}" Padding="18,9">
                                 <StackPanel Orientation="Horizontal">
@@ -128,10 +159,10 @@
                                     <TextBlock Text="{Binding DriverButtonText}" Margin="10,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource GhostButton}" Content="Projektseite" Margin="10,0,0,0"
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T Settings.ProjectPage}" Margin="10,0,0,0"
                                     Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/namazso/PawnIO.Setup" />
                         </StackPanel>
-                        <TextBlock Text="Zum Installieren muss EZTool als Administrator laufen." Style="{StaticResource Body}" FontSize="11.5" Foreground="{StaticResource Amber}"
+                        <TextBlock Text="{l:T Settings.DriverNeedsAdmin}" Style="{StaticResource Body}" FontSize="11.5" Foreground="{StaticResource Amber}"
                                    Margin="0,10,0,0" Visibility="{Binding IsAdmin, Converter={StaticResource InvVis}}" />
                     </StackPanel>
                 </Border>
@@ -144,8 +175,8 @@
                                 <TextBlock Text="&#xE895;" Style="{StaticResource Icon}" Foreground="{StaticResource Green}" HorizontalAlignment="Center" />
                             </Border>
                             <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="EZTool-Updates" Style="{StaticResource H2}" />
-                                <TextBlock Text="Neue Versionen kommen direkt von GitHub." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.UpdatesTitle}" Style="{StaticResource H2}" />
+                                <TextBlock Text="{l:T Settings.UpdatesSubtitle}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                         </StackPanel>
 
@@ -161,21 +192,21 @@
                                     Visibility="{Binding UpdateAvailable, Converter={StaticResource Vis}}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xE896;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" />
-                                    <TextBlock Text="Jetzt aktualisieren" Margin="10,0,0,0" />
+                                    <TextBlock Text="{l:T Settings.UpdateNow}" Margin="10,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource GhostButton}" Content="Nach Updates suchen" Command="{Binding CheckUpdatesCommand}" Margin="0,0,10,0" />
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T Settings.CheckUpdates}" Command="{Binding CheckUpdatesCommand}" Margin="0,0,10,0" />
                             <Button Style="{StaticResource GhostButton}" Content="GitHub" Command="{Binding OpenUrlCommand}" CommandParameter="{Binding RepoUrl}" />
                         </StackPanel>
 
                         <Grid Style="{StaticResource Row}">
-                            <TextBlock Text="Automatisch nach Updates suchen" Foreground="{StaticResource Text}" FontSize="13.5" VerticalAlignment="Center" />
+                            <TextBlock Text="{l:T Settings.AutoCheck}" Foreground="{StaticResource Text}" FontSize="13.5" VerticalAlignment="Center" />
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding AutoUpdateCheck}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
                         <Grid Style="{StaticResource Row}" IsEnabled="{Binding AutoUpdateCheck}">
                             <StackPanel Margin="0,0,70,0">
-                                <TextBlock Text="Updates automatisch installieren" Foreground="{StaticResource Text}" FontSize="13.5" />
-                                <TextBlock Text="Nur wenn EZTool im Infobereich läuft und kein Gaming-Modus aktiv ist – sonst kommt eine Benachrichtigung." Style="{StaticResource Body}" FontSize="12" />
+                                <TextBlock Text="{l:T Settings.AutoInstall}" Foreground="{StaticResource Text}" FontSize="13.5" />
+                                <TextBlock Text="{l:T Settings.AutoInstallHint}" Style="{StaticResource Body}" FontSize="12" />
                             </StackPanel>
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding AutoUpdateInstall}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
@@ -192,8 +223,8 @@
                             <TextBlock Text="{Binding SettingsPath}" Style="{StaticResource Body}" FontSize="11.5" Margin="0,4,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Style="{StaticResource GhostButton}" Content="Sicherungen" Command="{Binding OpenFolderCommand}" CommandParameter="backups" Padding="12,7" />
-                            <Button Style="{StaticResource GhostButton}" Content="Einstellungsordner" Command="{Binding OpenFolderCommand}" CommandParameter="settings" Padding="12,7" Margin="8,0,0,0" />
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T Settings.Backups}" Command="{Binding OpenFolderCommand}" CommandParameter="backups" Padding="12,7" />
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T Settings.SettingsFolder}" Command="{Binding OpenFolderCommand}" CommandParameter="settings" Padding="12,7" Margin="8,0,0,0" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -210,8 +241,8 @@
                                     <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Red}" HorizontalAlignment="Center" />
                                 </Border>
                                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Alarme" Style="{StaticResource H2}" />
-                                    <TextBlock Text="Windows-Benachrichtigung bei Überhitzung oder vollem Laufwerk." Style="{StaticResource Body}" FontSize="12" />
+                                    <TextBlock Text="{l:T Settings.AlertsTitle}" Style="{StaticResource H2}" />
+                                    <TextBlock Text="{l:T Settings.AlertsSubtitle}" Style="{StaticResource Body}" FontSize="12" />
                                 </StackPanel>
                             </StackPanel>
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding AlertsEnabled}" HorizontalAlignment="Right" VerticalAlignment="Center" />
@@ -219,7 +250,7 @@
 
                         <StackPanel IsEnabled="{Binding AlertsEnabled}">
                             <Grid Margin="0,24,0,6">
-                                <TextBlock Text="CPU WÄRMER ALS" Style="{StaticResource Label}" />
+                                <TextBlock Text="{l:T Settings.CpuLimit}" Style="{StaticResource Label}" />
                                 <TextBlock Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right">
                                     <Run Text="{Binding CpuTempLimit, Mode=OneWay}" /><Run Text=" °C" />
                                 </TextBlock>
@@ -227,7 +258,7 @@
                             <Slider Minimum="60" Maximum="100" TickFrequency="5" Value="{Binding CpuTempLimit}" />
 
                             <Grid Margin="0,18,0,6">
-                                <TextBlock Text="GPU WÄRMER ALS" Style="{StaticResource Label}" />
+                                <TextBlock Text="{l:T Settings.GpuLimit}" Style="{StaticResource Label}" />
                                 <TextBlock Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right">
                                     <Run Text="{Binding GpuTempLimit, Mode=OneWay}" /><Run Text=" °C" />
                                 </TextBlock>
@@ -235,14 +266,14 @@
                             <Slider Minimum="60" Maximum="100" TickFrequency="5" Value="{Binding GpuTempLimit}" />
 
                             <Grid Margin="0,18,0,6">
-                                <TextBlock Text="LAUFWERK WENIGER FREI ALS" Style="{StaticResource Label}" />
+                                <TextBlock Text="{l:T Settings.DriveLimit}" Style="{StaticResource Label}" />
                                 <TextBlock Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right">
                                     <Run Text="{Binding DriveFreeLimit, Mode=OneWay}" /><Run Text=" %" />
                                 </TextBlock>
                             </Grid>
                             <Slider Minimum="5" Maximum="30" TickFrequency="5" Value="{Binding DriveFreeLimit}" />
 
-                            <Button Style="{StaticResource GhostButton}" Content="Testbenachrichtigung senden" Command="{Binding TestAlertCommand}"
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T Settings.TestAlert}" Command="{Binding TestAlertCommand}"
                                     HorizontalAlignment="Left" Margin="0,20,0,0" Padding="14,8" />
                         </StackPanel>
                     </StackPanel>
@@ -257,30 +288,30 @@
                                     <TextBlock Text="&#xE7F4;" Style="{StaticResource Icon}" Foreground="{StaticResource Violet}" HorizontalAlignment="Center" />
                                 </Border>
                                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Overlay" Style="{StaticResource H2}" />
-                                    <TextBlock Text="Kleine Live-Anzeige über allen Fenstern – Klicks gehen hindurch." Style="{StaticResource Body}" FontSize="12" />
+                                    <TextBlock Text="{l:T Settings.OverlayTitle}" Style="{StaticResource H2}" />
+                                    <TextBlock Text="{l:T Settings.OverlaySubtitle}" Style="{StaticResource Body}" FontSize="12" />
                                 </StackPanel>
                             </StackPanel>
                             <CheckBox Style="{StaticResource Toggle}" IsChecked="{Binding OverlayEnabled}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                         </Grid>
 
                         <StackPanel IsEnabled="{Binding OverlayEnabled}">
-                            <TextBlock Text="POSITION" Style="{StaticResource Label}" Margin="0,24,0,8" />
+                            <TextBlock Text="{l:T Settings.Position}" Style="{StaticResource Label}" Margin="0,24,0,8" />
                             <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="10" Padding="3" HorizontalAlignment="Left">
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Style="{StaticResource SegmentButton}" Content="Oben links" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="TopLeft"
+                                    <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Settings.TopLeft}" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="TopLeft"
                                                  IsChecked="{Binding OverlayCorner, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=TopLeft}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" Content="Oben rechts" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="TopRight"
+                                    <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Settings.TopRight}" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="TopRight"
                                                  IsChecked="{Binding OverlayCorner, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=TopRight}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" Content="Unten links" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="BottomLeft"
+                                    <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Settings.BottomLeft}" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="BottomLeft"
                                                  IsChecked="{Binding OverlayCorner, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=BottomLeft}" />
-                                    <RadioButton Style="{StaticResource SegmentButton}" Content="Unten rechts" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="BottomRight"
+                                    <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Settings.BottomRight}" GroupName="oc" Command="{Binding SetCornerCommand}" CommandParameter="BottomRight"
                                                  IsChecked="{Binding OverlayCorner, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=BottomRight}" />
                                 </StackPanel>
                             </Border>
 
                             <Grid Margin="0,20,0,6">
-                                <TextBlock Text="DECKKRAFT" Style="{StaticResource Label}" />
+                                <TextBlock Text="{l:T Settings.Opacity}" Style="{StaticResource Label}" />
                                 <TextBlock Text="{Binding OverlayOpacity, StringFormat={}{0:P0}}" Style="{StaticResource Value}" FontSize="13" Foreground="{StaticResource Cyan}" HorizontalAlignment="Right" />
                             </Grid>
                             <Slider Minimum="0.3" Maximum="1" TickFrequency="0.05" Value="{Binding OverlayOpacity}" />

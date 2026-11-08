@@ -17,13 +17,19 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
+                            <!-- Titel links, Untertitel rechts – eigene Spalten, damit lange Übersetzungen nicht überlappen -->
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{TemplateBinding Icon}" Style="{StaticResource Icon}" FontSize="14" Foreground="{TemplateBinding ArcBrush}" />
                                     <TextBlock Text="{TemplateBinding Title}" Style="{StaticResource Label}" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <TextBlock Text="{TemplateBinding Caption}" Style="{StaticResource Body}" FontSize="11" HorizontalAlignment="Right"
-                                           TextTrimming="CharacterEllipsis" MaxWidth="150" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="{TemplateBinding Caption}" Style="{StaticResource Body}" FontSize="11" HorizontalAlignment="Right"
+                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="10,0,0,0"
+                                           ToolTip="{TemplateBinding Caption}" />
                             </Grid>
 
                             <Grid Grid.Row="1" Height="190" Margin="0,8,0,4">

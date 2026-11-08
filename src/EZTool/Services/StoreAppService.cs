@@ -1,5 +1,6 @@
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using EZTool.Core;
 using Microsoft.Win32;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
@@ -134,7 +135,7 @@ public static class StoreAppService
     /// <summary>Entfernt die App für den aktuellen Benutzer (inklusive ihrer App-Daten).</summary>
     public static async Task UninstallAsync(InstalledProgram p)
     {
-        if (p.IsProtected) throw new InvalidOperationException("Diese App ist systemrelevant und wird nicht entfernt.");
+        if (p.IsProtected) throw new InvalidOperationException(Loc.T("Programs.StoreProtected"));
         var result = await new PackageManager().RemovePackageAsync(p.KeyName).AsTask();
         if (result.ExtendedErrorCode != null && result.ExtendedErrorCode.HResult != 0)
             throw new InvalidOperationException(string.IsNullOrWhiteSpace(result.ErrorText) ? result.ExtendedErrorCode.Message : result.ErrorText);

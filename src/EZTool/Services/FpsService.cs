@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using EZTool.Core;
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Session;
 
@@ -51,7 +52,7 @@ public sealed class FpsService
         }
         if (!CanMeasure)
         {
-            Error = "FPS-Messung benötigt Administrator-Rechte.";
+            Error = Loc.T("Gaming.Fps.NeedsAdmin");
             return;
         }
         try
@@ -70,7 +71,7 @@ public sealed class FpsService
         }
         catch (Exception ex)
         {
-            Error = "FPS-Messung konnte nicht starten: " + ex.Message;
+            Error = Loc.T("Gaming.Fps.StartFailed", ex.Message);
             _session?.Dispose();
             _session = null;
         }
@@ -164,7 +165,7 @@ public sealed class FpsService
             using var p = Process.GetProcessById(pid);
             n = p.MainWindowTitle is { Length: > 0 } title ? title : p.ProcessName;
         }
-        catch { n = "Spiel"; }
+        catch { n = Loc.T("Gaming.Fps.FallbackName"); }
         if (_names.Count > 200) _names.Clear();
         return _names[pid] = n;
     }

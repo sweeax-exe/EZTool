@@ -1,5 +1,6 @@
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -195,7 +196,7 @@ public static class FolderService
                     list.RemoveAll(e => e.Path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
                     DateTime? lw = null;
                     try { lw = dir.LastWriteTime; } catch { /* egal */ }
-                    list.Add(new FolderEntry { Path = dir.FullName, LastWrite = lw, Note = subs.Count > 0 ? "nur leere Unterordner" : "leer" });
+                    list.Add(new FolderEntry { Path = dir.FullName, LastWrite = lw, Note = subs.Count > 0 ? Loc.T("Folders.Note.OnlyEmptySubfolders") : Loc.T("Folders.Note.Empty") });
                     return true;
                 }
                 return allEmpty;
@@ -306,7 +307,7 @@ public static class FolderService
                     Size = size,
                     Files = files,
                     LastWrite = newest,
-                    Note = "kein passendes Programm gefunden"
+                    Note = Loc.T("Folders.Note.NoMatchingProgram")
                 });
             }
         }

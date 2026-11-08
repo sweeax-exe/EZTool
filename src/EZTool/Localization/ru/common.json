@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Отмена",
+  "Common.UnexpectedError": "Непредвиденная ошибка",
+
+  "Window.Minimize": "Свернуть",
+  "Window.Maximize": "Развернуть",
+  "Window.Close": "Закрыть",
+
+  "Shell.Module": "МОДУЛЬ {0:00} / {1:00}",
+  "Shell.Admin": "Администратор",
+  "Shell.Limited": "Ограниченный",
+  "Shell.UpdateAvailable": "Доступно обновление {0}",
+  "Shell.UpdateAvailableShort": "Есть обновление",
+  "Shell.ClockFormat": "dddd, d MMMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool продолжает работать в фоне",
+  "Shell.TrayHintText": "Мониторинг и оповещения остаются активными. Для выхода щелкните значок правой кнопкой мыши.",
+
+  "Nav.Group.Monitor": "Мониторинг",
+  "Nav.Group.Gaming": "Игры",
+  "Nav.Group.Cleanup": "Очистка",
+  "Nav.Group.Software": "Программы",
+  "Nav.Group.System": "Система",
+
+  "Format.Today": "сегодня",
+  "Format.Yesterday": "вчера",
+  "Format.DaysAgo": "{0} дн. назад",
+  "Format.MonthsAgo": "{0} мес. назад",
+  "Format.YearsAgo": "{0} г. назад",
+  "Format.DurationDays": "{0} д {1} ч",
+  "Format.DurationHours": "{0} ч {1} мин",
+  "Format.DurationMinutes": "{0} мин",
+
+  "Tray.Open": "Открыть EZTool",
+  "Tray.GamingStart": "Включить игровой режим",
+  "Tray.GamingStop": "Выключить игровой режим",
+  "Tray.Overlay": "Показать оверлей",
+  "Tray.Exit": "Выход",
+  "Tray.SessionReady": "Отчет о сессии готов",
+  "Tray.SessionText": "{0}: сред. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU перегревается",
+  "Alert.CpuHotText": "{0}: {1:0} °C (предел {2} °C).",
+  "Alert.GpuHotTitle": "Видеокарта перегревается",
+  "Alert.GpuHotText": "{0}: {1:0} °C (предел {2} °C).",
+  "Alert.DriveFullTitle": "Диск {0} почти заполнен",
+  "Alert.DriveFullText": "Свободно всего {0} ({1:0} %). Щелкните, чтобы очистить.",
+  "Alert.TestTitle": "Оповещения EZTool активны",
+  "Alert.TestText": "Так выглядит предупреждение при превышении предела.",
+
+  "Chart.Empty": "Данных пока нет – история пополняется каждые 5 секунд.",
+  "System.RamModules": "{0} · {1}× модуль",
+  "Hardware.LocalDisk": "Локальный диск",
+
+  "Language.Title": "Язык",
+  "Language.Subtitle": "EZTool на вашем языке – автоматически, как в Windows.",
+  "Language.Auto": "Автоматически ({0})",
+  "Language.RestartTitle": "Сменить язык",
+  "Language.RestartText": "EZTool быстро перезапустится, чтобы новый язык применился везде.",
+  "Language.RestartNow": "Перезапустить",
+  "Language.Later": "Позже"
+}

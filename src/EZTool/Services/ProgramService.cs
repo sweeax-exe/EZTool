@@ -33,7 +33,7 @@ public sealed partial class InstalledProgram : ObservableObject
     public bool CanUninstall => !IsProtected;
     public string Kind => IsStore ? "store" : "desktop";
 
-    public string Scope => IsStore ? "Store-App" : Hive == RegistryHive.CurrentUser ? "Benutzer" : View == RegistryView.Registry32 ? "32-Bit" : "64-Bit";
+    public string Scope => IsStore ? Loc.T("Programs.ScopeStore") : Hive == RegistryHive.CurrentUser ? Loc.T("Programs.ScopeUser") : View == RegistryView.Registry32 ? Loc.T("Programs.Scope32") : Loc.T("Programs.Scope64");
     public string RegistryPath => $@"{(Hive == RegistryHive.CurrentUser ? "HKCU" : "HKLM")}\{ProgramService.UninstallKey}\{KeyName}";
 
     [ObservableProperty] private long _size;
@@ -47,7 +47,7 @@ public sealed partial class Leftover : ObservableObject
     public required string Path { get; init; }
     public required bool IsRegistry { get; init; }
     public long Size { get; init; }
-    public string Kind => IsRegistry ? "Registry" : "Ordner";
+    public string Kind => IsRegistry ? Loc.T("Leftover.KindRegistry") : Loc.T("Leftover.KindFolder");
     [ObservableProperty] private bool _isChecked = true;
 }
 

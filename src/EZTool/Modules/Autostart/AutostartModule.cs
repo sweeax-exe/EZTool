@@ -13,8 +13,8 @@ namespace EZTool.Modules.Autostart;
 public sealed class AutostartModule : IModule
 {
     public string Id => "autostart";
-    public string Title => "Autostart";
-    public string Subtitle => "Bestimme, was beim Hochfahren mitstartet – ein Klick schaltet aus, ohne etwas zu löschen.";
+    public string Title => Loc.T("Autostart.Title");
+    public string Subtitle => Loc.T("Autostart.Subtitle");
     public string Icon => "";
     public int Order => 330;
 
@@ -98,7 +98,7 @@ public sealed partial class AutostartViewModel : ObservableObject, IActivatable
             _suppress = true;
             e.IsEnabled = !wanted;
             _suppress = false;
-            NeonDialog.Show("Nicht möglich", $"„{e.Name}“ konnte nicht {(wanted ? "aktiviert" : "deaktiviert")} werden.\n\n{ex.Message}", cancelText: null, danger: true);
+            NeonDialog.Show(Loc.T("Autostart.NotPossible"), Loc.T(wanted ? "Autostart.EnableFailed" : "Autostart.DisableFailed", e.Name, ex.Message), cancelText: null, danger: true);
         }
         Recalc();
     }
@@ -120,11 +120,9 @@ public sealed partial class AutostartViewModel : ObservableObject, IActivatable
     private async Task DeleteAsync(AutostartEntry? e)
     {
         if (e == null) return;
-        var msg = $"„{e.Name}“ wird dauerhaft aus dem Autostart entfernt. Das Programm selbst bleibt installiert.\n\n" +
-                  "Tipp: Ausschalten genügt meistens – das lässt sich jederzeit rückgängig machen. " +
-                  $"Eine Sicherung des Eintrags wird abgelegt in:\n{ProgramService.BackupFolder}";
-        if (e.IsWindows) msg = "Achtung: Dieser Eintrag gehört zu Windows/Microsoft.\n\n" + msg;
-        if (!NeonDialog.Show("Eintrag entfernen?", msg, "Entfernen", danger: true, details: [e.Command])) return;
+        var msg = Loc.T("Autostart.DeleteText", e.Name, ProgramService.BackupFolder);
+        if (e.IsWindows) msg = Loc.T("Autostart.DeleteWindowsWarning") + "\n\n" + msg;
+        if (!NeonDialog.Show(Loc.T("Autostart.DeleteTitle"), msg, Loc.T("Autostart.Delete"), danger: true, details: [e.Command])) return;
 
         try
         {
@@ -135,7 +133,7 @@ public sealed partial class AutostartViewModel : ObservableObject, IActivatable
         }
         catch (Exception ex)
         {
-            NeonDialog.Show("Nicht möglich", $"„{e.Name}“ konnte nicht entfernt werden.\n\n{ex.Message}", cancelText: null, danger: true);
+            NeonDialog.Show(Loc.T("Autostart.NotPossible"), Loc.T("Autostart.DeleteFailed", e.Name, ex.Message), cancelText: null, danger: true);
         }
     }
 }

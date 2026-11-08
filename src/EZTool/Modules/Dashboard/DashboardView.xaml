@@ -1,7 +1,8 @@
 <UserControl x:Class="EZTool.Modules.Dashboard.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="clr-namespace:EZTool.Controls">
+             xmlns:c="clr-namespace:EZTool.Controls"
+             xmlns:l="clr-namespace:EZTool.Core">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="40,0,32,32">
         <StackPanel>
 
@@ -11,33 +12,33 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE7BA;" Style="{StaticResource Icon}" Foreground="{StaticResource Amber}" />
                     <TextBlock Text="{Binding DriverHint}" Style="{StaticResource Body}" Margin="12,0,0,0" VerticalAlignment="Center" />
-                    <Button Style="{StaticResource PrimaryButton}" Content="Jetzt installieren" Command="{Binding InstallDriverCommand}" Padding="14,6" FontSize="12.5"
+                    <Button Style="{StaticResource PrimaryButton}" Content="{l:T Dashboard.InstallNow}" Command="{Binding InstallDriverCommand}" Padding="14,6" FontSize="12.5"
                             Margin="16,0,0,0" Visibility="{Binding CanInstallDriver, Converter={StaticResource Vis}}" />
                 </StackPanel>
             </Border>
 
             <!-- ═══ Reihe 1: Gauges ═══ -->
             <UniformGrid Columns="4" Margin="-8,0">
-                <c:GaugeCard Margin="8" Title="Prozessor" Icon="&#xE950;" Caption="{Binding CpuName}"
+                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Processor}" Icon="&#xE950;" Caption="{Binding CpuName}"
                              Value="{Binding CpuLoad}" ValueText="{Binding CpuLoadText}" SubText="{Binding CpuTempText}"
                              ArcBrush="{StaticResource AccentGradient}" GlowColor="#00E5FF"
-                             Stat1Label="Takt" Stat1Value="{Binding CpuClockText}"
-                             Stat2Label="Leistung" Stat2Value="{Binding CpuPowerText}" />
-                <c:GaugeCard Margin="8" Title="Grafik" Icon="&#xE7F4;" Caption="{Binding GpuName}"
+                             Stat1Label="{l:T Dashboard.Clock}" Stat1Value="{Binding CpuClockText}"
+                             Stat2Label="{l:T Dashboard.Power}" Stat2Value="{Binding CpuPowerText}" />
+                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Graphics}" Icon="&#xE7F4;" Caption="{Binding GpuName}"
                              Value="{Binding GpuLoad}" ValueText="{Binding GpuLoadText}" SubText="{Binding GpuTempText}"
                              ArcBrush="{StaticResource HotGradient}" GlowColor="#B04DFF"
                              Stat1Label="VRAM" Stat1Value="{Binding GpuMemText}"
-                             Stat2Label="Takt" Stat2Value="{Binding GpuClockText}" />
-                <c:GaugeCard Margin="8" Title="Arbeitsspeicher" Icon="&#xE964;" Caption="{Binding RamTotalText}"
-                             Value="{Binding RamLoad}" ValueText="{Binding RamLoadText}" SubText="belegt"
+                             Stat2Label="{l:T Dashboard.Clock}" Stat2Value="{Binding GpuClockText}" />
+                <c:GaugeCard Margin="8" Title="{l:T Dashboard.Memory}" Icon="&#xE964;" Caption="{Binding RamTotalText}"
+                             Value="{Binding RamLoad}" ValueText="{Binding RamLoadText}" SubText="{l:T Dashboard.InUse}"
                              ArcBrush="{StaticResource GreenGradient}" GlowColor="#2CF5A0"
-                             Stat1Label="Belegt" Stat1Value="{Binding RamUsedText}"
-                             Stat2Label="Frei" Stat2Value="{Binding RamFreeText}" />
-                <c:GaugeCard Margin="8" Title="Systemlaufwerk" Icon="&#xEDA2;" Caption="{Binding SysDriveName}"
-                             Value="{Binding SysDriveLoad}" ValueText="{Binding SysDriveLoadText}" SubText="belegt"
+                             Stat1Label="{l:T Dashboard.Used}" Stat1Value="{Binding RamUsedText}"
+                             Stat2Label="{l:T Dashboard.Free}" Stat2Value="{Binding RamFreeText}" />
+                <c:GaugeCard Margin="8" Title="{l:T Dashboard.SystemDrive}" Icon="&#xEDA2;" Caption="{Binding SysDriveName}"
+                             Value="{Binding SysDriveLoad}" ValueText="{Binding SysDriveLoadText}" SubText="{l:T Dashboard.InUse}"
                              GlowColor="#FFB547"
-                             Stat1Label="Frei" Stat1Value="{Binding SysDriveFreeText}"
-                             Stat2Label="Gesamt" Stat2Value="{Binding SysDriveTotalText}">
+                             Stat1Label="{l:T Dashboard.Free}" Stat1Value="{Binding SysDriveFreeText}"
+                             Stat2Label="{l:T Dashboard.Total}" Stat2Value="{Binding SysDriveTotalText}">
                     <c:GaugeCard.ArcBrush>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                             <GradientStop Color="#FFB547" Offset="0" />
@@ -64,7 +65,7 @@
                         <Grid>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE9D2;" Style="{StaticResource Icon}" FontSize="14" />
-                                <TextBlock Text="Live-Auslastung · 60 Sekunden" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                                <TextBlock Text="{l:T Dashboard.LiveLoad}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Ellipse Width="8" Height="8" Fill="{StaticResource Cyan}" VerticalAlignment="Center" />
@@ -87,7 +88,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE9CA;" Style="{StaticResource Icon}" FontSize="14" />
-                            <TextBlock Text="Temperaturen" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                            <TextBlock Text="{l:T Dashboard.Temperatures}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
 
                         <Grid Margin="0,22,0,0">
@@ -107,7 +108,7 @@
                                      Foreground="{Binding GpuTemp, Converter={StaticResource TempBrush}}" />
 
                         <Grid Margin="0,22,0,0">
-                            <TextBlock Text="GPU Hotspot" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.GpuHotspot}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding GpuHotSpotText}" Style="{StaticResource Value}" HorizontalAlignment="Right"
                                        Foreground="{Binding GpuHotSpot, Converter={StaticResource TempBrush}}" />
                         </Grid>
@@ -116,11 +117,11 @@
 
                         <Grid Margin="0,22,0,0">
                             <StackPanel>
-                                <TextBlock Text="GPU-Lüfter" Style="{StaticResource Label}" />
+                                <TextBlock Text="{l:T Dashboard.GpuFan}" Style="{StaticResource Label}" />
                                 <TextBlock Text="{Binding GpuFanText}" Style="{StaticResource Value}" Margin="0,4,0,0" />
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Right">
-                                <TextBlock Text="GPU-Leistung" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{l:T Dashboard.GpuPower}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
                                 <TextBlock Text="{Binding GpuPowerText}" Style="{StaticResource Value}" Margin="0,4,0,0" HorizontalAlignment="Right" />
                             </StackPanel>
                         </Grid>
@@ -143,7 +144,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE950;" Style="{StaticResource Icon}" FontSize="14" />
-                            <TextBlock Text="Kern-Auslastung" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                            <TextBlock Text="{l:T Dashboard.CoreLoad}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding ThreadLoads}" Margin="0,18,0,0" Height="110">
                             <ItemsControl.ItemsPanel>
@@ -162,7 +163,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <TextBlock Style="{StaticResource Body}" FontSize="11" Margin="0,10,0,0">
-                            <Run Text="{Binding ThreadLoads.Length, Mode=OneWay}" /><Run Text=" logische Prozessoren" />
+                            <Run Text="{Binding ThreadLoads.Length, Mode=OneWay, StringFormat={l:T Dashboard.LogicalProcessors}}" />
                         </TextBlock>
                     </StackPanel>
                 </Border>
@@ -172,7 +173,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xEDA2;" Style="{StaticResource Icon}" FontSize="14" />
-                            <TextBlock Text="Laufwerke" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                            <TextBlock Text="{l:T Dashboard.Drives}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding Drives}" Margin="0,10,0,0">
                             <ItemsControl.ItemTemplate>
@@ -184,7 +185,7 @@
                                                 <Run Text="{Binding Label, Mode=OneWay}" Foreground="{StaticResource TextDim}" FontSize="12" />
                                             </TextBlock>
                                             <TextBlock HorizontalAlignment="Right" Foreground="{StaticResource TextDim}" FontSize="12">
-                                                <Run Text="{Binding Free, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Text}" /><Run Text=" frei von " /><Run Text="{Binding Total, Mode=OneWay, Converter={StaticResource Bytes}}" />
+                                                <Run Text="{Binding Free, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Text}" /><Run Text="{l:T Dashboard.FreeOf}" /><Run Text="{Binding Total, Mode=OneWay, Converter={StaticResource Bytes}}" />
                                             </TextBlock>
                                         </Grid>
                                         <ProgressBar Style="{StaticResource NeonBar}" Value="{Binding UsedPercent, Mode=OneWay}" Margin="0,7,0,0" />
@@ -205,15 +206,15 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE8CB;" Style="{StaticResource Icon}" FontSize="14" />
-                            <TextBlock Text="Netzwerk" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                            <TextBlock Text="{l:T Dashboard.Network}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                         </StackPanel>
                         <Grid Grid.Row="1" Margin="0,16,0,0">
                             <StackPanel>
-                                <TextBlock Text="↓ Download" Style="{StaticResource Label}" Foreground="{StaticResource Cyan}" />
+                                <TextBlock Text="{l:T Dashboard.Download}" Style="{StaticResource Label}" Foreground="{StaticResource Cyan}" />
                                 <TextBlock Text="{Binding NetDownText}" Style="{StaticResource Value}" FontSize="20" Margin="0,2,0,0" />
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Right">
-                                <TextBlock Text="↑ Upload" Style="{StaticResource Label}" Foreground="{StaticResource Magenta}" HorizontalAlignment="Right" />
+                                <TextBlock Text="{l:T Dashboard.Upload}" Style="{StaticResource Label}" Foreground="{StaticResource Magenta}" HorizontalAlignment="Right" />
                                 <TextBlock Text="{Binding NetUpText}" Style="{StaticResource Value}" FontSize="20" Margin="0,2,0,0" HorizontalAlignment="Right" />
                             </StackPanel>
                         </Grid>
@@ -230,42 +231,42 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE7F8;" Style="{StaticResource Icon}" FontSize="14" />
-                        <TextBlock Text="System" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
+                        <TextBlock Text="{l:T Dashboard.System}" Style="{StaticResource H2}" FontSize="15" Margin="10,0,0,0" />
                     </StackPanel>
                     <UniformGrid Columns="4" Margin="0,8,0,0">
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Betriebssystem" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Os}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.OsName, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
                             <TextBlock Text="{Binding System.OsBuild}" Style="{StaticResource Body}" FontSize="11" />
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Mainboard" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Motherboard}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.Motherboard, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
                             <TextBlock Style="{StaticResource Body}" FontSize="11"><Run Text="BIOS " /><Run Text="{Binding System.BiosVersion, Mode=OneWay}" /></TextBlock>
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Prozessor" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Processor}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding CpuName}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
-                            <TextBlock Style="{StaticResource Body}" FontSize="11"><Run Text="{Binding System.Cores, Mode=OneWay}" /><Run Text=" Kerne · " /><Run Text="{Binding System.Threads, Mode=OneWay}" /><Run Text=" Threads" /></TextBlock>
+                            <TextBlock Style="{StaticResource Body}" FontSize="11"><Run Text="{Binding System.Cores, Mode=OneWay}" /><Run Text="{l:T Dashboard.CoresSuffix}" /><Run Text="{Binding System.Threads, Mode=OneWay}" /><Run Text="{l:T Dashboard.ThreadsSuffix}" /></TextBlock>
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Arbeitsspeicher" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Memory}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.RamInfo, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Grafik" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Graphics}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.GpuName, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Computername" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.ComputerName}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.ComputerName, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" />
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Benutzer" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.User}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding System.UserName, FallbackValue=—}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" />
                         </StackPanel>
                         <StackPanel Margin="0,10,16,0">
-                            <TextBlock Text="Laufzeit" Style="{StaticResource Label}" />
+                            <TextBlock Text="{l:T Dashboard.Uptime}" Style="{StaticResource Label}" />
                             <TextBlock Text="{Binding UptimeText}" Style="{StaticResource Value}" FontSize="13" Margin="0,3,0,0" />
                         </StackPanel>
                     </UniformGrid>

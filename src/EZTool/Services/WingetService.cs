@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -14,7 +15,7 @@ public sealed partial class UpgradeItem : ObservableObject
 
     [ObservableProperty] private bool _isChecked = true;
     [ObservableProperty] private bool _isWorking;
-    [ObservableProperty] private string _status = "Update verfügbar";
+    [ObservableProperty] private string _status = Loc.T("Updates.StatusAvailable");
     [ObservableProperty] private int _state; // 0 = offen, 1 = erledigt, 2 = Fehler
     [ObservableProperty] private System.Windows.Media.ImageSource? _icon;
 }
@@ -94,9 +95,9 @@ public static class WingetService
     {
         var (code, output) = Run($"upgrade --id \"{item.Id}\" --exact --silent --include-unknown --accept-package-agreements --accept-source-agreements --disable-interactivity",
             TimeSpan.FromMinutes(30));
-        if (code == 0) return (true, "Aktualisiert");
+        if (code == 0) return (true, Loc.T("Updates.StatusUpdated"));
         var last = output.Replace("\r", "\n").Split('\n', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.Trim() ?? "";
-        return (false, string.IsNullOrEmpty(last) ? $"Fehler (Code 0x{code:X8})" : last);
+        return (false, string.IsNullOrEmpty(last) ? Loc.T("Updates.ErrorCode", code) : last);
     });
 
     private static (int Code, string Output) Run(string args, TimeSpan timeout)
@@ -110,13 +111,13 @@ public static class WingetService
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8,
         };
-        using var p = Process.Start(psi) ?? throw new InvalidOperationException("winget konnte nicht gestartet werden.");
+        using var p = Process.Start(psi) ?? throw new InvalidOperationException(Loc.T("Updates.WingetStartFailed"));
         var stdout = p.StandardOutput.ReadToEndAsync();
         var stderr = p.StandardError.ReadToEndAsync();
         if (!p.WaitForExit(timeout))
         {
             try { p.Kill(true); } catch { /* egal */ }
-            return (-1, "Zeitüberschreitung");
+            return (-1, Loc.T("Updates.Timeout"));
         }
         return (p.ExitCode, stdout.Result + stderr.Result);
     }

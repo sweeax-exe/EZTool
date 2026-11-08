@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Threading;
 using EZTool.Dialogs;
 using EZTool.Services;
@@ -29,6 +29,16 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        // Nach einem Neustart (z. B. Sprachwechsel) erst warten, bis die alte Instanz beendet ist
+        if (int.TryParse(Arg("--wait-pid="), out var oldPid))
+        {
+            try { System.Diagnostics.Process.GetProcessById(oldPid).WaitForExit(15000); } catch { /* schon beendet */ }
+        }
+
+        // Sprache muss vor dem ersten Fenster feststehen
+        // EZTOOL_LANG=en (o. ä.) überschreibt die Einstellung – zum Testen anderer Sprachen
+        Core.Loc.Init(Environment.GetEnvironmentVariable("EZTOOL_LANG") is { Length: > 0 } testLang ? testLang : SettingsService.Current.Language);
+
         // Nur eine Instanz: ein zweiter Start holt das laufende Fenster nach vorn.
         _mutex = new Mutex(true, InstanceName, out bool first);
         if (!first)
@@ -90,6 +100,16 @@ public partial class App : Application
         if (module != null) w.OpenModule(module);
     }
 
+    /// <summary>EZTool neu starten (z. B. nach einem Sprachwechsel). Läuft mit denselben Rechten weiter.</summary>
+    public void Restart()
+    {
+        var exe = Environment.ProcessPath;
+        if (exe == null) return;
+        var hidden = MainWindow is { IsVisible: false } ? " --tray" : "";
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exe, $"--wait-pid={Environment.ProcessId}{hidden}") { UseShellExecute = false });
+        ExitApp();
+    }
+
     public void ExitApp()
     {
         IsExiting = true;
@@ -108,6 +128,6 @@ public partial class App : Application
     private static void OnUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         e.Handled = true;
-        NeonDialog.Show("Unerwarteter Fehler", e.Exception.Message, "OK", cancelText: null, danger: true);
+        NeonDialog.Show(Core.Loc.T("Common.UnexpectedError"), e.Exception.Message, cancelText: null, danger: true);
     }
 }

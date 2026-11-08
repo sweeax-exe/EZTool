@@ -11,8 +11,8 @@ namespace EZTool.Modules.Updates;
 public sealed class UpdatesModule : IModule
 {
     public string Id => "updates";
-    public string Title => "Updates";
-    public string Subtitle => "Neue Versionen deiner Programme finden und mit einem Klick installieren – über den Windows-Paketmanager.";
+    public string Title => Loc.T("Updates.Title");
+    public string Subtitle => Loc.T("Updates.Subtitle");
     public string Icon => "";
     public int Order => 320;
 
@@ -47,7 +47,7 @@ public sealed partial class UpdatesViewModel : ObservableObject, IActivatable
     {
         _checked = true;
         IsBusy = IsChecking = true;
-        Status = "Suche nach Updates…";
+        Status = Loc.T("Updates.Searching");
         try
         {
             if (!await Task.Run(WingetService.IsAvailable))
@@ -60,11 +60,9 @@ public sealed partial class UpdatesViewModel : ObservableObject, IActivatable
             var (items, needsAgreement) = await Task.Run(() => WingetService.ListUpgrades(SettingsService.Current.WingetAgreed));
             if (needsAgreement)
             {
-                if (!NeonDialog.Show("Paketquellen freigeben",
-                        "Der Windows-Paketmanager (winget) möchte, dass du einmalig den Nutzungsbedingungen seiner Paketquellen zustimmst " +
-                        "(winget-Community-Repository und Microsoft Store). Erst danach kann er nach Updates suchen.", "Zustimmen"))
+                if (!NeonDialog.Show(Loc.T("Updates.AgreementTitle"), Loc.T("Updates.AgreementText"), Loc.T("Updates.AgreementAccept")))
                 {
-                    Status = "Ohne Zustimmung kann winget nicht nach Updates suchen.";
+                    Status = Loc.T("Updates.AgreementDeclined");
                     return;
                 }
                 SettingsService.Current.WingetAgreed = true;
@@ -82,7 +80,7 @@ public sealed partial class UpdatesViewModel : ObservableObject, IActivatable
                 Items.Add(i);
             }
             LastCheck = DateTime.Now;
-            Status = items.Count == 0 ? "Alles aktuell – keine Updates verfügbar. ✨" : $"{items.Count} Updates verfügbar";
+            Status = items.Count == 0 ? Loc.T("Updates.AllUpToDate") : Loc.T("Updates.Available", items.Count);
             Recalc();
             _ = LoadIconsAsync(items);
         }
@@ -140,10 +138,9 @@ public sealed partial class UpdatesViewModel : ObservableObject, IActivatable
     private async Task RunUpdates(List<UpgradeItem> list)
     {
         if (list.Count == 0) return;
-        if (!NeonDialog.Show(list.Count == 1 ? $"„{list[0].Name}“ aktualisieren?" : $"{list.Count} Programme aktualisieren?",
-                "Die Updates werden nacheinander still im Hintergrund installiert. Laufende Programme sollten vorher geschlossen werden – " +
-                "manche Installer fragen sonst nach oder brechen ab.\n\nMit dem Aktualisieren stimmst du den Lizenzbedingungen der jeweiligen Pakete zu.",
-                "Aktualisieren", details: list.Count > 1 ? list.Select(i => $"{i.Name}  ·  {i.Version} → {i.Available}") : null))
+        if (!NeonDialog.Show(list.Count == 1 ? Loc.T("Updates.ConfirmOneTitle", list[0].Name) : Loc.T("Updates.ConfirmManyTitle", list.Count),
+                Loc.T("Updates.ConfirmText"),
+                Loc.T("Updates.Update"), details: list.Count > 1 ? list.Select(i => $"{i.Name}  ·  {i.Version} → {i.Available}") : null))
             return;
 
         IsBusy = true;
@@ -151,18 +148,18 @@ public sealed partial class UpdatesViewModel : ObservableObject, IActivatable
         foreach (var item in list)
         {
             n++;
-            Status = $"Aktualisiere {n} von {list.Count}: {item.Name}";
+            Status = Loc.T("Updates.Progress", n, list.Count, item.Name);
             item.IsWorking = true;
-            item.Status = "Wird installiert…";
+            item.Status = Loc.T("Updates.Installing");
             var (success, msg) = await WingetService.UpgradeAsync(item);
             item.IsWorking = false;
             item.State = success ? 1 : 2;
-            item.Status = success ? $"Auf {item.Available} aktualisiert" : msg;
+            item.Status = success ? Loc.T("Updates.UpdatedTo", item.Available) : msg;
             item.IsChecked = false;
             if (success) ok++; else fail++;
         }
         IsBusy = false;
-        Status = fail == 0 ? $"Fertig – {ok} Programme aktualisiert. ✨" : $"{ok} aktualisiert, {fail} fehlgeschlagen (Details in der Liste)";
+        Status = fail == 0 ? Loc.T("Updates.Done", ok) : Loc.T("Updates.DonePartial", ok, fail);
         Recalc();
     }
 }

@@ -13,8 +13,8 @@ namespace EZTool.Modules.Cleaner;
 public sealed class CleanerModule : IModule
 {
     public string Id => "cleaner";
-    public string Title => "Speicher-Cleaner";
-    public string Subtitle => "Findet überflüssige Dateien und entfernt sie sicher – persönliche Daten bleiben unberührt.";
+    public string Title => Loc.T("Cleaner.Title");
+    public string Subtitle => Loc.T("Cleaner.Subtitle");
     public string Icon => "";
     public int Order => 210;
 
@@ -34,7 +34,7 @@ public sealed partial class CleanItemVm : ObservableObject
     [ObservableProperty] private bool _isChecked;
     [ObservableProperty] private long _size;
     [ObservableProperty] private int _files;
-    [ObservableProperty] private string _state = "Bereit";
+    [ObservableProperty] private string _state = Loc.T("Cleaner.State.Ready");
     [ObservableProperty] private bool _isWorking;
     [ObservableProperty] private bool _isDone;
 
@@ -59,7 +59,7 @@ public sealed partial class CleanerViewModel : ObservableObject, IActivatable
     [ObservableProperty] private long _freedBytes;
     [ObservableProperty] private bool _hasCleaned;
     [ObservableProperty] private bool _hasScanned;
-    [ObservableProperty] private string _status = "Bereit zum Scannen.";
+    [ObservableProperty] private string _status = Loc.T("Cleaner.Status.ReadyToScan");
     [ObservableProperty] private double _progress;
 
     public CleanerViewModel()
@@ -106,19 +106,19 @@ public sealed partial class CleanerViewModel : ObservableObject, IActivatable
         {
             item.IsWorking = true;
             item.IsDone = false;
-            item.State = "Analysiere…";
-            Status = $"Analysiere: {item.Name}";
+            item.State = Loc.T("Cleaner.State.Analyzing");
+            Status = Loc.T("Cleaner.Status.Analyzing", item.Name);
             var scan = await Task.Run(() => CleanerService.Scan(item.Rule));
             item.Scan = scan;
             item.Size = scan.Bytes;
             item.Files = scan.Files;
-            item.State = item.Rule.SizeUnknown ? "Größe wird beim Bereinigen gemessen"
-                : scan.Files == 0 ? "Sauber" : $"{Format.Number(scan.Files)} Dateien";
+            item.State = item.Rule.SizeUnknown ? Loc.T("Cleaner.State.SizeUnknown")
+                : scan.Files == 0 ? Loc.T("Cleaner.State.Clean") : Loc.T("Cleaner.State.Files", Format.Number(scan.Files));
             item.IsWorking = false;
             Progress = ++n * 100.0 / Items.Count;
         }
         HasScanned = true;
-        Status = $"Analyse abgeschlossen · {Format.Bytes(Items.Sum(i => i.Size))} gefunden";
+        Status = Loc.T("Cleaner.Status.ScanDone", Format.Bytes(Items.Sum(i => i.Size)));
         IsBusy = false;
         Recalc();
     }
@@ -130,14 +130,13 @@ public sealed partial class CleanerViewModel : ObservableObject, IActivatable
         if (selected.Count == 0) return;
 
         var running = selected.Where(i => CleanerService.IsAnyRunning(i.Rule)).Select(i => i.Name).ToList();
-        var msg = $"{Format.Bytes(selected.Sum(i => i.Size))} in {Format.Number(selected.Sum(i => i.Files))} Dateien werden endgültig gelöscht. " +
-                  "Dateien, die gerade verwendet werden, werden automatisch übersprungen.";
-        if (selected.Any(i => i.Rule.Category == "Tiefenreinigung"))
-            msg += "\n\nDie Tiefenreinigung nutzt die Windows-eigenen Werkzeuge (DISM / Datenträgerbereinigung) und kann mehrere Minuten dauern. Bitte EZTool währenddessen nicht schließen.";
+        var msg = Loc.T("Cleaner.Confirm.Message", Format.Bytes(selected.Sum(i => i.Size)), Format.Number(selected.Sum(i => i.Files)));
+        if (selected.Any(i => i.Rule.CategoryId == CleanRule.DeepCleanCategory))
+            msg += "\n\n" + Loc.T("Cleaner.Confirm.DeepClean");
         if (running.Count > 0)
-            msg += "\n\nHinweis: Einige Programme laufen noch (z. B. Browser). Schließe sie für ein besseres Ergebnis.";
+            msg += "\n\n" + Loc.T("Cleaner.Confirm.Running");
 
-        if (!NeonDialog.Show("Bereinigung starten?", msg, "Jetzt bereinigen",
+        if (!NeonDialog.Show(Loc.T("Cleaner.Confirm.Title"), msg, Loc.T("Cleaner.CleanNow"),
                 details: selected.Select(i => $"{i.Name}  ·  {Format.Bytes(i.Size)}")))
             return;
 
@@ -148,14 +147,14 @@ public sealed partial class CleanerViewModel : ObservableObject, IActivatable
         foreach (var item in selected)
         {
             item.IsWorking = true;
-            item.State = "Bereinige…";
-            Status = $"Bereinige: {item.Name}";
+            item.State = Loc.T("Cleaner.State.Cleaning");
+            Status = Loc.T("Cleaner.Status.Cleaning", item.Name);
             var res = await Task.Run(() => CleanerService.Clean(item.Rule, item.Scan!));
             freed += res.FreedBytes;
             skipped += res.Skipped;
             item.IsWorking = false;
             item.IsDone = true;
-            item.State = res.Skipped > 0 ? $"{Format.Bytes(res.FreedBytes)} frei · {res.Skipped} gesperrt" : $"{Format.Bytes(res.FreedBytes)} frei";
+            item.State = res.Skipped > 0 ? Loc.T("Cleaner.State.FreedLocked", Format.Bytes(res.FreedBytes), res.Skipped) : Loc.T("Cleaner.State.Freed", Format.Bytes(res.FreedBytes));
             item.Size = Math.Max(0, item.Size - res.FreedBytes);
             item.Files = res.Skipped;
             item.Scan = null;
@@ -165,8 +164,8 @@ public sealed partial class CleanerViewModel : ObservableObject, IActivatable
         FreedBytes = freed;
         HasCleaned = true;
         Status = skipped > 0
-            ? $"Fertig! {Format.Bytes(freed)} freigegeben · {Format.Number(skipped)} Dateien waren in Benutzung"
-            : $"Fertig! {Format.Bytes(freed)} freigegeben";
+            ? Loc.T("Cleaner.Status.DoneSkipped", Format.Bytes(freed), Format.Number(skipped))
+            : Loc.T("Cleaner.Status.Done", Format.Bytes(freed));
         IsBusy = false;
         HasScanned = false; // erneuter Scan nötig, bevor wieder gelöscht werden kann
         Recalc();

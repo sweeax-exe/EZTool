@@ -27,14 +27,14 @@ public sealed class AlertService
         if (_cpuHot >= SamplesNeeded && now - _lastCpu > TempCooldown)
         {
             _lastCpu = now;
-            tray.Notify("CPU wird heiß", $"{s.CpuName}: {s.CpuTemp:0} °C (Grenze {cfg.CpuTempLimit} °C).", warning: true, openModule: "dashboard");
+            tray.Notify(Core.Loc.T("Alert.CpuHotTitle"), Core.Loc.T("Alert.CpuHotText", s.CpuName, s.CpuTemp, cfg.CpuTempLimit), warning: true, openModule: "dashboard");
         }
 
         _gpuHot = s.GpuTemp >= cfg.GpuTempLimit ? _gpuHot + 1 : 0;
         if (_gpuHot >= SamplesNeeded && now - _lastGpu > TempCooldown)
         {
             _lastGpu = now;
-            tray.Notify("Grafikkarte wird heiß", $"{s.GpuName}: {s.GpuTemp:0} °C (Grenze {cfg.GpuTempLimit} °C).", warning: true, openModule: "dashboard");
+            tray.Notify(Core.Loc.T("Alert.GpuHotTitle"), Core.Loc.T("Alert.GpuHotText", s.GpuName, s.GpuTemp, cfg.GpuTempLimit), warning: true, openModule: "dashboard");
         }
 
         // Speicherplatz nur gelegentlich prüfen
@@ -45,12 +45,11 @@ public sealed class AlertService
             var freePct = d.Free * 100.0 / d.Total;
             if (freePct >= cfg.DriveFreeLimitPercent) continue;
             _lastDrive = now;
-            tray.Notify($"Laufwerk {d.Letter} fast voll",
-                $"Nur noch {Core.Format.Bytes(d.Free)} frei ({freePct:0} %). Klicke hier, um aufzuräumen.", warning: true, openModule: "cleaner");
+            tray.Notify(Core.Loc.T("Alert.DriveFullTitle", d.Letter), Core.Loc.T("Alert.DriveFullText", Core.Format.Bytes(d.Free), freePct), warning: true, openModule: "cleaner");
             break;
         }
     }
 
     public static void Test() =>
-        TrayService.Instance?.Notify("EZTool-Alarme sind aktiv", "So sieht eine Warnung aus, wenn ein Grenzwert überschritten wird.");
+        TrayService.Instance?.Notify(Core.Loc.T("Alert.TestTitle"), Core.Loc.T("Alert.TestText"));
 }

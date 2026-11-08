@@ -33,12 +33,12 @@ public sealed partial class AutostartEntry : ObservableObject
 
     public string SourceLabel => Source switch
     {
-        AutostartSource.RegistryUser => "Registry · Benutzer",
-        AutostartSource.RegistryMachine => "Registry · Alle Benutzer",
-        AutostartSource.RegistryMachine32 => "Registry · 32-Bit",
-        AutostartSource.FolderUser => "Autostart-Ordner",
-        AutostartSource.FolderCommon => "Autostart-Ordner · Alle",
-        _ => "Geplante Aufgabe",
+        AutostartSource.RegistryUser => Loc.T("Autostart.SourceRegistryUser"),
+        AutostartSource.RegistryMachine => Loc.T("Autostart.SourceRegistryMachine"),
+        AutostartSource.RegistryMachine32 => Loc.T("Autostart.SourceRegistry32"),
+        AutostartSource.FolderUser => Loc.T("Autostart.SourceFolderUser"),
+        AutostartSource.FolderCommon => Loc.T("Autostart.SourceFolderCommon"),
+        _ => Loc.T("Autostart.SourceTask"),
     };
 
     public string SourceIcon => Source switch
@@ -227,7 +227,7 @@ public static class AutostartService
 
     private static dynamic ConnectScheduler()
     {
-        var type = Type.GetTypeFromProgID("Schedule.Service") ?? throw new InvalidOperationException("Aufgabenplanung nicht verfügbar");
+        var type = Type.GetTypeFromProgID("Schedule.Service") ?? throw new InvalidOperationException(Loc.T("Autostart.TaskSchedulerUnavailable"));
         dynamic svc = Activator.CreateInstance(type)!;
         svc.Connect();
         return svc;
@@ -342,7 +342,7 @@ public static class AutostartService
                 break;
 
             case AutostartSource.FolderUser or AutostartSource.FolderCommon:
-                if (!Native.MoveToRecycleBin(e.Location)) throw new IOException("Verknüpfung konnte nicht in den Papierkorb verschoben werden.");
+                if (!Native.MoveToRecycleBin(e.Location)) throw new IOException(Loc.T("Autostart.RecycleFailed"));
                 RemoveApproved(e.Source, Path.GetFileName(e.Location));
                 break;
 
@@ -350,7 +350,7 @@ public static class AutostartService
                 var hive = e.Source == AutostartSource.RegistryUser ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
                 var view = e.Source == AutostartSource.RegistryMachine32 ? RegistryView.Registry32 : RegistryView.Registry64;
                 using (var bk = RegistryKey.OpenBaseKey(hive, view))
-                using (var run = bk.OpenSubKey(RunKey, true) ?? throw new IOException("Run-Schlüssel nicht gefunden."))
+                using (var run = bk.OpenSubKey(RunKey, true) ?? throw new IOException(Loc.T("Autostart.RunKeyMissing")))
                 {
                     run.DeleteValue(e.Location, false);
                 }

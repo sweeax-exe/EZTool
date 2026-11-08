@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Zrušit",
+  "Common.UnexpectedError": "Neočekávaná chyba",
+
+  "Window.Minimize": "Minimalizovat",
+  "Window.Maximize": "Maximalizovat",
+  "Window.Close": "Zavřít",
+
+  "Shell.Module": "MODUL {0:00} / {1:00}",
+  "Shell.Admin": "Správce",
+  "Shell.Limited": "Omezený",
+  "Shell.UpdateAvailable": "K dispozici je aktualizace {0}",
+  "Shell.UpdateAvailableShort": "K dispozici aktualizace",
+  "Shell.ClockFormat": "dddd d. MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool běží dál na pozadí",
+  "Shell.TrayHintText": "Monitorování a upozornění zůstávají aktivní. Pro ukončení klikni pravým tlačítkem na ikonu.",
+
+  "Nav.Group.Monitor": "Monitor",
+  "Nav.Group.Gaming": "Hraní",
+  "Nav.Group.Cleanup": "Úklid",
+  "Nav.Group.Software": "Software",
+  "Nav.Group.System": "Systém",
+
+  "Format.Today": "dnes",
+  "Format.Yesterday": "včera",
+  "Format.DaysAgo": "před {0} dny",
+  "Format.MonthsAgo": "před {0} měsíci",
+  "Format.YearsAgo": "před {0} lety",
+  "Format.DurationDays": "{0} d {1} h",
+  "Format.DurationHours": "{0} h {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Otevřít EZTool",
+  "Tray.GamingStart": "Spustit herní režim",
+  "Tray.GamingStop": "Ukončit herní režim",
+  "Tray.Overlay": "Zobrazit overlay",
+  "Tray.Exit": "Ukončit",
+  "Tray.SessionReady": "Zpráva o relaci je připravena",
+  "Tray.SessionText": "{0}: prům. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU se zahřívá",
+  "Alert.CpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.GpuHotTitle": "Grafická karta se zahřívá",
+  "Alert.GpuHotText": "{0}: {1:0} °C (limit {2} °C).",
+  "Alert.DriveFullTitle": "Jednotka {0} je téměř plná",
+  "Alert.DriveFullText": "Volné už jen {0} ({1:0} %). Klikni sem a ukliď.",
+  "Alert.TestTitle": "Upozornění EZTool jsou aktivní",
+  "Alert.TestText": "Takto vypadá varování při překročení limitu.",
+
+  "Chart.Empty": "Zatím žádná data – historie se plní každých 5 sekund.",
+  "System.RamModules": "{0} · {1}× modul",
+  "Hardware.LocalDisk": "Místní disk",
+
+  "Language.Title": "Jazyk",
+  "Language.Subtitle": "EZTool ve tvém jazyce – automaticky podle Windows.",
+  "Language.Auto": "Automaticky ({0})",
+  "Language.RestartTitle": "Změnit jazyk",
+  "Language.RestartText": "EZTool se krátce restartuje, aby se nový jazyk použil všude.",
+  "Language.RestartNow": "Restartovat",
+  "Language.Later": "Později"
+}

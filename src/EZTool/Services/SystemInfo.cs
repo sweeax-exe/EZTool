@@ -64,7 +64,7 @@ public sealed class SystemInfo
         if (modules.Count == 0) return "—";
         var total = modules.Sum(m => (double)m.Capacity);
         var speed = modules.Max(m => m.Speed);
-        return $"{Core.Format.Bytes(total)} · {modules.Count}× Modul" + (speed > 0 ? $" · {speed} MT/s" : "");
+        return Core.Loc.T("System.RamModules", Core.Format.Bytes(total), modules.Count) + (speed > 0 ? $" · {speed} MT/s" : "");
     }
 
     private static T Wmi<T>(string cls, Func<ManagementBaseObject, T> sel) => WmiAll(cls, sel).First();

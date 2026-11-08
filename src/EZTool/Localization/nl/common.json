@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Annuleren",
+  "Common.UnexpectedError": "Onverwachte fout",
+
+  "Window.Minimize": "Minimaliseren",
+  "Window.Maximize": "Maximaliseren",
+  "Window.Close": "Sluiten",
+
+  "Shell.Module": "MODULE {0:00} / {1:00}",
+  "Shell.Admin": "Administrator",
+  "Shell.Limited": "Beperkt",
+  "Shell.UpdateAvailable": "Update {0} beschikbaar",
+  "Shell.UpdateAvailableShort": "Update beschikbaar",
+  "Shell.ClockFormat": "dddd d MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool blijft actief op de achtergrond",
+  "Shell.TrayHintText": "Monitoring en meldingen blijven actief. Klik met rechts op het pictogram om af te sluiten.",
+
+  "Nav.Group.Monitor": "Monitor",
+  "Nav.Group.Gaming": "Gaming",
+  "Nav.Group.Cleanup": "Opruimen",
+  "Nav.Group.Software": "Software",
+  "Nav.Group.System": "Systeem",
+
+  "Format.Today": "vandaag",
+  "Format.Yesterday": "gisteren",
+  "Format.DaysAgo": "{0} dagen geleden",
+  "Format.MonthsAgo": "{0} maanden geleden",
+  "Format.YearsAgo": "{0} jaar geleden",
+  "Format.DurationDays": "{0} d {1} u",
+  "Format.DurationHours": "{0} u {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "EZTool openen",
+  "Tray.GamingStart": "Gamemodus starten",
+  "Tray.GamingStop": "Gamemodus stoppen",
+  "Tray.Overlay": "Overlay tonen",
+  "Tray.Exit": "Afsluiten",
+  "Tray.SessionReady": "Sessierapport klaar",
+  "Tray.SessionText": "{0}: gem. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "CPU wordt heet",
+  "Alert.CpuHotText": "{0}: {1:0} °C (limiet {2} °C).",
+  "Alert.GpuHotTitle": "Videokaart wordt heet",
+  "Alert.GpuHotText": "{0}: {1:0} °C (limiet {2} °C).",
+  "Alert.DriveFullTitle": "Station {0} bijna vol",
+  "Alert.DriveFullText": "Nog maar {0} vrij ({1:0} %). Klik hier om op te ruimen.",
+  "Alert.TestTitle": "EZTool-meldingen zijn actief",
+  "Alert.TestText": "Zo ziet een waarschuwing eruit als een limiet wordt overschreden.",
+
+  "Chart.Empty": "Nog geen gegevens – de geschiedenis vult zich elke 5 seconden.",
+  "System.RamModules": "{0} · {1}× module",
+  "Hardware.LocalDisk": "Lokale schijf",
+
+  "Language.Title": "Taal",
+  "Language.Subtitle": "EZTool in jouw taal – automatisch afgestemd op Windows.",
+  "Language.Auto": "Automatisch ({0})",
+  "Language.RestartTitle": "Taal wijzigen",
+  "Language.RestartText": "EZTool start even opnieuw zodat de nieuwe taal overal wordt toegepast.",
+  "Language.RestartNow": "Nu opnieuw starten",
+  "Language.Later": "Later"
+}

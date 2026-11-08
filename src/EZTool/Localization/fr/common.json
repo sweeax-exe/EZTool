@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Annuler",
+  "Common.UnexpectedError": "Erreur inattendue",
+
+  "Window.Minimize": "Réduire",
+  "Window.Maximize": "Agrandir",
+  "Window.Close": "Fermer",
+
+  "Shell.Module": "MODULE {0:00} / {1:00}",
+  "Shell.Admin": "Administrateur",
+  "Shell.Limited": "Limité",
+  "Shell.UpdateAvailable": "Mise à jour {0} disponible",
+  "Shell.UpdateAvailableShort": "Mise à jour disponible",
+  "Shell.ClockFormat": "dddd dd MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool continue de tourner en arrière-plan",
+  "Shell.TrayHintText": "La surveillance et les alertes restent actives. Clic droit sur l'icône pour quitter.",
+
+  "Nav.Group.Monitor": "Surveillance",
+  "Nav.Group.Gaming": "Jeu",
+  "Nav.Group.Cleanup": "Nettoyage",
+  "Nav.Group.Software": "Logiciels",
+  "Nav.Group.System": "Système",
+
+  "Format.Today": "aujourd'hui",
+  "Format.Yesterday": "hier",
+  "Format.DaysAgo": "il y a {0} jours",
+  "Format.MonthsAgo": "il y a {0} mois",
+  "Format.YearsAgo": "il y a {0} ans",
+  "Format.DurationDays": "{0} j {1} h",
+  "Format.DurationHours": "{0} h {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Ouvrir EZTool",
+  "Tray.GamingStart": "Démarrer le mode jeu",
+  "Tray.GamingStop": "Arrêter le mode jeu",
+  "Tray.Overlay": "Afficher l'overlay",
+  "Tray.Exit": "Quitter",
+  "Tray.SessionReady": "Rapport de session prêt",
+  "Tray.SessionText": "{0} : moy. {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "Le CPU chauffe",
+  "Alert.CpuHotText": "{0} : {1:0} °C (limite {2} °C).",
+  "Alert.GpuHotTitle": "La carte graphique chauffe",
+  "Alert.GpuHotText": "{0} : {1:0} °C (limite {2} °C).",
+  "Alert.DriveFullTitle": "Lecteur {0} presque plein",
+  "Alert.DriveFullText": "Seulement {0} libres ({1:0} %). Cliquez ici pour faire le ménage.",
+  "Alert.TestTitle": "Les alertes EZTool sont actives",
+  "Alert.TestText": "Voici à quoi ressemble un avertissement quand une limite est dépassée.",
+
+  "Chart.Empty": "Pas encore de données – l'historique se remplit toutes les 5 secondes.",
+  "System.RamModules": "{0} · {1}× barrette",
+  "Hardware.LocalDisk": "Disque local",
+
+  "Language.Title": "Langue",
+  "Language.Subtitle": "EZTool dans votre langue – adaptée automatiquement à Windows.",
+  "Language.Auto": "Automatique ({0})",
+  "Language.RestartTitle": "Changer de langue",
+  "Language.RestartText": "EZTool va redémarrer brièvement pour appliquer la nouvelle langue partout.",
+  "Language.RestartNow": "Redémarrer maintenant",
+  "Language.Later": "Plus tard"
+}

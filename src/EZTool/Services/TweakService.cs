@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
+using EZTool.Core;
 using Microsoft.Win32;
 
 namespace EZTool.Services;
@@ -37,9 +38,9 @@ public static class TweakService
         // ── Datenschutz & Werbung ──
         new()
         {
-            Id = "ads-start", Category = "Werbung & Datenschutz", Icon = "\uE8BB",
-            Name = "Werbung und App-Vorschläge ausschalten",
-            Description = "Keine „empfohlenen“ Apps im Startmenü, keine automatisch installierten Werbe-Apps, keine Tipps im Explorer.",
+            Id = "ads-start", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE8BB",
+            Name = Loc.T("Tweaks.AdsStart.Name"),
+            Description = Loc.T("Tweaks.AdsStart.Description"),
             Values =
             [
                 new(CU, Cdm, "SystemPaneSuggestionsEnabled", 0, 1),
@@ -52,9 +53,9 @@ public static class TweakService
         },
         new()
         {
-            Id = "ads-lock", Category = "Werbung & Datenschutz", Icon = "\uE72E",
-            Name = "Tipps und Werbung auf dem Sperrbildschirm aus",
-            Description = "Entfernt „Wissenswertes“ und Werbeeinblendungen vom Sperrbildschirm.",
+            Id = "ads-lock", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE72E",
+            Name = Loc.T("Tweaks.AdsLock.Name"),
+            Description = Loc.T("Tweaks.AdsLock.Description"),
             Values =
             [
                 new(CU, Cdm, "RotatingLockScreenOverlayEnabled", 0, 1),
@@ -63,31 +64,31 @@ public static class TweakService
         },
         new()
         {
-            Id = "ad-id", Category = "Werbung & Datenschutz", Icon = "\uE77B",
-            Name = "Werbe-ID deaktivieren",
-            Description = "Apps können dich nicht mehr über eine geräteweite Werbe-ID wiedererkennen.",
+            Id = "ad-id", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE77B",
+            Name = Loc.T("Tweaks.AdId.Name"),
+            Description = Loc.T("Tweaks.AdId.Description"),
             Values = [new(CU, @"Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo", "Enabled", 0, 1)]
         },
         new()
         {
-            Id = "telemetry", Category = "Werbung & Datenschutz", Icon = "\uE9D9",
-            Name = "Telemetrie auf das Minimum",
-            Description = "Windows sendet nur noch die minimal erforderlichen Diagnosedaten.",
+            Id = "telemetry", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE9D9",
+            Name = Loc.T("Tweaks.Telemetry.Name"),
+            Description = Loc.T("Tweaks.Telemetry.Description"),
             Values = [new(LM, @"SOFTWARE\Policies\Microsoft\Windows\DataCollection", "AllowTelemetry", 0, null)]
         },
         new()
         {
-            Id = "bing", Category = "Werbung & Datenschutz", Icon = "\uE721",
-            Name = "Bing-Websuche im Startmenü aus",
-            Description = "Die Startmenü-Suche findet nur noch Apps, Dateien und Einstellungen – keine Bing-Ergebnisse mehr.",
+            Id = "bing", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE721",
+            Name = Loc.T("Tweaks.Bing.Name"),
+            Description = Loc.T("Tweaks.Bing.Description"),
             Values = [new(CU, @"Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", 1, null)],
             Needs = "explorer"
         },
         new()
         {
-            Id = "copilot", Category = "Werbung & Datenschutz", Icon = "\uE99A",
-            Name = "Copilot ausblenden",
-            Description = "Entfernt die Copilot-Schaltfläche aus der Taskleiste.",
+            Id = "copilot", Category = Loc.T("Tweaks.Category.Privacy"), Icon = "\uE99A",
+            Name = Loc.T("Tweaks.Copilot.Name"),
+            Description = Loc.T("Tweaks.Copilot.Description"),
             Values =
             [
                 new(CU, Adv, "ShowCopilotButton", 0, 1),
@@ -99,42 +100,42 @@ public static class TweakService
         // ── Explorer & Bedienung ──
         new()
         {
-            Id = "classic-menu", Category = "Explorer & Bedienung", Icon = "\uE700",
-            Name = "Klassisches Rechtsklick-Menü (Windows 11)",
-            Description = "Zeigt sofort das vollständige Kontextmenü – ohne Umweg über „Weitere Optionen anzeigen“.",
+            Id = "classic-menu", Category = Loc.T("Tweaks.Category.Explorer"), Icon = "\uE700",
+            Name = Loc.T("Tweaks.ClassicMenu.Name"),
+            Description = Loc.T("Tweaks.ClassicMenu.Description"),
             Values = [new(CU, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", "", "", null, RegistryValueKind.String)],
             Needs = "explorer"
         },
         new()
         {
-            Id = "file-ext", Category = "Explorer & Bedienung", Icon = "\uE8A5",
-            Name = "Dateiendungen anzeigen",
-            Description = "Zeigt z. B. „.exe“ oder „.pdf“ – hilft, getarnte Schadsoftware zu erkennen.",
+            Id = "file-ext", Category = Loc.T("Tweaks.Category.Explorer"), Icon = "\uE8A5",
+            Name = Loc.T("Tweaks.FileExt.Name"),
+            Description = Loc.T("Tweaks.FileExt.Description"),
             Values = [new(CU, Adv, "HideFileExt", 0, 1)],
             Needs = "explorer"
         },
         new()
         {
-            Id = "hidden-files", Category = "Explorer & Bedienung", Icon = "\uE7B3",
-            Name = "Versteckte Dateien anzeigen",
-            Description = "Zeigt versteckte Ordner wie AppData im Explorer.",
+            Id = "hidden-files", Category = Loc.T("Tweaks.Category.Explorer"), Icon = "\uE7B3",
+            Name = Loc.T("Tweaks.HiddenFiles.Name"),
+            Description = Loc.T("Tweaks.HiddenFiles.Description"),
             Values = [new(CU, Adv, "Hidden", 1, 2)],
             Needs = "explorer"
         },
         new()
         {
-            Id = "this-pc", Category = "Explorer & Bedienung", Icon = "\uE7F8",
-            Name = "Explorer öffnet „Dieser PC“",
-            Description = "Der Explorer startet mit deinen Laufwerken statt mit der Startseite.",
+            Id = "this-pc", Category = Loc.T("Tweaks.Category.Explorer"), Icon = "\uE7F8",
+            Name = Loc.T("Tweaks.ThisPc.Name"),
+            Description = Loc.T("Tweaks.ThisPc.Description"),
             Values = [new(CU, Adv, "LaunchTo", 1, null)],
         },
 
         // ── Gaming & Leistung ──
         new()
         {
-            Id = "mouse-accel", Category = "Gaming & Leistung", Icon = "\uE962",
-            Name = "Mausbeschleunigung aus",
-            Description = "„Zeigerbeschleunigung verbessern“ deaktivieren – Mausbewegungen werden 1:1 umgesetzt. Wichtig für präzises Zielen.",
+            Id = "mouse-accel", Category = Loc.T("Tweaks.Category.Gaming"), Icon = "\uE962",
+            Name = Loc.T("Tweaks.MouseAccel.Name"),
+            Description = Loc.T("Tweaks.MouseAccel.Description"),
             Values =
             [
                 new(CU, @"Control Panel\Mouse", "MouseSpeed", "0", "1", RegistryValueKind.String),
@@ -145,9 +146,9 @@ public static class TweakService
         },
         new()
         {
-            Id = "game-dvr", Category = "Gaming & Leistung", Icon = "\uE714",
-            Name = "Hintergrundaufnahme (Game DVR) aus",
-            Description = "Die Xbox Game Bar zeichnet nicht mehr ständig im Hintergrund auf – spart Leistung in Spielen.",
+            Id = "game-dvr", Category = Loc.T("Tweaks.Category.Gaming"), Icon = "\uE714",
+            Name = Loc.T("Tweaks.GameDvr.Name"),
+            Description = Loc.T("Tweaks.GameDvr.Description"),
             Values =
             [
                 new(CU, @"System\GameConfigStore", "GameDVR_Enabled", 0, 1),
@@ -156,9 +157,9 @@ public static class TweakService
         },
         new()
         {
-            Id = "game-mode", Category = "Gaming & Leistung", Icon = "\uE7FC",
-            Name = "Windows-Spielmodus an",
-            Description = "Windows priorisiert Spiele und verschiebt Updates und Benachrichtigungen während des Spielens.",
+            Id = "game-mode", Category = Loc.T("Tweaks.Category.Gaming"), Icon = "\uE7FC",
+            Name = Loc.T("Tweaks.GameMode.Name"),
+            Description = Loc.T("Tweaks.GameMode.Description"),
             Values =
             [
                 new(CU, @"Software\Microsoft\GameBar", "AutoGameModeEnabled", 1, 0),
@@ -167,9 +168,9 @@ public static class TweakService
         },
         new()
         {
-            Id = "hags", Category = "Gaming & Leistung", Icon = "\uE7F4",
-            Name = "Hardwarebeschleunigte GPU-Planung",
-            Description = "Die Grafikkarte verwaltet ihren Speicher selbst – kann Latenz senken. Wirkt nach einem Neustart.",
+            Id = "hags", Category = Loc.T("Tweaks.Category.Gaming"), Icon = "\uE7F4",
+            Name = Loc.T("Tweaks.Hags.Name"),
+            Description = Loc.T("Tweaks.Hags.Description"),
             Values = [new(LM, @"SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "HwSchMode", 2, 1)],
             Needs = "reboot"
         },
@@ -249,16 +250,16 @@ public static class TweakService
         {
             using var cls = new ManagementClass(@"\\.\root\default", "SystemRestore", null);
             using var inParams = cls.GetMethodParameters("CreateRestorePoint");
-            inParams["Description"] = "EZTool – vor Windows-Tweaks";
+            inParams["Description"] = Loc.T("Tweaks.RestorePointDescription");
             inParams["RestorePointType"] = 12; // MODIFY_SETTINGS
             inParams["EventType"] = 100;       // BEGIN_SYSTEM_CHANGE
             using var result = cls.InvokeMethod("CreateRestorePoint", inParams, null);
             var code = Convert.ToUInt32(result?["ReturnValue"] ?? 1u);
             return code == 0
-                ? (true, "Wiederherstellungspunkt wurde erstellt.")
+                ? (true, Loc.T("Tweaks.RestorePointCreated"))
                 : (false, code == 1058
-                    ? "Der Systemschutz ist für Laufwerk C: deaktiviert. Aktiviere ihn unter „Wiederherstellungspunkt erstellen“ in Windows."
-                    : $"Windows hat den Wiederherstellungspunkt abgelehnt (Code {code}). Windows erlaubt höchstens einen pro 24 Stunden.");
+                    ? Loc.T("Tweaks.RestorePointProtectionOff")
+                    : Loc.T("Tweaks.RestorePointRejected", code));
         }
         catch (Exception ex)
         {

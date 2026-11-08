@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "Aceptar",
+  "Common.Cancel": "Cancelar",
+  "Common.UnexpectedError": "Error inesperado",
+
+  "Window.Minimize": "Minimizar",
+  "Window.Maximize": "Maximizar",
+  "Window.Close": "Cerrar",
+
+  "Shell.Module": "MÓDULO {0:00} / {1:00}",
+  "Shell.Admin": "Administrador",
+  "Shell.Limited": "Limitado",
+  "Shell.UpdateAvailable": "Actualización {0} disponible",
+  "Shell.UpdateAvailableShort": "Actualización disponible",
+  "Shell.ClockFormat": "dddd, d MMM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool sigue ejecutándose en segundo plano",
+  "Shell.TrayHintText": "La supervisión y las alertas siguen activas. Haz clic derecho en el icono para salir.",
+
+  "Nav.Group.Monitor": "Monitor",
+  "Nav.Group.Gaming": "Juegos",
+  "Nav.Group.Cleanup": "Limpieza",
+  "Nav.Group.Software": "Software",
+  "Nav.Group.System": "Sistema",
+
+  "Format.Today": "hoy",
+  "Format.Yesterday": "ayer",
+  "Format.DaysAgo": "hace {0} días",
+  "Format.MonthsAgo": "hace {0} meses",
+  "Format.YearsAgo": "hace {0} años",
+  "Format.DurationDays": "{0} d {1} h",
+  "Format.DurationHours": "{0} h {1} min",
+  "Format.DurationMinutes": "{0} min",
+
+  "Tray.Open": "Abrir EZTool",
+  "Tray.GamingStart": "Iniciar modo juego",
+  "Tray.GamingStop": "Detener modo juego",
+  "Tray.Overlay": "Mostrar superposición",
+  "Tray.Exit": "Salir",
+  "Tray.SessionReady": "Informe de sesión listo",
+  "Tray.SessionText": "{0}: media {1} FPS · 1% low {2}",
+
+  "Alert.CpuHotTitle": "La CPU se está calentando",
+  "Alert.CpuHotText": "{0}: {1:0} °C (límite {2} °C).",
+  "Alert.GpuHotTitle": "La tarjeta gráfica se está calentando",
+  "Alert.GpuHotText": "{0}: {1:0} °C (límite {2} °C).",
+  "Alert.DriveFullTitle": "Unidad {0} casi llena",
+  "Alert.DriveFullText": "Solo quedan {0} libres ({1:0} %). Haz clic aquí para limpiar.",
+  "Alert.TestTitle": "Las alertas de EZTool están activas",
+  "Alert.TestText": "Así se ve una advertencia cuando se supera un límite.",
+
+  "Chart.Empty": "Aún no hay datos – el historial se llena cada 5 segundos.",
+  "System.RamModules": "{0} · {1}× módulo",
+  "Hardware.LocalDisk": "Disco local",
+
+  "Language.Title": "Idioma",
+  "Language.Subtitle": "EZTool en tu idioma – se ajusta automáticamente a Windows.",
+  "Language.Auto": "Automático ({0})",
+  "Language.RestartTitle": "Cambiar idioma",
+  "Language.RestartText": "EZTool se reiniciará brevemente para aplicar el nuevo idioma en todas partes.",
+  "Language.RestartNow": "Reiniciar ahora",
+  "Language.Later": "Más tarde"
+}

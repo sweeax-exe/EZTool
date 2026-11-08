@@ -1,0 +1,62 @@
+{
+  "Common.Ok": "OK",
+  "Common.Cancel": "Hủy",
+  "Common.UnexpectedError": "Lỗi không mong muốn",
+
+  "Window.Minimize": "Thu nhỏ",
+  "Window.Maximize": "Phóng to",
+  "Window.Close": "Đóng",
+
+  "Shell.Module": "MÔ-ĐUN {0:00} / {1:00}",
+  "Shell.Admin": "Quản trị viên",
+  "Shell.Limited": "Giới hạn",
+  "Shell.UpdateAvailable": "Có bản cập nhật {0}",
+  "Shell.UpdateAvailableShort": "Có bản cập nhật",
+  "Shell.ClockFormat": "dddd, dd/MM · HH:mm:ss",
+  "Shell.TrayHintTitle": "EZTool vẫn chạy trong nền",
+  "Shell.TrayHintText": "Giám sát và cảnh báo vẫn hoạt động. Nhấp chuột phải vào biểu tượng để thoát.",
+
+  "Nav.Group.Monitor": "Giám sát",
+  "Nav.Group.Gaming": "Chơi game",
+  "Nav.Group.Cleanup": "Dọn dẹp",
+  "Nav.Group.Software": "Phần mềm",
+  "Nav.Group.System": "Hệ thống",
+
+  "Format.Today": "hôm nay",
+  "Format.Yesterday": "hôm qua",
+  "Format.DaysAgo": "{0} ngày trước",
+  "Format.MonthsAgo": "{0} tháng trước",
+  "Format.YearsAgo": "{0} năm trước",
+  "Format.DurationDays": "{0} ngày {1} giờ",
+  "Format.DurationHours": "{0} giờ {1} phút",
+  "Format.DurationMinutes": "{0} phút",
+
+  "Tray.Open": "Mở EZTool",
+  "Tray.GamingStart": "Bật chế độ chơi game",
+  "Tray.GamingStop": "Tắt chế độ chơi game",
+  "Tray.Overlay": "Hiện lớp phủ",
+  "Tray.Exit": "Thoát",
+  "Tray.SessionReady": "Báo cáo phiên đã sẵn sàng",
+  "Tray.SessionText": "{0}: TB {1} FPS · 1% thấp {2}",
+
+  "Alert.CpuHotTitle": "CPU đang nóng lên",
+  "Alert.CpuHotText": "{0}: {1:0} °C (giới hạn {2} °C).",
+  "Alert.GpuHotTitle": "Card đồ họa đang nóng lên",
+  "Alert.GpuHotText": "{0}: {1:0} °C (giới hạn {2} °C).",
+  "Alert.DriveFullTitle": "Ổ {0} sắp đầy",
+  "Alert.DriveFullText": "Chỉ còn trống {0} ({1:0} %). Nhấp vào đây để dọn dẹp.",
+  "Alert.TestTitle": "Cảnh báo EZTool đang hoạt động",
+  "Alert.TestText": "Đây là dạng cảnh báo khi vượt quá giới hạn.",
+
+  "Chart.Empty": "Chưa có dữ liệu – lịch sử được cập nhật mỗi 5 giây.",
+  "System.RamModules": "{0} · {1}× thanh",
+  "Hardware.LocalDisk": "Đĩa cục bộ",
+
+  "Language.Title": "Ngôn ngữ",
+  "Language.Subtitle": "EZTool bằng ngôn ngữ của bạn – tự động theo Windows.",
+  "Language.Auto": "Tự động ({0})",
+  "Language.RestartTitle": "Đổi ngôn ngữ",
+  "Language.RestartText": "EZTool sẽ khởi động lại nhanh để áp dụng ngôn ngữ mới ở mọi nơi.",
+  "Language.RestartNow": "Khởi động lại ngay",
+  "Language.Later": "Để sau"
+}

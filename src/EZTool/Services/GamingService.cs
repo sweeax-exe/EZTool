@@ -2,7 +2,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using EZTool.Core;
 
 namespace EZTool.Services;
 
@@ -10,7 +12,10 @@ public sealed class GameSession
 {
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
-    public string Game { get; set; } = "";
+    /// <summary>Gespeicherter Spielname ("" = kein Spiel erkannt). JSON-Name bleibt "Game".</summary>
+    [JsonPropertyName("Game")] public string GameId { get; set; } = "";
+    /// <summary>Anzeige-Name (ältere Berichte enthalten noch den deutschen Platzhalter).</summary>
+    [JsonIgnore] public string Game => GameId is "" or "Kein Spiel erkannt" ? Loc.T("Gaming.NoGameDetected") : GameId;
     public double AvgFps { get; set; }
     public double Low1Fps { get; set; }
     public double MaxFps { get; set; }
@@ -25,7 +30,7 @@ public sealed class GameSession
     public List<double?> GpuTempSeries { get; set; } = [];
     public List<string> Actions { get; set; } = [];
 
-    public string DurationText => (End - Start) is var d && d.TotalHours >= 1 ? $"{(int)d.TotalHours} Std {d.Minutes} Min" : $"{(int)(End - Start).TotalMinutes} Min";
+    public string DurationText => (End - Start) is var d && d.TotalHours >= 1 ? Loc.T("Format.DurationHours", (int)d.TotalHours, d.Minutes) : Loc.T("Format.DurationMinutes", (int)(End - Start).TotalMinutes);
     public string FpsText => AvgFps > 0 ? $"{AvgFps:0}" : "—";
     public string LowText => Low1Fps > 0 ? $"{Low1Fps:0}" : "—";
     public string TempText => $"{(MaxCpuTemp is { } c ? $"{c:0}" : "—")} / {(MaxGpuTemp is { } g ? $"{g:0}" : "—")} °C";
@@ -66,7 +71,7 @@ public sealed class GamingService
         await Task.Run(() =>
         {
             if (cfg.BoostPowerPlan) TrySetHighPerformance();
-            if (cfg.BoostPurgeRam && PurgeStandbyList()) AppliedActions.Add("Standby-Arbeitsspeicher geleert");
+            if (cfg.BoostPurgeRam && PurgeStandbyList()) AppliedActions.Add(Loc.T("Gaming.Action.RamPurged"));
             if (cfg.BoostPauseUpdates) TryPauseUpdates();
             if (cfg.BoostCloseApps.Count > 0) CloseApps(cfg.BoostCloseApps);
         });
@@ -118,7 +123,7 @@ public sealed class GamingService
         if (session != null)
         {
             session.End = DateTime.Now;
-            session.Game = _gameSeconds.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).FirstOrDefault() ?? "Kein Spiel erkannt";
+            session.GameId = _gameSeconds.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).FirstOrDefault() ?? "";
             if (frames.Count > 10)
             {
                 var sorted = frames.OrderByDescending(f => f).ToList();
@@ -173,7 +178,7 @@ public sealed class GamingService
         if (target == null) return;
         RunPowercfg($"/setactive {target}");
         _previousScheme = m.Value;
-        AppliedActions.Add("Energieplan „Höchstleistung“ aktiv");
+        AppliedActions.Add(Loc.T("Gaming.Action.PowerPlan"));
     }
 
     private static string RunPowercfg(string args)
@@ -204,7 +209,7 @@ public sealed class GamingService
             sc.Stop();
             sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(15));
             _stoppedUpdates = true;
-            AppliedActions.Add("Windows Update angehalten");
+            AppliedActions.Add(Loc.T("Gaming.Action.UpdatesPaused"));
         }
         catch { /* gerade beschäftigt – dann eben nicht */ }
     }
@@ -234,7 +239,7 @@ public sealed class GamingService
             }
             closed.Add(name);
         }
-        if (closed.Count > 0) AppliedActions.Add("Geschlossen: " + string.Join(", ", closed));
+        if (closed.Count > 0) AppliedActions.Add(Loc.T("Gaming.Action.Closed", string.Join(", ", closed)));
     }
 
     // ───────────── Standby-Liste leeren ─────────────

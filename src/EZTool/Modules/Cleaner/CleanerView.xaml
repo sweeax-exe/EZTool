@@ -1,7 +1,8 @@
 <UserControl x:Class="EZTool.Modules.Cleaner.CleanerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="clr-namespace:EZTool.Controls">
+             xmlns:c="clr-namespace:EZTool.Controls"
+             xmlns:l="clr-namespace:EZTool.Core">
     <Grid Margin="40,0,40,28">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="340" />
@@ -12,14 +13,14 @@
         <!-- ═══ Zusammenfassung ═══ -->
         <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="24">
             <StackPanel>
-                <TextBlock Text="AUSGEWÄHLT ZUM BEREINIGEN" Style="{StaticResource Label}" HorizontalAlignment="Center" />
+                <TextBlock Text="{l:T Cleaner.SelectedLabel}" Style="{StaticResource Label}" HorizontalAlignment="Center" />
                 <Grid Width="240" Height="240" Margin="0,16,0,8">
                     <c:RadialGauge Value="{Binding Progress}" Thickness="9" ArcBrush="{StaticResource AccentGradientDiag}" />
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <TextBlock Text="{Binding SelectedBytes, Converter={StaticResource Bytes}}" Style="{StaticResource BigValue}" FontSize="38"
                                    HorizontalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Center" Style="{StaticResource Body}" FontSize="12">
-                            <Run Text="{Binding SelectedFiles, Mode=OneWay, StringFormat={}{0:N0}}" /><Run Text=" Dateien" />
+                            <Run Text="{Binding SelectedFiles, Mode=OneWay, StringFormat={l:T Cleaner.FilesCount}}" />
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -29,7 +30,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE73E;" Style="{StaticResource Icon}" Foreground="{StaticResource Green}" FontSize="12" />
                         <TextBlock Margin="8,0,0,0" Foreground="{StaticResource Green}" FontFamily="{StaticResource DisplayFont}">
-                            <Run Text="{Binding FreedBytes, Mode=OneWay, Converter={StaticResource Bytes}}" /><Run Text=" freigegeben" />
+                            <Run Text="{Binding FreedBytes, Mode=OneWay, Converter={StaticResource Bytes}, StringFormat={l:T Cleaner.Freed}}" />
                         </TextBlock>
                     </StackPanel>
                 </Border>
@@ -39,22 +40,20 @@
                 <Button Style="{StaticResource PrimaryButton}" Command="{Binding CleanCommand}" Margin="0,14,0,0" Padding="22,13">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xEA99;" FontFamily="{StaticResource IconFont}" FontSize="15" VerticalAlignment="Center" />
-                        <TextBlock Text="Jetzt bereinigen" Margin="10,0,0,0" />
+                        <TextBlock Text="{l:T Cleaner.CleanNow}" Margin="10,0,0,0" />
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource GhostButton}" Command="{Binding ScanCommand}" Margin="0,10,0,0" Padding="16,11">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE72C;" FontFamily="{StaticResource IconFont}" FontSize="13" VerticalAlignment="Center" />
-                        <TextBlock Text="Erneut analysieren" Margin="10,0,0,0" />
+                        <TextBlock Text="{l:T Cleaner.Rescan}" Margin="10,0,0,0" />
                     </StackPanel>
                 </Button>
 
                 <Rectangle Height="1" Fill="{StaticResource StrokeSoft}" Margin="0,22,0,16" />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE83D;" Style="{StaticResource Icon}" Foreground="{StaticResource Green}" FontSize="14" VerticalAlignment="Top" Margin="0,2,0,0" />
-                    <TextBlock Style="{StaticResource Body}" FontSize="11.5" Margin="10,0,0,0" Width="260">
-                        Sicherer Modus: Nur bekannte Cache- und Temp-Orte. Gesperrte Dateien und Verknüpfungen (Junctions) werden nie angefasst.
-                    </TextBlock>
+                    <TextBlock Text="{l:T Cleaner.SafeModeHint}" Style="{StaticResource Body}" FontSize="11.5" Margin="10,0,0,0" Width="260" />
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -68,11 +67,11 @@
 
             <Grid Margin="0,0,0,12">
                 <TextBlock Style="{StaticResource Body}" VerticalAlignment="Center">
-                    <Run Text="Insgesamt gefunden: " /><Run Text="{Binding TotalBytes, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" />
+                    <Run Text="{l:T Cleaner.TotalFound}" /><Run Text="{Binding TotalBytes, Mode=OneWay, Converter={StaticResource Bytes}}" Foreground="{StaticResource Cyan}" FontFamily="{StaticResource DisplayFont}" />
                 </TextBlock>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource GhostButton}" Content="Alle" Command="{Binding SelectAllCommand}" Padding="12,6" Margin="0,0,8,0" />
-                    <Button Style="{StaticResource GhostButton}" Content="Keine" Command="{Binding SelectNoneCommand}" Padding="12,6" />
+                    <Button Style="{StaticResource GhostButton}" Content="{l:T Cleaner.SelectAll}" Command="{Binding SelectAllCommand}" Padding="12,6" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource GhostButton}" Content="{l:T Cleaner.SelectNone}" Command="{Binding SelectNoneCommand}" Padding="12,6" />
                 </StackPanel>
             </Grid>
 

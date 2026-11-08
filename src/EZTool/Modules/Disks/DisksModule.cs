@@ -10,8 +10,8 @@ namespace EZTool.Modules.Disks;
 public sealed class DisksModule : IModule
 {
     public string Id => "disks";
-    public string Title => "Datenträger";
-    public string Subtitle => "Gesundheit deiner SSDs und Festplatten: Restlebensdauer, Temperatur, Betriebsstunden und Fehler.";
+    public string Title => Loc.T("Disks.Title");
+    public string Subtitle => Loc.T("Disks.Subtitle");
     public string Icon => "";
     public int Order => 50;
 
