@@ -1,4 +1,4 @@
-# EZTool
+# <img src="docs/logo.png" width="40" alt=""> EZTool
 
 **English** · [Deutsch](README.de.md)
 
@@ -19,6 +19,7 @@ A system tool for Windows 10/11 that looks and reads like a measuring instrument
 | ![Hardware](docs/screenshots/en/hardware.png) **Hardware**: every sensor live, grouped by component | ![Storage cleaner](docs/screenshots/en/cleaner.png) **Storage cleaner**: safe cleanup, including deep clean |
 | ![Windows tweaks](docs/screenshots/en/tweaks.png) **Windows tweaks**: ads out, gaming in, everything reversible | ![Key mapping](docs/screenshots/en/hotkeys.png) **Key mapping**: media keys for any keyboard |
 | ![Settings](docs/screenshots/en/settings.png) **Settings**: language, startup, alerts, overlay, auto-update | ![Adblocker](docs/screenshots/en/adblock.png) **Adblocker**: blocks ads and trackers in every browser and app |
+| ![Network](docs/screenshots/en/network.png) **Network**: live traffic per app, every connection, devices in your network | |
 
 ## Download
 
@@ -49,10 +50,11 @@ The navigation is organized into five groups:
 
 | Group | Module | What it does |
 |---|---|---|
-| Monitor | **Dashboard** | Ring gauges for CPU, GPU, RAM and system drive, 60-second history, temperatures, per-core load, drives, network, system info |
+| Monitor | **Dashboard** | Large readouts with segmented level meters for CPU, GPU, RAM and system drive, 60-second history, temperatures, per-core load, drives, network, system info |
 | | **Processes** | Processes grouped by app (e.g. "Chrome 30×"), live CPU and RAM, end with one click. Windows core processes are protected |
 | | **Hardware** | Every sensor (often 150+) grouped by component, with filter and search |
 | | **History** | Temperatures, load and FPS over the last 24 hours as charts with crosshair, peak values, CSV export |
+| | **Network** | Live download and upload, data usage per app (today, 7 or 30 days), every connection with app, host name and traffic, open ports, devices in your home network with manufacturer, adapter details |
 | | **Disks** | SSD/HDD health: remaining life, temperature, power-on hours, TB written, read/write errors |
 | Gaming | **Gaming mode** | Boost button (high-performance power plan, clear standby RAM, pause Windows Update, close selected apps), live FPS, session report with average FPS, 1% low and peak temperatures |
 | Clean up | **Storage cleaner** | Temp files, caches, crash dumps, browsers, Recycle Bin, plus deep clean (old Windows updates via DISM, `Windows.old`) |
@@ -92,6 +94,15 @@ A global low-level keyboard hook (`WH_KEYBOARD_LL`) intercepts the mapped key. I
 - **No loops:** Keys EZTool sends itself are ignored.
 - **Normal rights:** Programs started by a key run through Explorer with normal rights, not as administrator.
 - **Storage:** Mappings are saved in `settings.json` (`KeyBindings`).
+
+## Network
+
+- **Live traffic per app and connection:** EZTool reads the Windows ETW source `Microsoft-Windows-Kernel-Network`. Every TCP and UDP packet arrives with process ID, size and remote address, so EZTool shows which app talks to which server and how much. Needs administrator rights and only runs while the Network page is open.
+- **Host names:** remote addresses are matched with the names programs looked up (Windows DNS cache), otherwise a reverse lookup is used.
+- **Data usage per app:** comes from the Windows statistics (the same numbers as Settings → Network → Data usage) for today, 7 or 30 days.
+- **Open ports:** programs waiting for incoming connections, marked when they listen on all networks.
+- **Devices:** the scan pings every address in your home network, reads the MAC addresses from the ARP table and asks the router for the names. The manufacturer comes from the public IEEE list (`standards-oui.ieee.org`, downloaded once). Phones with a private (random) MAC address are marked as such.
+- **Public IP:** only on request, via `api.ipify.org`.
 
 ## Adblocker
 
@@ -185,7 +196,7 @@ src/EZTool/
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
 │                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        17 modules (Dashboard … Settings)
+└── Modules/        18 modules (Dashboard … Settings)
 ```
 
 ## Ideas for later

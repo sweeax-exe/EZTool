@@ -143,11 +143,16 @@ public partial class MainWindow : Window
 
         await Task.Delay(6000); // Sensoren, Systeminfos und Verlauf laden lassen
 
-        foreach (var page in pages)
+        foreach (var entry in pages)
         {
+            // "network#apps" = Seite "network", Reiter "apps" (für Module mit einer Tab-Eigenschaft)
+            var parts = entry.Split('#', 2);
+            var page = parts[0];
             var module = _modules.FirstOrDefault(m => m.Id.Equals(page, StringComparison.OrdinalIgnoreCase));
             if (module == null || !OpenModule(page)) continue;
-            await Task.Delay(page == "cleaner" ? 12000 : 5000);
+            if (parts.Length == 2 && _views[module.Id].DataContext?.GetType().GetProperty("Tab") is { CanWrite: true } tab)
+                tab.SetValue(_views[module.Id].DataContext, parts[1]);
+            await Task.Delay(page == "cleaner" ? 12000 : parts.Length == 2 && parts[1] == "devices" ? 20000 : 5000);
 
             // Sicherheitsnetz: nur fotografieren, wenn wirklich die gewünschte Seite angezeigt wird
             if (PageTitle.Text != module.Title || PageHost.Content != _views[module.Id])
@@ -171,7 +176,7 @@ public partial class MainWindow : Window
             bmp.Render(visual);
             var png = new System.Windows.Media.Imaging.PngBitmapEncoder();
             png.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));
-            await using var fs = File.Create(Path.Combine(dir, page + ".png"));
+            await using var fs = File.Create(Path.Combine(dir, entry.Replace('#', '-') + ".png"));
             png.Save(fs);
         }
         ((App)Application.Current).ExitApp();

@@ -101,6 +101,15 @@ public sealed class EqualsMultiConverter : IMultiValueConverter
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [];
 }
 
+/// <summary>Sichtbar, wenn mindestens einer der Werte true ist.</summary>
+public sealed class AnyVisibleConverter : IMultiValueConverter
+{
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) =>
+        values.Any(v => v is true) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [];
+}
+
 public sealed class NotConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is not true;

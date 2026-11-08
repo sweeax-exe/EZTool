@@ -1,4 +1,4 @@
-# EZTool
+# <img src="docs/logo.png" width="40" alt=""> EZTool
 
 [English](README.md) · **Deutsch**
 
@@ -19,6 +19,7 @@ System-Tool für Windows 10/11, das aussieht und sich liest wie ein Messgerät: 
 | ![Hardware](docs/screenshots/de/hardware.png) **Hardware**: alle Sensoren live, nach Bauteil gruppiert | ![Speicher-Cleaner](docs/screenshots/de/cleaner.png) **Speicher-Cleaner**: sicher aufräumen, inklusive Tiefenreinigung |
 | ![Windows-Tweaks](docs/screenshots/de/tweaks.png) **Windows-Tweaks**: Werbung raus, Gaming rein, alles umkehrbar | ![Tastenbelegung](docs/screenshots/de/hotkeys.png) **Tastenbelegung**: Medientasten für jede Tastatur |
 | ![Einstellungen](docs/screenshots/de/settings.png) **Einstellungen**: Sprache, Autostart, Alarme, Overlay, Auto-Update | ![Adblocker](docs/screenshots/de/adblock.png) **Adblocker**: blockiert Werbung und Tracker in allen Browsern und Apps |
+| ![Netzwerk](docs/screenshots/de/network.png) **Netzwerk**: Live-Verkehr pro App, jede Verbindung, Geräte im Heimnetz | |
 
 ## Download
 
@@ -49,10 +50,11 @@ Die Navigation ist in fünf Gruppen gegliedert:
 
 | Gruppe | Modul | Was es kann |
 |---|---|---|
-| Monitor | **Dashboard** | Ringanzeigen für CPU, GPU, RAM und Systemlaufwerk, 60-Sekunden-Verlauf, Temperaturen, Kern-Auslastung, Laufwerke, Netzwerk, Systeminfos |
+| Monitor | **Dashboard** | Große Messwerte mit Segment-Pegelanzeigen für CPU, GPU, RAM und Systemlaufwerk, 60-Sekunden-Verlauf, Temperaturen, Kern-Auslastung, Laufwerke, Netzwerk, Systeminfos |
 | | **Prozesse** | Prozesse nach Programm gruppiert (z. B. „Chrome 30×“), CPU und RAM live, mit einem Klick beenden. Windows-Kernprozesse sind geschützt |
 | | **Hardware** | Alle Sensoren (oft 150+) nach Bauteil gruppiert, mit Filter und Suche |
 | | **Verlauf** | Temperaturen, Auslastung und FPS der letzten 24 Stunden als Diagramm mit Fadenkreuz, Höchstwerte, CSV-Export |
+| | **Netzwerk** | Live-Download und -Upload, Datenverbrauch pro App (heute, 7 oder 30 Tage), jede Verbindung mit App, Hostname und Datenmenge, offene Ports, Geräte im Heimnetz mit Hersteller, Adapter-Details |
 | | **Datenträger** | SSD-/HDD-Gesundheit: Restlebensdauer, Temperatur, Betriebsstunden, geschriebene TB, Lese-/Schreibfehler |
 | Gaming | **Gaming-Modus** | Boost-Knopf (Höchstleistung, Standby-RAM leeren, Windows Update anhalten, gewählte Apps schließen), Live-FPS, Session-Bericht mit Ø-FPS, 1 % Low und Höchsttemperaturen |
 | Aufräumen | **Speicher-Cleaner** | Temp, Caches, Crash-Dumps, Browser, Papierkorb, dazu Tiefenreinigung (alte Windows-Updates per DISM, `Windows.old`) |
@@ -92,6 +94,15 @@ Ein globaler Low-Level-Tastatur-Hook (`WH_KEYBOARD_LL`) fängt die belegte Taste
 - **Keine Endlosschleife:** Selbst gesendete Tasten werden ignoriert.
 - **Normale Rechte:** Programme, die per Taste gestartet werden, laufen über den Explorer mit normalen Rechten, nicht als Administrator.
 - **Gespeichert** werden die Belegungen in `settings.json` (`KeyBindings`).
+
+## Netzwerk
+
+- **Live-Verkehr pro App und Verbindung:** EZTool liest die Windows-ETW-Quelle `Microsoft-Windows-Kernel-Network`. Jedes TCP- und UDP-Paket kommt mit Prozess-ID, Größe und Gegenstelle an, so zeigt EZTool, welche App mit welchem Server wie viel austauscht. Braucht Administrator-Rechte und läuft nur, solange die Netzwerk-Seite offen ist.
+- **Hostnamen:** Gegenstellen werden mit den Namen abgeglichen, die Programme nachgeschlagen haben (Windows-DNS-Cache), sonst per Rückwärtssuche.
+- **Datenverbrauch pro App:** stammt aus der Windows-Statistik (dieselben Zahlen wie unter Einstellungen → Netzwerk → Datennutzung) für heute, 7 oder 30 Tage.
+- **Offene Ports:** Programme, die auf eingehende Verbindungen warten, markiert, wenn sie auf allen Netzwerken lauschen.
+- **Geräte:** Der Scan pingt jede Adresse im Heimnetz an, liest die MAC-Adressen aus der ARP-Tabelle und fragt den Router nach den Namen. Der Hersteller kommt aus der öffentlichen IEEE-Liste (`standards-oui.ieee.org`, einmal geladen). Handys mit privater (zufälliger) MAC-Adresse werden so gekennzeichnet.
+- **Öffentliche IP:** nur auf Knopfdruck, über `api.ipify.org`.
 
 ## Adblocker
 
@@ -185,7 +196,7 @@ src/EZTool/
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
 │                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        17 Module (Dashboard … Einstellungen)
+└── Modules/        18 Module (Dashboard … Einstellungen)
 ```
 
 ## Ideen für später

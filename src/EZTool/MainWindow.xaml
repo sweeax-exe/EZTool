@@ -20,11 +20,16 @@
         <!-- ═══════ Sidebar: bündige, dunklere Schiene ═══════ -->
         <Border Grid.Column="0" Background="{StaticResource Rail}">
             <DockPanel>
-                <!-- Marke: gelbes Typenschild -->
+                <!-- Marke "Pegel": vier gelbe Pegelbalken und ein roter Spitzenbalken, pixelgenau auf 34 px -->
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="24,26,0,28">
-                    <Border Width="34" Height="34" CornerRadius="4" Background="{StaticResource Accent}">
-                        <TextBlock Text="EZ" FontFamily="{StaticResource DisplayFont}" FontWeight="Bold" FontStretch="Condensed" FontSize="18"
-                                   Foreground="{StaticResource OnAccent}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,1,0,0" />
+                    <Border Width="34" Height="34" CornerRadius="6" Background="{StaticResource Panel}">
+                        <Canvas Width="34" Height="34">
+                            <Rectangle Canvas.Left="7" Canvas.Top="22" Width="3" Height="5" Fill="{StaticResource Accent}" />
+                            <Rectangle Canvas.Left="11" Canvas.Top="18" Width="3" Height="9" Fill="{StaticResource Accent}" />
+                            <Rectangle Canvas.Left="15" Canvas.Top="15" Width="3" Height="12" Fill="{StaticResource Accent}" />
+                            <Rectangle Canvas.Left="19" Canvas.Top="12" Width="3" Height="15" Fill="{StaticResource Accent}" />
+                            <Rectangle Canvas.Left="23" Canvas.Top="7" Width="3" Height="20" Fill="{StaticResource Red}" />
+                        </Canvas>
                     </Border>
                     <TextBlock Text="EZTool" FontFamily="{StaticResource DisplayFont}" FontWeight="SemiBold" FontSize="22"
                                Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="12,0,0,0" />

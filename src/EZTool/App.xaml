@@ -16,6 +16,7 @@
             <core:EqualsConverter x:Key="Eq" />
             <core:NotConverter x:Key="Not" />
             <core:NameToBrushConverter x:Key="NameBrush" />
+            <core:AnyVisibleConverter x:Key="AnyVis" />
             <core:InitialConverter x:Key="Initial" />
         </ResourceDictionary>
     </Application.Resources>
