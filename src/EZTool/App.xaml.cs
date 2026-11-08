@@ -35,6 +35,16 @@ public partial class App : Application
             try { System.Diagnostics.Process.GetProcessById(oldPid).WaitForExit(15000); } catch { /* schon beendet */ }
         }
 
+        // Notausgang: "EZTool.exe --restore-dns" stellt die DNS-Server zurück, falls nach einem Absturz kein Internet geht
+        if (e.Args.Contains("--restore-dns", StringComparer.OrdinalIgnoreCase))
+        {
+            Services.AdBlock.DnsSwitcher.Restore();
+            SettingsService.Current.AdBlockEnabled = false;
+            SettingsService.Save();
+            Shutdown();
+            return;
+        }
+
         // Sprache muss vor dem ersten Fenster feststehen
         // "--lang=en" oder EZTOOL_LANG=en überschreibt die Einstellung – für Tests und Screenshots
         var forcedLang = Arg("--lang=") ?? Environment.GetEnvironmentVariable("EZTOOL_LANG");
@@ -65,6 +75,8 @@ public partial class App : Application
         {
             // Nur anzeigen und fotografieren – keine Hintergrund-Funktionen, nichts wird geschrieben
             SensorLogService.Instance.LoadOnly();
+            if ((Arg("--pages=") ?? "").Contains("adblock", StringComparison.OrdinalIgnoreCase))
+                _ = Services.AdBlock.AdBlockService.Instance.RunScreenshotDemoAsync();
             var shot = new MainWindow();
             MainWindow = shot;
             shot.Show();
@@ -74,6 +86,14 @@ public partial class App : Application
 
         SensorLogService.Instance.Start();
         SensorLogService.Instance.FpsSource = () => FpsService.Instance.Current?.Fps;
+
+        // Werbeblocker: Testinstanzen (EZTOOL_DEV) lassen die DNS-Einstellungen in Ruhe
+        if (InstanceName.EndsWith(".v1"))
+        {
+            Services.AdBlock.AdBlockService.Instance.OnAppStart();
+            AppDomain.CurrentDomain.ProcessExit += (_, _) => Services.AdBlock.AdBlockService.Instance.OnAppExit();
+            AppDomain.CurrentDomain.UnhandledException += (_, _) => Services.AdBlock.AdBlockService.Instance.OnAppExit();
+        }
 
         var main = new MainWindow();
         MainWindow = main;
@@ -118,8 +138,16 @@ public partial class App : Application
         Shutdown();
     }
 
+    protected override void OnSessionEnding(SessionEndingCancelEventArgs e)
+    {
+        // Abmelden / Herunterfahren: DNS zurückstellen, solange noch Zeit ist
+        Services.AdBlock.AdBlockService.Instance.OnAppExit();
+        base.OnSessionEnding(e);
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
+        Services.AdBlock.AdBlockService.Instance.OnAppExit();
         _tray?.Dispose();
         HardwareService.Instance.Dispose();
         _mutex?.Dispose();

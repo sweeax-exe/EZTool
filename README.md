@@ -2,12 +2,12 @@
 
 **English** · [Deutsch](README.de.md)
 
-[![Latest release](https://img.shields.io/github/v/release/sweeax-exe/EZTool?label=Download&color=00E5FF)](https://github.com/sweeax-exe/EZTool/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-8B5CF6)](LICENSE)
-![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-2CF5A0)
-![20 languages](https://img.shields.io/badge/Languages-20-FF3D9A)
+[![Latest release](https://img.shields.io/github/v/release/sweeax-exe/EZTool?label=Download&color=FFC20E)](https://github.com/sweeax-exe/EZTool/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-4DA8E8)](LICENSE)
+![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-6CCB6A)
+![20 languages](https://img.shields.io/badge/Languages-20-A3A9AF)
 
-A system tool for Windows 10/11 that looks and reads like a measuring instrument: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, tweaks and key mapping. Free and open source.
+A system tool for Windows 10/11 that looks and reads like a measuring instrument: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, a system-wide adblocker, tweaks and key mapping. Free and open source.
 
 ![EZTool dashboard](docs/screenshots/en/dashboard.png)
 
@@ -18,7 +18,7 @@ A system tool for Windows 10/11 that looks and reads like a measuring instrument
 | ![Gaming mode](docs/screenshots/en/gaming.png) **Gaming mode**: one-click boost, live FPS, session report | ![History](docs/screenshots/en/history.png) **History**: temperatures and load over the last 24 hours |
 | ![Hardware](docs/screenshots/en/hardware.png) **Hardware**: every sensor live, grouped by component | ![Storage cleaner](docs/screenshots/en/cleaner.png) **Storage cleaner**: safe cleanup, including deep clean |
 | ![Windows tweaks](docs/screenshots/en/tweaks.png) **Windows tweaks**: ads out, gaming in, everything reversible | ![Key mapping](docs/screenshots/en/hotkeys.png) **Key mapping**: media keys for any keyboard |
-| ![Settings](docs/screenshots/en/settings.png) **Settings**: language, startup, alerts, overlay, auto-update | |
+| ![Settings](docs/screenshots/en/settings.png) **Settings**: language, startup, alerts, overlay, auto-update | ![Adblocker](docs/screenshots/en/adblock.png) **Adblocker**: blocks ads and trackers in every browser and app |
 
 ## Download
 
@@ -63,6 +63,7 @@ The navigation is organized into five groups:
 | | **Updates** | Available updates for all programs via winget, one by one or all with one click |
 | | **Startup** | Turn Run keys, startup folder entries and scheduled tasks on and off |
 | System | **Windows tweaks** | 14 switches for ads, privacy, Explorer and gaming (mouse acceleration, Game DVR …), reversible any time, with restore point |
+| | **Adblocker** | System-wide ad and tracker blocking through EZTool's own DNS server: blocklists (AdGuard, Steven Black, HaGeZi), live log, allow and block rules, encrypted DNS (Cloudflare, Quad9, Google) |
 | | **Key mapping** | Put media functions (next/previous track, play/pause, volume), other keys, programs or EZTool actions on any key, globally, even in games. Quick start: Page ↑/↓ = next/previous track |
 | | **Settings** | Language, start with Windows, background mode, sensor driver, alerts, overlay, updates |
 
@@ -91,6 +92,18 @@ A global low-level keyboard hook (`WH_KEYBOARD_LL`) intercepts the mapped key. I
 - **No loops:** Keys EZTool sends itself are ignored.
 - **Normal rights:** Programs started by a key run through Explorer with normal rights, not as administrator.
 - **Storage:** Mappings are saved in `settings.json` (`KeyBindings`).
+
+## Adblocker
+
+The adblocker works on the DNS level, so it covers every browser and app at once:
+
+- **How it works:** EZTool runs a small DNS server on `127.0.0.1` and `::1` (port 53) and points the DNS settings of your network adapters (Ethernet, Wi-Fi) at it. Domains on the blocklists get `0.0.0.0` as the answer. Everything else is resolved encrypted via DNS over HTTPS at the chosen provider.
+- **Hidden trackers:** If an allowed domain is only a CNAME alias for a blocked one, it is blocked too.
+- **Local network:** Names like `fritz.box`, printer names and private reverse lookups still go to your router.
+- **Firefox:** EZTool answers the canary domain `use-application-dns.net`, so Firefox turns off its own DNS over HTTPS and uses the adblocker.
+- **Safe restore:** The original DNS settings are saved to `%LOCALAPPDATA%ZToolAdBlockdns-backup.json` before anything changes. They are restored when EZTool closes, when you sign out or shut down, and on the next start after a crash. In an emergency, `EZTool.exe --restore-dns` resets them too.
+- **Limits:** Ads on YouTube and Twitch come from the same servers as the videos, so DNS can't block them. While a VPN is connected, its DNS is used.
+- **Lists:** downloaded from the list maintainers (AdGuard DNS filter, Steven Black Unified hosts, HaGeZi Multi NORMAL) and refreshed every 3 days.
 
 ## Safety principles
 
@@ -172,7 +185,7 @@ src/EZTool/
 │                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
 │                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        16 modules (Dashboard … Settings)
+└── Modules/        17 modules (Dashboard … Settings)
 ```
 
 ## Ideas for later

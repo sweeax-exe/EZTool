@@ -92,6 +92,15 @@ public sealed class EqualsConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 }
 
+/// <summary>true, wenn alle Werte gleich sind (z. B. gewählter Eintrag in einer Liste von RadioButtons).</summary>
+public sealed class EqualsMultiConverter : IMultiValueConverter
+{
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) =>
+        values.Length > 1 && values.All(v => Equals(v?.ToString(), values[0]?.ToString()));
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => [];
+}
+
 public sealed class NotConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is not true;

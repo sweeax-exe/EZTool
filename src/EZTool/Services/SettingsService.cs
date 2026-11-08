@@ -43,6 +43,13 @@ public sealed class AppSettings
     public bool OverlayEnabled { get; set; }
     public string OverlayCorner { get; set; } = "TopRight";
     public double OverlayOpacity { get; set; } = 0.9;
+
+    // Werbeblocker (DNS)
+    public bool AdBlockEnabled { get; set; }
+    public List<string> AdBlockLists { get; set; } = ["adguard", "stevenblack"];
+    public string AdBlockUpstream { get; set; } = "cloudflare";
+    public List<string> AdBlockAllow { get; set; } = [];
+    public List<string> AdBlockDeny { get; set; } = [];
 }
 
 public static class SettingsService

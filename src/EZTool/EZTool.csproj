@@ -14,7 +14,7 @@
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <AssemblyName>EZTool</AssemblyName>
     <RootNamespace>EZTool</RootNamespace>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Product>EZTool</Product>
     <Description>System monitoring and cleanup tool for Windows</Description>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
