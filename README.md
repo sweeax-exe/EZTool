@@ -1,190 +1,188 @@
 # EZTool
 
-[![Neueste Version](https://img.shields.io/github/v/release/sweeax-exe/EZTool?label=Download&color=00E5FF)](https://github.com/sweeax-exe/EZTool/releases/latest)
-[![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-8B5CF6)](LICENSE)
+**English** · [Deutsch](README.de.md)
+
+[![Latest release](https://img.shields.io/github/v/release/sweeax-exe/EZTool?label=Download&color=00E5FF)](https://github.com/sweeax-exe/EZTool/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-8B5CF6)](LICENSE)
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-2CF5A0)
+![20 languages](https://img.shields.io/badge/Languages-20-FF3D9A)
 
-Futuristisches System-Tool für Windows 10/11 im Glas-Design: Hardware-Monitoring mit FPS, Gaming-Modus, Speicher-Cleaner, Deinstaller, Updates, Autostart, Tweaks und Tastenbelegung – kostenlos und Open Source.
+A futuristic system tool for Windows 10/11 with a glass design: hardware monitoring with FPS, gaming mode, storage cleaner, uninstaller, updates, startup manager, tweaks and key mapping. Free and open source.
 
-![EZTool Dashboard](docs/screenshots/dashboard.png)
+![EZTool dashboard](docs/screenshots/en/dashboard.png)
 
 ## Screenshots
 
 | | |
 |---|---|
-| ![Gaming-Modus](docs/screenshots/gaming.png) **Gaming-Modus** – Boost per Klick, Live-FPS, Session-Bericht | ![Verlauf](docs/screenshots/history.png) **Verlauf** – Temperaturen und Auslastung der letzten 24 Stunden |
-| ![Hardware](docs/screenshots/hardware.png) **Hardware** – alle Sensoren live, nach Bauteil gruppiert | ![Speicher-Cleaner](docs/screenshots/cleaner.png) **Speicher-Cleaner** – sicher aufräumen, inklusive Tiefenreinigung |
-| ![Windows-Tweaks](docs/screenshots/tweaks.png) **Windows-Tweaks** – Werbung raus, Gaming rein, alles umkehrbar | ![Tastenbelegung](docs/screenshots/hotkeys.png) **Tastenbelegung** – Medientasten für jede Tastatur |
-| ![Einstellungen](docs/screenshots/settings.png) **Einstellungen** – Autostart, Alarme, Overlay, Auto-Update | |
-
-## 🌍 Sprachen
-
-EZTool erkennt die Windows-Sprache automatisch. In den Einstellungen lässt sie sich jederzeit ändern.
-
-Deutsch · English · Español · Français · Italiano · Português · Nederlands · Polski · Čeština · Svenska · Türkçe · Русский · Українська · 日本語 · 한국어 · 简体中文 · 繁體中文 · हिन्दी · Bahasa Indonesia · Tiếng Việt
-
-**Neue Sprache beitragen:**
-1. Den Ordner `src/EZTool/Localization/en` nach `Localization/<code>` kopieren und die Texte übersetzen.
-2. Platzhalter wie `{0}` nicht verändern.
-3. Die Sprache in `Core/Loc.cs` bei `Languages` eintragen und einen Pull Request stellen.
-
-Fehlt in einer Sprache ein Text, zeigt EZTool automatisch den englischen an.
+| ![Gaming mode](docs/screenshots/en/gaming.png) **Gaming mode**: one-click boost, live FPS, session report | ![History](docs/screenshots/en/history.png) **History**: temperatures and load over the last 24 hours |
+| ![Hardware](docs/screenshots/en/hardware.png) **Hardware**: every sensor live, grouped by component | ![Storage cleaner](docs/screenshots/en/cleaner.png) **Storage cleaner**: safe cleanup, including deep clean |
+| ![Windows tweaks](docs/screenshots/en/tweaks.png) **Windows tweaks**: ads out, gaming in, everything reversible | ![Key mapping](docs/screenshots/en/hotkeys.png) **Key mapping**: media keys for any keyboard |
+| ![Settings](docs/screenshots/en/settings.png) **Settings**: language, startup, alerts, overlay, auto-update | |
 
 ## Download
 
-1. Unter [**Releases**](https://github.com/sweeax-exe/EZTool/releases/latest) die Datei **`EZTool.exe`** herunterladen.
-2. Starten – fertig. Keine Installation nötig, .NET ist bereits enthalten.
+1. Download **`EZTool.exe`** from [**Releases**](https://github.com/sweeax-exe/EZTool/releases/latest).
+2. Run it. No installation needed, .NET is already included.
 
-**Hinweise:**
-- EZTool fragt beim Start nach Administrator-Rechten. Die braucht es für Temperatursensoren, FPS-Messung, Tiefenreinigung und Deinstallationen.
-- Beim ersten Start kann Windows SmartScreen „Der Computer wurde durch Windows geschützt“ anzeigen, weil die EXE nicht kostenpflichtig signiert ist. Dann über **Weitere Informationen → Trotzdem ausführen** starten. Der komplette Quellcode liegt in diesem Repository, und jede EXE wird öffentlich von GitHub Actions gebaut.
-- **Updates kommen automatisch:** EZTool prüft regelmäßig auf neue Releases. Ein Update wird per SHA-256 geprüft und installiert, danach startet EZTool neu. Das lässt sich in den Einstellungen abschalten.
+**Good to know:**
+- **Administrator rights:** EZTool asks for them at startup. It needs them for temperature sensors, FPS measurement, deep clean and uninstalling.
+- **SmartScreen:** On first launch Windows may show "Windows protected your PC", because the EXE has no paid code-signing certificate. Click **More info → Run anyway**. The full source code is in this repository, and every EXE is built publicly by GitHub Actions.
+- **Automatic updates:** EZTool checks for new releases regularly. Each update is verified via SHA-256, installed, and EZTool restarts. You can turn this off in the settings.
 
-**Technik:** C# · WPF · .NET 10 · [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (Sensoren) · CommunityToolkit.Mvvm · Windows-SDK (Store-Apps)
+## 🌍 Languages
+
+EZTool detects your Windows language automatically. You can change it any time in the settings.
+
+Deutsch · English · Español · Français · Italiano · Português · Nederlands · Polski · Čeština · Svenska · Türkçe · Русский · Українська · 日本語 · 한국어 · 简体中文 · 繁體中文 · हिन्दी · Bahasa Indonesia · Tiếng Việt
+
+**Contribute a language or improve a translation:**
+1. Copy `src/EZTool/Localization/en` to `Localization/<code>` and translate the texts.
+2. Keep placeholders like `{0}` unchanged.
+3. Add the language to `Languages` in `Core/Loc.cs` and open a pull request.
+
+If a text is missing in a language, EZTool falls back to English.
+
+## Modules
+
+The navigation is organized into five groups:
+
+| Group | Module | What it does |
+|---|---|---|
+| Monitor | **Dashboard** | Ring gauges for CPU, GPU, RAM and system drive, 60-second history, temperatures, per-core load, drives, network, system info |
+| | **Processes** | Processes grouped by app (e.g. "Chrome 30×"), live CPU and RAM, end with one click. Windows core processes are protected |
+| | **Hardware** | Every sensor (often 150+) grouped by component, with filter and search |
+| | **History** | Temperatures, load and FPS over the last 24 hours as charts with crosshair, peak values, CSV export |
+| | **Disks** | SSD/HDD health: remaining life, temperature, power-on hours, TB written, read/write errors |
+| Gaming | **Gaming mode** | Boost button (high-performance power plan, clear standby RAM, pause Windows Update, close selected apps), live FPS, session report with average FPS, 1% low and peak temperatures |
+| Clean up | **Storage cleaner** | Temp files, caches, crash dumps, browsers, Recycle Bin, plus deep clean (old Windows updates via DISM, `Windows.old`) |
+| | **Storage map** | Drive as a treemap: tiles sized by space used, two levels deep, click to zoom in, right-click to go back |
+| | **Folder analysis** | Large and long-unused, orphaned and empty folders |
+| | **Duplicates** | Duplicate files, compared by actual content (SHA-256) |
+| Software | **Programs** | Uninstall desktop programs and Store apps, then remove the leftovers |
+| | **Updates** | Available updates for all programs via winget, one by one or all with one click |
+| | **Startup** | Turn Run keys, startup folder entries and scheduled tasks on and off |
+| System | **Windows tweaks** | 14 switches for ads, privacy, Explorer and gaming (mouse acceleration, Game DVR …), reversible any time, with restore point |
+| | **Key mapping** | Put media functions (next/previous track, play/pause, volume), other keys, programs or EZTool actions on any key, globally, even in games. Quick start: Page ↑/↓ = next/previous track |
+| | **Settings** | Language, start with Windows, background mode, sensor driver, alerts, overlay, updates |
 
 ## Design
 
-Unter Windows 11 (ab 22H2) läuft das Fenster auf echtem **Acrylic-Glas**: Der Desktop scheint verschwommen durch. Darüber liegen halbtransparente Glaskarten mit Lichtkante und langsam treibende Leucht-Nebel (Aurora). Unter Windows 10 gibt es stattdessen einen dunklen, deckenden Hintergrund. Alle Farben und Glas-Materialien stehen zentral in `Themes/Theme.xaml` (`CardFill`, `CardBorderGradient`, `GlassPanel`, `GlassEdge`).
+On Windows 11 (22H2 and later) the window sits on real **acrylic glass**: your desktop shows through, blurred. On top are semi-transparent glass cards with a light edge and slowly drifting glow orbs (aurora). On Windows 10 the background is dark and opaque instead. All colors and glass materials live in `Themes/Theme.xaml` (`CardFill`, `CardBorderGradient`, `GlassPanel`, `GlassEdge`).
 
-## Module
+## Running in the background
 
-Die Navigation ist in fünf Gruppen gegliedert:
+- **Tray icon:** The X minimizes EZTool to the notification area. The tooltip shows live CPU/GPU/RAM. The right-click menu opens modules, toggles the overlay and gaming mode, and exits EZTool.
+- **Start with Windows:** creates a scheduled task with highest privileges. A normal Run entry would fail at UAC, because EZTool needs admin rights. The task starts EZTool hidden with `--tray`.
+- **Alerts:** A Windows notification appears when the CPU or GPU exceeds its limit (after 5 readings in a row, then at most every 10 minutes) or a drive is almost full. Clicking it opens the matching module.
+- **Overlay:** a small live display on top of all windows with CPU, GPU, RAM and **FPS**. Clicks pass through. Works over borderless games, not in exclusive fullscreen.
+- **Sensor log:** every 5 seconds, one CSV per day in `%LOCALAPPDATA%\EZTool\Logs`. Files older than 30 days are deleted automatically.
+- **Single instance:** starting EZTool a second time brings the running window to the front.
 
-| Gruppe | Modul | Was es kann |
-|---|---|---|
-| Monitor | **Dashboard** | Ringanzeigen für CPU, GPU, RAM und Systemlaufwerk, 60-Sekunden-Verlauf, Temperaturen, Kern-Auslastung, Laufwerke, Netzwerk, Systeminfos |
-| | **Prozesse** | Prozesse nach Programm gruppiert (z. B. „Chrome 30×“), CPU und RAM live, mit einem Klick beenden. Windows-Kernprozesse sind geschützt |
-| | **Hardware** | Alle Sensoren (oft 150+) nach Bauteil gruppiert, mit Filter und Suche |
-| | **Verlauf** | Temperaturen, Auslastung und FPS der letzten 24 Stunden als Diagramm mit Fadenkreuz, Höchstwerte, CSV-Export |
-| | **Datenträger** | SSD-/HDD-Gesundheit: Restlebensdauer, Temperatur, Betriebsstunden, geschriebene TB, Lese-/Schreibfehler |
-| Gaming | **Gaming-Modus** | Boost-Knopf (Höchstleistung, Standby-RAM leeren, Windows Update anhalten, gewählte Apps schließen), Live-FPS, Session-Bericht mit Ø-FPS, 1 % Low und Höchsttemperaturen |
-| Aufräumen | **Speicher-Cleaner** | Temp, Caches, Crash-Dumps, Browser, Papierkorb – plus Tiefenreinigung (alte Windows-Updates per DISM, `Windows.old`) |
-| | **Speicher-Karte** | Laufwerk als Treemap: Kacheln proportional zur Größe, zwei Ebenen, Klick zoomt hinein, Rechtsklick zurück |
-| | **Ordner-Analyse** | Große und lange ungenutzte, verwaiste und leere Ordner |
-| | **Duplikate** | Doppelte Dateien, verglichen über den echten Inhalt (SHA-256) |
-| Software | **Programme** | Desktop-Programme und Store-Apps deinstallieren, danach die Reste entfernen |
-| | **Updates** | Verfügbare Updates aller Programme über winget, einzeln oder alle mit einem Klick |
-| | **Autostart** | Run-Keys, Autostart-Ordner und geplante Aufgaben ein- und ausschalten |
-| System | **Tastenbelegung** | Medienfunktionen (Titel vor/zurück, Play/Pause, Lautstärke), andere Tasten, Programme oder EZTool-Aktionen auf beliebige Tasten legen – global, auch in Spielen. Schnellstart: Bild ↑/↓ = Titel vor/zurück |
-| | **Windows-Tweaks** | 14 Schalter für Werbung, Datenschutz, Explorer und Gaming (Mausbeschleunigung, Game DVR …), jederzeit rückgängig, mit Wiederherstellungspunkt |
-| | **Einstellungen** | Mit Windows starten, Hintergrundbetrieb, Sensor-Treiber, Alarme, Overlay |
+## FPS measurement
 
-## Hintergrundbetrieb
+EZTool reads DirectX "Present" events via Windows ETW, the same source PresentMon uses. It measures the window in the foreground. This works with DirectX 9 to 12. Vulkan and OpenGL games are only captured if they present through DXGI. Measuring needs administrator rights and only runs while the overlay, the gaming page or gaming mode is active. Session reports are stored in `%LOCALAPPDATA%\EZTool\Sessions`.
 
-- **Tray-Symbol:** Das X minimiert in den Infobereich. Der Tooltip zeigt CPU/GPU/RAM live, das Rechtsklick-Menü öffnet Module, schaltet das Overlay und beendet EZTool.
-- **Mit Windows starten:** legt eine geplante Aufgabe mit höchsten Rechten an. Ein normaler Run-Eintrag würde an der UAC scheitern, weil EZTool Admin-Rechte braucht. Die Aufgabe startet EZTool unsichtbar mit `--tray`.
-- **Alarme:** Eine Windows-Benachrichtigung erscheint, wenn CPU oder GPU über dem Grenzwert liegen (erst nach 5 Messungen in Folge, dann höchstens alle 10 Minuten) oder ein Laufwerk fast voll ist. Ein Klick auf die Meldung öffnet das passende Modul.
-- **Overlay:** kleine Live-Anzeige über allen Fenstern mit CPU, GPU, RAM und **FPS**. Klicks gehen hindurch. Funktioniert über randlosen Spielen, nicht in exklusivem Vollbild.
-- **Sensor-Log:** alle 5 Sekunden, tageweise als CSV unter `%LOCALAPPDATA%\EZTool\Logs`. Wird nach 30 Tagen automatisch gelöscht.
+## Key mapping
 
-## Tastenbelegung
+A global low-level keyboard hook (`WH_KEYBOARD_LL`) intercepts the mapped key. Its normal function is suppressed, and EZTool sends the chosen action via `SendInput` instead, for example the media key "Next track". Details:
 
-Ein globaler Low-Level-Tastatur-Hook (`WH_KEYBOARD_LL`) fängt die belegte Taste ab. Ihre normale Funktion entfällt, und stattdessen sendet EZTool per `SendInput` die gewünschte Aktion, z. B. die Medientaste „Nächster Titel“. Weitere Details:
+- **No idle cost:** The hook is only active while at least one mapping is enabled.
+- **No loops:** Keys EZTool sends itself are ignored.
+- **Normal rights:** Programs started by a key run through Explorer with normal rights, not as administrator.
+- **Storage:** Mappings are saved in `settings.json` (`KeyBindings`).
 
-- **Kein Leerlauf:** Der Hook ist nur aktiv, wenn mindestens eine Belegung eingeschaltet ist.
-- **Keine Endlosschleife:** Selbst gesendete Tasten werden ignoriert.
-- **Normale Rechte:** Programme, die per Taste gestartet werden, laufen über den Explorer mit normalen Rechten, nicht als Administrator.
-- **Gespeichert** werden die Belegungen in `settings.json` (`KeyBindings`).
+## Safety principles
 
-## FPS-Messung
+- **Cleaner:** only known cache and temp locations. Temp files only when older than 24 hours, locked files are skipped, junctions are never followed. For browsers **only** the cache is deleted. Deep clean uses Windows' own tools exclusively (DISM, Disk Cleanup).
+- **Programs:** The vendor's uninstaller is always used (Store apps via the official PackageManager API). Folders of other installed programs are never suggested as leftovers. Registry keys are backed up as `.reg` first. System-relevant Store apps (Store, App Installer, Xbox Identity …) can't be removed.
+- **Folders & duplicates:** Deleting always means *Recycle Bin*. System, program, dot and build folders are excluded. Cloud files (OneDrive placeholders) are never read. Duplicates are only preselected for media, and at least one copy always stays in every group.
+- **Startup:** Turning an entry off uses the same mechanism as Task Manager (`StartupApproved`), so the entry stays intact. A JSON or XML backup is saved before an entry is removed permanently.
+- **Processes:** Windows core processes (csrss, lsass, svchost, dwm …) can't be ended.
 
-EZTool liest die DirectX-„Present“-Ereignisse über Windows-ETW, also dieselbe Quelle, die auch PresentMon nutzt. Gemessen wird das Fenster im Vordergrund. Das funktioniert mit DirectX 9 bis 12. Vulkan- und OpenGL-Spiele werden nur erfasst, wenn sie über DXGI präsentieren. Die Messung braucht Administrator-Rechte und läuft nur, solange das Overlay, die Gaming-Seite oder der Gaming-Modus aktiv ist. Session-Berichte liegen unter `%LOCALAPPDATA%\EZTool\Sessions`.
-- **Nur eine Instanz:** Ein zweiter Start holt das laufende Fenster nach vorn.
+### CPU temperatures (PawnIO)
 
-## Sicherheitsprinzipien
+LibreHardwareMonitor reads CPU temperature, clock and power through the free, open-source driver **PawnIO**. If it's missing, EZTool offers to install it on first launch (and any time from the dashboard or the settings):
 
-- **Cleaner:** nur bekannte Cache- und Temp-Orte. Temp-Dateien erst ab einem Alter von 24 Stunden, gesperrte Dateien werden übersprungen, Junctions nie verfolgt. Bei Browsern wird **nur** der Cache gelöscht. Die Tiefenreinigung nutzt ausschließlich die Windows-eigenen Werkzeuge (DISM, Datenträgerbereinigung).
-- **Programme:** Es startet immer das Deinstallationsprogramm des Herstellers (Store-Apps über die offizielle PackageManager-API). Ordner anderer installierter Programme werden nie als Reste vorgeschlagen. Registry-Schlüssel werden vorher als `.reg` gesichert. Systemrelevante Store-Apps (Store, App Installer, Xbox-Identität …) lassen sich nicht entfernen.
-- **Ordner & Duplikate:** Löschen bedeutet immer *Papierkorb*. System-, Programm-, Punkt- und Build-Ordner sind ausgeschlossen. Cloud-Dateien (OneDrive-Platzhalter) werden nie gelesen. Duplikate sind nur bei Medien vorausgewählt, und in jeder Gruppe bleibt mindestens ein Exemplar.
-- **Autostart:** Ausschalten nutzt denselben Mechanismus wie der Task-Manager (`StartupApproved`), der Eintrag bleibt also erhalten. Vor dem dauerhaften Entfernen wird eine JSON- bzw. XML-Sicherung abgelegt.
-- **Prozesse:** Windows-Kernprozesse (csrss, lsass, svchost, dwm …) können nicht beendet werden.
+1. The official installer is downloaded from `github.com/namazso/PawnIO.Setup` (latest version via the GitHub API).
+2. Its Authenticode signature is verified with `WinVerifyTrust`. Nothing runs without a valid signature.
+3. The installer starts with its own dialog (`-install`, exactly like LibreHardwareMonitor does).
+4. The sensors are reinitialized without restarting EZTool.
 
-## Starten
+## Building
 
 ```bash
 dotnet run --project src/EZTool
 ```
 
-Die App fordert Administrator-Rechte an (UAC). Die braucht sie für Temperatursensoren, die Tiefenreinigung, Deinstallationen und den Autostart.
+The app requests administrator rights (UAC).
 
-Startparameter:
-- `--page=<modul>` öffnet ein Modul direkt (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `settings`).
-- `--tray` startet unsichtbar im Infobereich.
-- Umgebungsvariable `EZTOOL_DEV=1`: eigene Instanz für Tests, die eine laufende EZTool-Instanz nicht stört.
-- `--screenshots=<Ordner> --pages=dashboard,gaming,…`: EZTool fotografiert die genannten Seiten selbst und beendet sich. So entstehen die Bilder in `docs/screenshots`. Computer- und Benutzername werden dabei durch Platzhalter ersetzt, und es wird nichts aufgezeichnet.
+Command-line options:
+- `--page=<module>` opens a module directly (`dashboard`, `processes`, `hardware`, `history`, `disks`, `gaming`, `cleaner`, `storagemap`, `folders`, `duplicates`, `programs`, `updates`, `autostart`, `tweaks`, `hotkeys`, `settings`).
+- `--tray` starts hidden in the notification area.
+- `--lang=<code>` (or the environment variable `EZTOOL_LANG`) overrides the language, e.g. `--lang=ja`.
+- Environment variable `EZTOOL_DEV=1`: a separate instance for testing that doesn't interfere with a running EZTool.
+- `--screenshots=<folder> --pages=dashboard,gaming,…`: EZTool captures the listed pages itself and exits. That's how the images in `docs/screenshots` are made. Computer and user names are replaced with placeholders, input is ignored during capture, and nothing is logged.
 
-### CPU-Temperaturen (PawnIO)
-
-LibreHardwareMonitor liest CPU-Temperatur, -Takt und -Leistung über den kostenlosen Open-Source-Treiber **PawnIO**. Fehlt er, bietet EZTool beim ersten Start (und jederzeit im Dashboard bzw. in den Einstellungen) die Installation an:
-
-1. Der offizielle Installer wird von `github.com/namazso/PawnIO.Setup` geladen (neueste Version laut GitHub-API).
-2. Seine Authenticode-Signatur wird mit `WinVerifyTrust` geprüft. Ohne gültige Signatur wird nichts ausgeführt.
-3. Der Installer startet mit seinem eigenen Dialog (`-install`, genau wie bei LibreHardwareMonitor).
-4. Die Sensoren werden ohne Neustart von EZTool neu initialisiert.
-
-## Neue Version veröffentlichen
-
-Releases baut GitHub Actions automatisch (`.github/workflows/release.yml`). Für eine neue Version:
-
-```bash
-git tag v1.0.1
-```
-
-```bash
-git push origin v1.0.1
-```
-
-Der Workflow baut eine eigenständige Einzeldatei. Die Versionsnummer kommt aus dem Tag. Veröffentlicht werden `EZTool.exe`, `EZTool-win-x64.zip` und `SHA256SUMS.txt` als Release. Alle installierten EZTool-Versionen finden das Update danach von selbst.
-
-Lokal dieselbe EXE bauen:
+Build the same single-file EXE as the releases locally:
 
 ```bash
 dotnet publish src/EZTool -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish
 ```
 
-## Erweitern – neues Modul in 2 Minuten
+### Releases
 
-1. Ordner `src/EZTool/Modules/MeinModul/` anlegen.
-2. Eine Klasse schreiben, die `IModule` implementiert:
+GitHub Actions builds releases automatically (`.github/workflows/release.yml`). Pushing a version tag such as `v1.2.0` builds a self-contained single-file EXE (the version number comes from the tag) and publishes `EZTool.exe`, `EZTool-win-x64.zip` and `SHA256SUMS.txt`. Installed copies of EZTool pick up the update on their own.
+
+## Extending: a new module in 2 minutes
+
+1. Create a folder `src/EZTool/Modules/MyModule/`.
+2. Write a class that implements `IModule`:
 
 ```csharp
-public sealed class MeinModul : IModule
+public sealed class MyModule : IModule
 {
-    public string Id => "meinmodul";
-    public string Title => "Mein Modul";
-    public string Subtitle => "Beschreibung oben auf der Seite.";
-    public string Icon => "";   // Glyph aus "Segoe Fluent Icons"
-    public int Order => 60;            // Position in der Navigation
+    public string Id => "mymodule";
+    public string Title => Loc.T("MyModule.Title");        // texts live in Localization/<lang>/*.json
+    public string Subtitle => Loc.T("MyModule.Subtitle");
+    public string Icon => "";                        // glyph from "Segoe Fluent Icons"
+    public int Order => 420;                               // position (and group) in the navigation
 
-    public FrameworkElement CreateView() => new MeinModulView { DataContext = new MeinModulViewModel() };
+    public FrameworkElement CreateView() => new MyModuleView { DataContext = new MyModuleViewModel() };
 }
 ```
 
-Das Modul wird automatisch gefunden und in der Navigation angezeigt. Implementiert das ViewModel `IActivatable`, wird `OnActivated()` bei jedem Öffnen der Seite aufgerufen.
+The module is discovered automatically and shows up in the navigation. If the view model implements `IActivatable`, `OnActivated()` is called whenever the page is opened. In XAML, texts are referenced with `{l:T MyModule.Title}` (`xmlns:l="clr-namespace:EZTool.Core"`).
 
-**Bausteine zum Wiederverwenden:**
-- **Controls** (in `Controls/`): `RadialGauge`, `Sparkline`, `GaugeCard`
+**Reusable building blocks:**
+- **Controls** (in `Controls/`): `RadialGauge`, `Sparkline`, `GaugeCard`, `TimeChart`, `TreemapView`
 - **Styles** (in `Themes/Theme.xaml`): `Card`, `PrimaryButton`, `DangerButton`, `GhostButton`, `SegmentButton`, `Toggle`, `NeonBar`, `SearchBox`
-- **Dienste:** `NeonDialog.Show(...)` für Rückfragen, `TrayService.Instance.Notify(...)` für Benachrichtigungen, `SettingsService` für eigene Einstellungen
+- **Services:** `NeonDialog.Show(...)` for confirmations, `TrayService.Instance.Notify(...)` for notifications, `SettingsService` for your own settings, `Loc.T(...)` for texts
 
-## Projektstruktur
+## Project structure
 
 ```
 src/EZTool/
-├── Assets/         App-Icon
-├── Core/           IModule, Formatierung, Konverter, Native (Papierkorb, Icons, Acrylic)
-├── Controls/       RadialGauge, Sparkline, GaugeCard
-├── Themes/         Farben, Glas-Materialien, Fonts, alle Control-Styles
-├── Services/       Hardware, SystemInfo, Settings, Tray, Alerts, PawnIo, StartupTask, Cleaner (+ DeepClean),
-│                   Program, StoreApp, Autostart, Process, Folder, Duplicate
+├── Assets/         App icon
+├── Core/           IModule, Loc (languages), formatting, converters, Native (Recycle Bin, icons, acrylic)
+├── Controls/       RadialGauge, Sparkline, GaugeCard, TimeChart, TreemapView
+├── Themes/         Colors, glass materials, fonts, all control styles
+├── Localization/   <language>/*.json – all UI texts (20 languages)
+├── Services/       Hardware, Fps, Gaming, SensorLog, SystemInfo, Settings, Tray, Alerts, PawnIo, StartupTask,
+│                   Update, Cleaner (+ DeepClean), DiskMap, DiskHealth, Program, StoreApp, Winget, Autostart,
+│                   Process, Folder, Duplicate, Tweak, Hotkey
 ├── Dialogs/        NeonDialog, LeftoverDialog, OverlayWindow
-└── Modules/        Dashboard, Processes, Hardware, Cleaner, Programs, Autostart, Folders, Duplicates, Settings
+└── Modules/        16 modules (Dashboard … Settings)
 ```
 
-## Ideen für später
+## Ideas for later
 
-- Autostart: Windows-Dienste und Startzeit-Messung pro Eintrag
-- Prozess-Details: Verlauf pro Prozess, Netzwerk- und Datenträgerlast
-- Gaming-Modus automatisch starten, wenn ein Spiel erkannt wird
-- Akzentfarben-Wahl und Sprache (Englisch)
-- Treiber-Update-Check (GPU-Treiber)
+- Startup: Windows services and boot-time impact per entry
+- Process details: history per process, network and disk load
+- Start gaming mode automatically when a game is detected
+- Choice of accent colors
+- Driver update check (GPU drivers)
+
+## License
+
+[MIT](LICENSE). Third-party libraries: see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

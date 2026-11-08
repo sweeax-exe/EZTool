@@ -176,12 +176,28 @@ public partial class MainWindow : Window
         Width = 1440;
         Height = 900;
         Directory.CreateDirectory(dir);
+
+        // Während der Aufnahme keine Maus-/Tastatureingaben annehmen – sonst landet womöglich eine andere
+        // (persönliche) Seite auf dem Bild.
+        Root.IsHitTestVisible = false;
+        PreviewKeyDown += (_, e) => e.Handled = true;
+        PreviewMouseWheel += (_, e) => e.Handled = true;
+
         await Task.Delay(6000); // Sensoren, Systeminfos und Verlauf laden lassen
 
         foreach (var page in pages)
         {
-            if (!OpenModule(page)) continue;
+            var module = _modules.FirstOrDefault(m => m.Id.Equals(page, StringComparison.OrdinalIgnoreCase));
+            if (module == null || !OpenModule(page)) continue;
             await Task.Delay(page == "cleaner" ? 12000 : 5000);
+
+            // Sicherheitsnetz: nur fotografieren, wenn wirklich die gewünschte Seite angezeigt wird
+            if (PageTitle.Text != module.Title || PageHost.Content != _views[module.Id])
+            {
+                OpenModule(page);
+                await Task.Delay(2000);
+                if (PageTitle.Text != module.Title) continue;
+            }
 
             const double scale = 1.25;
             var size = new Size(Root.ActualWidth, Root.ActualHeight);

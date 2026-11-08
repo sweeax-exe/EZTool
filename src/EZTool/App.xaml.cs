@@ -36,8 +36,9 @@ public partial class App : Application
         }
 
         // Sprache muss vor dem ersten Fenster feststehen
-        // EZTOOL_LANG=en (o. ä.) überschreibt die Einstellung – zum Testen anderer Sprachen
-        Core.Loc.Init(Environment.GetEnvironmentVariable("EZTOOL_LANG") is { Length: > 0 } testLang ? testLang : SettingsService.Current.Language);
+        // "--lang=en" oder EZTOOL_LANG=en überschreibt die Einstellung – für Tests und Screenshots
+        var forcedLang = Arg("--lang=") ?? Environment.GetEnvironmentVariable("EZTOOL_LANG");
+        Core.Loc.Init(!string.IsNullOrEmpty(forcedLang) ? forcedLang : SettingsService.Current.Language);
 
         // Nur eine Instanz: ein zweiter Start holt das laufende Fenster nach vorn.
         _mutex = new Mutex(true, InstanceName, out bool first);

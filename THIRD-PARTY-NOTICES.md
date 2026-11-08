@@ -1,14 +1,14 @@
-# Verwendete Open-Source-Bibliotheken
+# Third-party notices
 
-EZTool selbst steht unter der MIT-Lizenz (siehe `LICENSE`). Es nutzt diese Bibliotheken, die jeweils unter ihrer eigenen Lizenz stehen:
+EZTool itself is licensed under the MIT License (see `LICENSE`). It uses the following libraries, each under its own license:
 
-| Bibliothek | Zweck | Lizenz |
+| Library | Purpose | License |
 |---|---|---|
-| [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | Hardware-Sensoren | MPL-2.0 |
-| [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM-Grundlagen | MIT |
-| [Microsoft.Diagnostics.Tracing.TraceEvent](https://github.com/microsoft/perfview) | FPS-Messung über ETW | MIT |
-| [System.Management](https://github.com/dotnet/runtime) | WMI-Abfragen | MIT |
-| [System.ServiceProcess.ServiceController](https://github.com/dotnet/runtime) | Windows-Dienste | MIT |
-| [.NET Runtime / WPF / WinForms](https://github.com/dotnet) | Laufzeit (in der EXE enthalten) | MIT |
+| [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) | Hardware sensors | MPL-2.0 |
+| [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM foundation | MIT |
+| [Microsoft.Diagnostics.Tracing.TraceEvent](https://github.com/microsoft/perfview) | FPS measurement via ETW | MIT |
+| [System.Management](https://github.com/dotnet/runtime) | WMI queries | MIT |
+| [System.ServiceProcess.ServiceController](https://github.com/dotnet/runtime) | Windows services | MIT |
+| [.NET runtime / WPF / WinForms](https://github.com/dotnet) | Runtime (bundled in the EXE) | MIT |
 
-**PawnIO** (Sensor-Treiber) ist nicht in EZTool enthalten. Auf Wunsch lädt EZTool den offiziellen, signierten Installer von [github.com/namazso/PawnIO.Setup](https://github.com/namazso/PawnIO.Setup).
+**PawnIO** (sensor driver) is not included in EZTool. On request, EZTool downloads the official, signed installer from [github.com/namazso/PawnIO.Setup](https://github.com/namazso/PawnIO.Setup).

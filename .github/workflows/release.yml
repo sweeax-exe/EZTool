@@ -1,5 +1,5 @@
-# Baut EZTool und veröffentlicht ein GitHub-Release, sobald ein Versions-Tag (z. B. v1.0.1) gepusht wird.
-# Die App findet das Release über die GitHub-API und bietet es als Update an.
+# Builds EZTool and publishes a GitHub release whenever a version tag (e.g. v1.2.0) is pushed.
+# Installed copies find the release via the GitHub API and offer it as an update.
 name: Release
 
 on:
@@ -19,11 +19,11 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Version aus dem Tag lesen
+      - name: Read version from tag
         shell: pwsh
         run: echo "VERSION=$('${{ github.ref_name }}'.TrimStart('v'))" >> $env:GITHUB_ENV
 
-      - name: Als eigenständige Einzeldatei bauen
+      - name: Build self-contained single-file EXE
         shell: pwsh
         run: >
           dotnet publish src/EZTool/EZTool.csproj -c Release -r win-x64
@@ -35,7 +35,7 @@ jobs:
           -p:Version=${{ env.VERSION }}
           -o publish
 
-      - name: Paket und Prüfsumme erstellen
+      - name: Create package and checksum
         shell: pwsh
         run: |
           Copy-Item README.md, LICENSE, THIRD-PARTY-NOTICES.md publish/
@@ -43,7 +43,7 @@ jobs:
           $hash = (Get-FileHash EZTool-win-x64.zip -Algorithm SHA256).Hash.ToLower()
           "$hash  EZTool-win-x64.zip" | Out-File SHA256SUMS.txt -Encoding ascii
 
-      - name: GitHub-Release veröffentlichen
+      - name: Publish GitHub release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
