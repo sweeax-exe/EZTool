@@ -374,6 +374,38 @@
         </Setter>
     </Style>
 
+    <!-- Klickbarer Spaltenkopf: aktiv = heller Text + gelber Pfeil (Tag = Pfeil-Glyphe) -->
+    <Style x:Key="SortHeader" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource KeyFocus}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border Background="Transparent" Padding="0,3">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter VerticalAlignment="Center" />
+                            <TextBlock x:Name="arrow" Text="{TemplateBinding Tag}" FontFamily="{StaticResource IconFont}" FontSize="9"
+                                       Margin="6,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource Accent}" Visibility="Hidden" />
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Text}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Text}" />
+                            <Setter TargetName="arrow" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ═══════════════════════════ CHECKBOX ═══════════════════════════ -->
     <Style TargetType="CheckBox">
         <Setter Property="Foreground" Value="{StaticResource Text}" />

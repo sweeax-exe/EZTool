@@ -30,6 +30,7 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
     [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private string _search = "";
     [ObservableProperty] private string _sort = "name";
+    [ObservableProperty] private bool _sortDescending;
     [ObservableProperty] private string _kind = "all";
     [ObservableProperty] private bool _quietMode;
     [ObservableProperty] private int _count;
@@ -66,22 +67,90 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
     [RelayCommand]
     private void SetKind(string k) => Kind = k;
 
-    private void ApplySort()
+    /// <summary>Pfeil im aktiven Spaltenkopf: ▼ absteigend, ▲ aufsteigend.</summary>
+    public string SortGlyph => SortDescending ? "" : "";
+
+    partial void OnSortDescendingChanged(bool value)
     {
-        using (ProgramsView.DeferRefresh())
-        {
-            ProgramsView.SortDescriptions.Clear();
-            ProgramsView.SortDescriptions.Add(Sort switch
-            {
-                "size" => new SortDescription(nameof(InstalledProgram.Size), ListSortDirection.Descending),
-                "date" => new SortDescription(nameof(InstalledProgram.InstallDate), ListSortDirection.Descending),
-                _ => new SortDescription(nameof(InstalledProgram.Name), ListSortDirection.Ascending)
-            });
-        }
+        OnPropertyChanged(nameof(SortGlyph));
+        ApplySort();
     }
 
+    private void ApplySort()
+    {
+        if (!_batchSort && ProgramsView is ListCollectionView lcv) lcv.CustomSort = new ProgramComparer(Sort, SortDescending);
+    }
+
+    /// <summary>Klick auf einen Spaltenkopf: gleiche Spalte dreht die Richtung, neue Spalte startet
+    /// sinnvoll (Name A→Z, Größe/Datum/Version größte bzw. neueste zuerst).</summary>
     [RelayCommand]
-    private void SetSort(string s) => Sort = s;
+    private void SetSort(string s)
+    {
+        if (s == Sort)
+        {
+            SortDescending = !SortDescending;
+            return;
+        }
+        _batchSort = true; // Spalte und Richtung zusammen setzen, dann nur einmal sortieren
+        Sort = s;
+        SortDescending = s != "name";
+        _batchSort = false;
+        ApplySort();
+    }
+
+    private bool _batchSort;
+
+    /// <summary>Sortiert nach Spalte; fehlende Werte (Größe unbekannt, kein Datum) stehen immer unten,
+    /// Gleichstände nach Name.</summary>
+    private sealed class ProgramComparer(string key, bool descending) : System.Collections.IComparer
+    {
+        public int Compare(object? x, object? y)
+        {
+            if (x is not InstalledProgram a || y is not InstalledProgram b) return 0;
+            int r = key switch
+            {
+                "size" => Missing(a.Size <= 0, b.Size <= 0) ?? Dir(a.Size.CompareTo(b.Size)),
+                "date" => Missing(a.InstallDate is null, b.InstallDate is null) ?? Dir(Nullable.Compare(a.InstallDate, b.InstallDate)),
+                "version" => Missing(a.Version.Length == 0, b.Version.Length == 0) ?? Dir(Natural(a.Version, b.Version)),
+                _ => Dir(ByName(a, b))
+            };
+            return r != 0 ? r : ByName(a, b);
+        }
+
+        private int Dir(int r) => descending ? -r : r;
+
+        private static int? Missing(bool a, bool b) => a == b ? (a ? 0 : null) : a ? 1 : -1;
+
+        private static int ByName(InstalledProgram a, InstalledProgram b) =>
+            string.Compare(a.Name, b.Name, StringComparison.CurrentCultureIgnoreCase);
+
+        /// <summary>Vergleicht Zahlenblöcke als Zahlen: 10.2 kommt nach 9.14.</summary>
+        private static int Natural(string a, string b)
+        {
+            int i = 0, j = 0;
+            while (i < a.Length && j < b.Length)
+            {
+                if (char.IsDigit(a[i]) && char.IsDigit(b[j]))
+                {
+                    int si = i, sj = j;
+                    while (i < a.Length && char.IsDigit(a[i])) i++;
+                    while (j < b.Length && char.IsDigit(b[j])) j++;
+                    var na = a[si..i].TrimStart('0');
+                    var nb = b[sj..j].TrimStart('0');
+                    int c = na.Length != nb.Length ? na.Length.CompareTo(nb.Length) : string.CompareOrdinal(na, nb);
+                    if (c != 0) return c;
+                }
+                else
+                {
+                    int c = char.ToUpperInvariant(a[i]).CompareTo(char.ToUpperInvariant(b[j]));
+                    if (c != 0) return c;
+                    i++;
+                    j++;
+                }
+            }
+            return (a.Length - i).CompareTo(b.Length - j);
+        }
+    }
 
     [RelayCommand]
     private async Task LoadAsync()
@@ -114,6 +183,8 @@ public sealed partial class ProgramsViewModel : ObservableObject, IActivatable
                 var size = p.IsStore ? StoreAppService.MeasureSize(p) : ProgramService.MeasureInstallFolder(p);
                 if (size > 0) Application.Current?.Dispatcher.BeginInvoke(() => p.Size = size);
             }
+            // nachgemessene Größen einsortieren (läuft nach allen Größen-Updates in der Dispatcher-Warteschlange)
+            Application.Current?.Dispatcher.BeginInvoke(() => { if (Sort == "size") ProgramsView.Refresh(); });
         });
     }
 

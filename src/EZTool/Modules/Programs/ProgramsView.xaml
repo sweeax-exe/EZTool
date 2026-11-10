@@ -28,13 +28,6 @@
                          Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
                 <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="4" Padding="3" Margin="12,0,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortName}" IsChecked="True" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="name" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortSize}" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="size" />
-                        <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.SortNewest}" GroupName="psort" Command="{Binding SetSortCommand}" CommandParameter="date" />
-                    </StackPanel>
-                </Border>
-                <Border Background="{StaticResource SurfaceRaised}" BorderBrush="{StaticResource Stroke}" BorderThickness="1" CornerRadius="4" Padding="3" Margin="12,0,0,0">
-                    <StackPanel Orientation="Horizontal">
                         <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindAll}" IsChecked="True" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="all" />
                         <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindDesktop}" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="desktop" />
                         <RadioButton Style="{StaticResource SegmentButton}" Content="{l:T Programs.KindStore}" GroupName="pkind" Command="{Binding SetKindCommand}" CommandParameter="store" />
@@ -59,16 +52,28 @@
                 <ColumnDefinition Width="{StaticResource ColSize}" />
                 <ColumnDefinition Width="{StaticResource ColActions}" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="2" Style="{StaticResource Label}">
-                <Run Text="{Binding Count, Mode=OneWay}" /><Run Text="{l:T Programs.CountSuffix}" /><Run Text="{Binding TotalSize, Mode=OneWay, Converter={StaticResource Bytes}}" />
-            </TextBlock>
-            <TextBlock Grid.Column="3" Text="{l:T Programs.ColVersion}" Style="{StaticResource Label}" />
-            <TextBlock Grid.Column="4" Text="{l:T Programs.ColInstalled}" Style="{StaticResource Label}" />
-            <TextBlock Grid.Column="5" Text="{l:T Programs.ColSize}" Style="{StaticResource Label}" HorizontalAlignment="Right" />
+            <!-- Spaltenköpfe sortieren per Klick; erneuter Klick dreht die Richtung -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,0,0,0">
+                <RadioButton Style="{StaticResource SortHeader}" GroupName="psort" Content="{l:T Programs.SortName}" Tag="{Binding SortGlyph}"
+                             IsChecked="{Binding Sort, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=name}"
+                             Command="{Binding SetSortCommand}" CommandParameter="name" />
+                <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource TextMute}" Margin="14,0,0,0" VerticalAlignment="Center">
+                    <Run Text="{Binding Count, Mode=OneWay}" /><Run Text="{l:T Programs.CountSuffix}" /><Run Text="{Binding TotalSize, Mode=OneWay, Converter={StaticResource Bytes}}" />
+                </TextBlock>
+            </StackPanel>
+            <RadioButton Grid.Column="3" Style="{StaticResource SortHeader}" GroupName="psort" Content="{l:T Programs.ColVersion}" Tag="{Binding SortGlyph}"
+                         IsChecked="{Binding Sort, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=version}"
+                         Command="{Binding SetSortCommand}" CommandParameter="version" />
+            <RadioButton Grid.Column="4" Style="{StaticResource SortHeader}" GroupName="psort" Content="{l:T Programs.ColInstalled}" Tag="{Binding SortGlyph}"
+                         IsChecked="{Binding Sort, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=date}"
+                         Command="{Binding SetSortCommand}" CommandParameter="date" />
+            <RadioButton Grid.Column="5" Style="{StaticResource SortHeader}" GroupName="psort" Content="{l:T Programs.ColSize}" Tag="{Binding SortGlyph}"
+                         IsChecked="{Binding Sort, Mode=OneWay, Converter={StaticResource Eq}, ConverterParameter=size}"
+                         Command="{Binding SetSortCommand}" CommandParameter="size" HorizontalAlignment="Right" />
         </Grid>
 
         <!-- ═══ Liste ═══ -->
-        <ListBox Grid.Row="2" Style="{StaticResource CleanList}" ItemsSource="{Binding ProgramsView}">
+        <ListBox x:Name="List" Grid.Row="2" Style="{StaticResource CleanList}" ItemsSource="{Binding ProgramsView}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="58" Margin="0,0,8,0">
