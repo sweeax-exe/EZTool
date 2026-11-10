@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Hotspot GPU",
   "Dashboard.GpuFan": "Ventilateur GPU",
   "Dashboard.GpuPower": "Puissance GPU",
+  "Dashboard.GpuClock": "Fréquence GPU",
   "Dashboard.CoreLoad": "Charge par cœur",
   "Dashboard.LogicalProcessors": "{0} processeurs logiques",
   "Dashboard.Drives": "Lecteurs",

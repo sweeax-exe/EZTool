@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU 핫스팟",
   "Dashboard.GpuFan": "GPU 팬",
   "Dashboard.GpuPower": "GPU 전력",
+  "Dashboard.GpuClock": "GPU 클럭",
   "Dashboard.CoreLoad": "코어 부하",
   "Dashboard.LogicalProcessors": "논리 프로세서 {0}개",
   "Dashboard.Drives": "드라이브",

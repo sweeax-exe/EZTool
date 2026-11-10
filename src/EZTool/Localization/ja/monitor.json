@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU ホットスポット",
   "Dashboard.GpuFan": "GPU ファン",
   "Dashboard.GpuPower": "GPU 電力",
+  "Dashboard.GpuClock": "GPU クロック",
   "Dashboard.CoreLoad": "コア負荷",
   "Dashboard.LogicalProcessors": "論理プロセッサ数 {0}",
   "Dashboard.Drives": "ドライブ",

@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Hotspot GPU",
   "Dashboard.GpuFan": "Kipas GPU",
   "Dashboard.GpuPower": "Daya GPU",
+  "Dashboard.GpuClock": "Clock GPU",
   "Dashboard.CoreLoad": "Beban core",
   "Dashboard.LogicalProcessors": "{0} prosesor logis",
   "Dashboard.Drives": "Drive",

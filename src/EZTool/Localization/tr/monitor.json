@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU sıcak nokta",
   "Dashboard.GpuFan": "GPU fanı",
   "Dashboard.GpuPower": "GPU gücü",
+  "Dashboard.GpuClock": "GPU saat hızı",
   "Dashboard.CoreLoad": "Çekirdek yükü",
   "Dashboard.LogicalProcessors": "{0} mantıksal işlemci",
   "Dashboard.Drives": "Sürücüler",

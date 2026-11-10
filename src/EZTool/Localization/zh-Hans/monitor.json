@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU 热点",
   "Dashboard.GpuFan": "GPU 风扇",
   "Dashboard.GpuPower": "GPU 功耗",
+  "Dashboard.GpuClock": "GPU 频率",
   "Dashboard.CoreLoad": "核心负载",
   "Dashboard.LogicalProcessors": "{0} 个逻辑处理器",
   "Dashboard.Drives": "驱动器",

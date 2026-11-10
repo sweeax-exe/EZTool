@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU Hotspot",
   "Dashboard.GpuFan": "GPU-Lüfter",
   "Dashboard.GpuPower": "GPU-Leistung",
+  "Dashboard.GpuClock": "GPU-Takt",
   "Dashboard.CoreLoad": "Kern-Auslastung",
   "Dashboard.LogicalProcessors": "{0} logische Prozessoren",
   "Dashboard.Drives": "Laufwerke",

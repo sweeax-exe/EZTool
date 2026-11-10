@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU-hotspot",
   "Dashboard.GpuFan": "GPU-ventilator",
   "Dashboard.GpuPower": "GPU-vermogen",
+  "Dashboard.GpuClock": "GPU-klok",
   "Dashboard.CoreLoad": "Kernbelasting",
   "Dashboard.LogicalProcessors": "{0} logische processors",
   "Dashboard.Drives": "Stations",

@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Hotspot de GPU",
   "Dashboard.GpuFan": "Ventilador GPU",
   "Dashboard.GpuPower": "Consumo GPU",
+  "Dashboard.GpuClock": "Frecuencia GPU",
   "Dashboard.CoreLoad": "Carga por núcleo",
   "Dashboard.LogicalProcessors": "{0} procesadores lógicos",
   "Dashboard.Drives": "Unidades",

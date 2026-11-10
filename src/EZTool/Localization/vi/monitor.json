@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Điểm nóng GPU",
   "Dashboard.GpuFan": "Quạt GPU",
   "Dashboard.GpuPower": "Công suất GPU",
+  "Dashboard.GpuClock": "Xung nhịp GPU",
   "Dashboard.CoreLoad": "Tải từng nhân",
   "Dashboard.LogicalProcessors": "{0} bộ xử lý logic",
   "Dashboard.Drives": "Ổ đĩa",

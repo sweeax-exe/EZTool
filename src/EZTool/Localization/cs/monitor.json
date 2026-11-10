@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Hotspot GPU",
   "Dashboard.GpuFan": "Ventilátor GPU",
   "Dashboard.GpuPower": "Příkon GPU",
+  "Dashboard.GpuClock": "Takt GPU",
   "Dashboard.CoreLoad": "Vytížení jader",
   "Dashboard.LogicalProcessors": "Logické procesory: {0}",
   "Dashboard.Drives": "Jednotky",

@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "GPU hotspot",
   "Dashboard.GpuFan": "GPU fan",
   "Dashboard.GpuPower": "GPU power",
+  "Dashboard.GpuClock": "GPU clock",
   "Dashboard.CoreLoad": "Core load",
   "Dashboard.LogicalProcessors": "{0} logical processors",
   "Dashboard.Drives": "Drives",

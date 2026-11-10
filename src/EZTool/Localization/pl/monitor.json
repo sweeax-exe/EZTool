@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Hotspot GPU",
   "Dashboard.GpuFan": "Wentylator GPU",
   "Dashboard.GpuPower": "Moc GPU",
+  "Dashboard.GpuClock": "Taktowanie GPU",
   "Dashboard.CoreLoad": "Obciążenie rdzeni",
   "Dashboard.LogicalProcessors": "Procesory logiczne: {0}",
   "Dashboard.Drives": "Dyski",

@@ -23,6 +23,7 @@
   "Dashboard.GpuHotspot": "Хотспот GPU",
   "Dashboard.GpuFan": "Вентилятор GPU",
   "Dashboard.GpuPower": "Потужність GPU",
+  "Dashboard.GpuClock": "Частота GPU",
   "Dashboard.CoreLoad": "Навантаження ядер",
   "Dashboard.LogicalProcessors": "Логічних процесорів: {0}",
   "Dashboard.Drives": "Диски",
